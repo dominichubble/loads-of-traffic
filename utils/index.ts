@@ -10,37 +10,39 @@ export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// @ts-expect-error there is no typescript version for this function
-export function horizontalLoop(items: gsap.TweenTarget, config) {
-  items = gsap.utils.toArray(items);
-  config = config || {};
+// This is a well-known community GSAP helper (not part of the typed GSAP API),
+// so its internals are intentionally loosely typed rather than fought into gsap's types.
+export function horizontalLoop(target: gsap.TweenTarget, config: Record<string, any> = {}) {
+  const items: any[] = gsap.utils.toArray(target);
   let tl = gsap.timeline({
     repeat: config.repeat,
     paused: config.paused,
     defaults: { ease: "none" },
-    onReverseComplete: () => tl.totalTime(tl.rawTime() + tl.duration() * 100),
+    onReverseComplete: () => {
+      tl.totalTime(tl.rawTime() + tl.duration() * 100);
+    },
   }),
     length = items.length,
     startX = items[0].offsetLeft,
-    times = [],
-    widths = [],
-    xPercents = [],
+    times: number[] = [],
+    widths: number[] = [],
+    xPercents: number[] = [],
     curIndex = 0,
     pixelsPerSecond = (config.speed || 1) * 100,
-    snap = config.snap === false ? (v) => v : gsap.utils.snap(config.snap || 1), // some browsers shift by a pixel to accommodate flex layouts, so for example if width is 20% the first element's width might be 242px, and the next 243px, alternating back and forth. So we snap to 5 percentage points to make things look more natural
-    totalWidth,
-    curX,
-    distanceToStart,
-    distanceToLoop,
-    item,
-    i;
+    snap = config.snap === false ? (v: number) => v : gsap.utils.snap(config.snap || 1), // some browsers shift by a pixel to accommodate flex layouts, so for example if width is 20% the first element's width might be 242px, and the next 243px, alternating back and forth. So we snap to 5 percentage points to make things look more natural
+    totalWidth: number,
+    curX: number,
+    distanceToStart: number,
+    distanceToLoop: number,
+    item: any,
+    i: number;
   gsap.set(items, {
     // convert "x" to "xPercent" to make things responsive, and populate the widths/xPercents Arrays to make lookups faster.
-    xPercent: (i, el) => {
-      const w = (widths[i] = parseFloat(gsap.getProperty(el, "width", "px")));
+    xPercent: (i: number, el: Element) => {
+      const w = (widths[i] = Number(gsap.getProperty(el, "width", "px")));
       xPercents[i] = snap(
-        (parseFloat(gsap.getProperty(el, "x", "px")) / w) * 100 +
-        gsap.getProperty(el, "xPercent"),
+        (Number(gsap.getProperty(el, "x", "px")) / w) * 100 +
+        Number(gsap.getProperty(el, "xPercent")),
       );
       return xPercents[i];
     },
@@ -51,14 +53,14 @@ export function horizontalLoop(items: gsap.TweenTarget, config) {
     (xPercents[length - 1] / 100) * widths[length - 1] -
     startX +
     items[length - 1].offsetWidth *
-    gsap.getProperty(items[length - 1], "scaleX") +
+    Number(gsap.getProperty(items[length - 1], "scaleX")) +
     (parseFloat(config.paddingRight) || 0);
   for (i = 0; i < length; i++) {
     item = items[i];
     curX = (xPercents[i] / 100) * widths[i];
     distanceToStart = item.offsetLeft + curX - startX;
     distanceToLoop =
-      distanceToStart + widths[i] * gsap.getProperty(item, "scaleX");
+      distanceToStart + widths[i] * Number(gsap.getProperty(item, "scaleX"));
     tl.to(
       item,
       {
@@ -85,7 +87,7 @@ export function horizontalLoop(items: gsap.TweenTarget, config) {
       .add("label" + i, distanceToStart / pixelsPerSecond);
     times[i] = distanceToStart / pixelsPerSecond;
   }
-  function toIndex(index, vars) {
+  function toIndex(index: number, vars?: Record<string, any>) {
     vars = vars || {};
     Math.abs(index - curIndex) > length / 2 &&
       (index += index > curIndex ? -length : length); // always go in the shortest direction
@@ -100,14 +102,14 @@ export function horizontalLoop(items: gsap.TweenTarget, config) {
     vars.overwrite = true;
     return tl.tweenTo(time, vars);
   }
-  tl.next = (vars) => toIndex(curIndex + 1, vars);
-  tl.previous = (vars) => toIndex(curIndex - 1, vars);
+  tl.next = (vars?: Record<string, any>) => toIndex(curIndex + 1, vars);
+  tl.previous = (vars?: Record<string, any>) => toIndex(curIndex - 1, vars);
   tl.current = () => curIndex;
-  tl.toIndex = (index, vars) => toIndex(index, vars);
+  tl.toIndex = (index: number, vars?: Record<string, any>) => toIndex(index, vars);
   tl.times = times;
   tl.progress(1, true).progress(0, true); // pre-render for performance
   if (config.reversed) {
-    tl.vars.onReverseComplete();
+    tl.vars.onReverseComplete?.();
     tl.reverse();
   }
   return tl;

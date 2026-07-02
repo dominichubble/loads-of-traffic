@@ -28,7 +28,7 @@ export default CustomCursorContextProvider;
 
 export const useCustomCursorContext = function() {
   const context = useContext(customCursorContext);
-  if (!customCursorContext) {
+  if (!context) {
     throw new Error("This element don't have access to this context");
   }
   return context;
