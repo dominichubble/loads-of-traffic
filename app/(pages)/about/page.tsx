@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import AboutContact from "@/components/about-contact";
 import AboutFeatures from "@/components/about-features";
 import AboutMarquee from "@/components/about-marquee";
@@ -5,6 +6,12 @@ import AboutMission from "@/components/about-mission";
 import AboutPortfolio from "@/components/about-portfolio";
 import AboutSection from "@/components/about-section";
 import AboutTextGradient from "@/components/about-text-gradient";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Loads of Traffic is a high-tech scale-up business based in the Isle of Man, focused on affiliate strategy, competitive intelligence, and growth.",
+};
 
 const AboutPage = () => {
   return (

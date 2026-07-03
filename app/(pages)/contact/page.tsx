@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import ContactForm from "@/components/contact-form";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Get in touch with Loads of Traffic to explore your market trends, competitor traffic sources, and how we can help your business grow.",
+};
 
 const ContactPage = () => {
   return (

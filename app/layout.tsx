@@ -15,11 +15,35 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
+const siteUrl = "https://www.loadsoftraffic.com";
+const siteName = "Loads of Traffic";
+const siteDescription =
+  "Loads Of Traffic is a digital marketing agency focused on affiliate strategy, competitive intelligence, and growth for the e-gaming and consumer sectors.";
+
 export const metadata: Metadata = {
-  title: "Loads of Traffic",
-  description: "Loads Of Traffic is a digital marketing agency focused on affiliate strategy, competitive intelligence, and growth for the e-gaming and consumer sectors.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteName,
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
   icons: {
     icon: "/favicon.ico",
+  },
+  openGraph: {
+    title: siteName,
+    description: siteDescription,
+    url: siteUrl,
+    siteName,
+    images: [{ url: "/logo.png", width: 1841, height: 492, alt: siteName }],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteName,
+    description: siteDescription,
+    images: ["/logo.png"],
   },
 };
 
