@@ -12,7 +12,7 @@ import { sleep } from "@/utils";
 const MobileHeader = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const navBtnTimeline = useRef<gsap.core.Timeline>();
+  const navBtnTimeline = useRef<gsap.core.Timeline | undefined>(undefined);
   const router = useRouter();
 
   const { contextSafe } = useGSAP(function() { }, { scope: headerRef });

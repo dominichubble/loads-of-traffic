@@ -1,5 +1,5 @@
 "use client";
-import { useLenis } from "@studio-freight/react-lenis";
+import { useLenis } from "lenis/react";
 import React, { ReactNode, useEffect } from "react";
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {

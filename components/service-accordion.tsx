@@ -30,8 +30,8 @@ const ServiceAccordion = ({
     x: 0,
     y: 0,
   });
-  const ballQuickToX = useRef<gsap.QuickToFunc>();
-  const ballQuickToY = useRef<gsap.QuickToFunc>();
+  const ballQuickToX = useRef<gsap.QuickToFunc | undefined>(undefined);
+  const ballQuickToY = useRef<gsap.QuickToFunc | undefined>(undefined);
 
   useEffect(() => {
     ballQuickToX.current = gsap.quickTo(
