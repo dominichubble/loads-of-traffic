@@ -658,6 +658,7 @@ const Home = () => {
                     {activeSection === i && (
                       <EmblaCarousel
                         options={{ loop: true }}
+                        label={`${section.title} details`}
                         slides={section.description.map((line, i) => (
                           <p
                             key={line}

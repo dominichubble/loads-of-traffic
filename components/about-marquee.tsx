@@ -9,6 +9,9 @@ const AboutMarquee = () => {
 
   useGSAP(
     function() {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
       const items = gsap.utils.toArray<HTMLDivElement>(".marquee-item");
       horizontalLoop(items, {
         repeat: -1,
@@ -22,6 +25,7 @@ const AboutMarquee = () => {
     <div
       ref={containerRef}
       className="flex items-center justify-center gap-[1rem] overflow-hidden py-4 xl:py-8"
+      aria-hidden="true"
     >
       {[...new Array(10)].map((_, i) => (
         <div
