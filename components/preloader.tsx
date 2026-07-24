@@ -17,6 +17,14 @@ function shouldSkipAnimation() {
   return prefersReducedMotion || alreadySeen;
 }
 
+function markSeen() {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, "1");
+  } catch {
+    // Ignore private-mode / blocked storage.
+  }
+}
+
 const Preloader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
@@ -33,30 +41,46 @@ const Preloader = () => {
       setIsDone(true);
       return;
     }
-    window.localStorage.setItem(STORAGE_KEY, "1");
 
-    const fallback = window.setTimeout(
-      () => setIsDone(true),
-      FALLBACK_TIMEOUT_MS,
-    );
+    document.documentElement.classList.add("preloader-active");
+
+    const fallback = window.setTimeout(() => {
+      markSeen();
+      document.documentElement.classList.remove("preloader-active");
+      setIsDone(true);
+    }, FALLBACK_TIMEOUT_MS);
+
     const progressObj = { value: 0 };
-
-    gsap.to(progressObj, {
+    const progressTween = gsap.to(progressObj, {
       value: 100,
       duration: ANIMATION_DURATION_MS / 1000,
       ease: "power1.inOut",
       onUpdate: () => setProgress(progressObj.value),
       onComplete: () => {
-        gsap.to(containerRef.current, {
-          y: "-100%",
+        const exitTween = gsap.to(containerRef.current, {
+          yPercent: -100,
           duration: EXIT_DURATION_MS / 1000,
           ease: "power4.inOut",
-          onComplete: () => setIsDone(true),
+          onComplete: () => {
+            markSeen();
+            document.documentElement.classList.remove("preloader-active");
+            setIsDone(true);
+          },
         });
+        // Keep a handle for cleanup via killTweensOf(container).
+        void exitTween;
       },
     });
 
-    return () => window.clearTimeout(fallback);
+    return () => {
+      window.clearTimeout(fallback);
+      progressTween.kill();
+      gsap.killTweensOf(progressObj);
+      if (containerRef.current) {
+        gsap.killTweensOf(containerRef.current);
+      }
+      document.documentElement.classList.remove("preloader-active");
+    };
   }, []);
 
   if (isDone) return null;
@@ -68,6 +92,7 @@ const Preloader = () => {
       className="fixed inset-0 z-[3000] grid place-content-center bg-accent px-6 text-white"
       role="status"
       aria-label="Loading website"
+      aria-busy="true"
     >
       <div className="flex w-[min(24rem,80vw)] flex-col items-center gap-8">
         <div className="relative h-16 w-full">

@@ -29,6 +29,12 @@ html.preloader-skip #site-preloader {
   display: none !important;
 }
 
+/* Lock scroll while the first-visit preloader is on screen. */
+html.preloader-active,
+html.preloader-active body {
+  overflow: hidden !important;
+}
+
 /* Freeze scroll while the page-to-page conveyor runs. */
 html.page-transitioning,
 html.page-transitioning body {
@@ -71,7 +77,7 @@ html.page-transitioning #main-content {
   --pages-header-height: 88px;
   /* Fluid page rhythm — percentage gutters keep pace with resolution. */
   --sections-gap: clamp(3.75rem, 2.5rem + 5vw, 10rem);
-  --container-padding-x: 5vw;
+  --container-padding-x: 10vw;
   --container-padding-y: clamp(2rem, 1.25rem + 3vw, 7rem);
   --content-max-width: none;
   --page-split-gap: clamp(1.5rem, 0.75rem + 2.5vw, 6rem);
@@ -96,7 +102,7 @@ html {
 @media screen and (max-width: 768px) {
   :root {
     --pages-header-height: 76px;
-    --container-padding-x: 5vw;
+    --container-padding-x: 10vw;
     --container-padding-y: clamp(1.75rem, 4vw, 2.25rem);
     --sections-gap: clamp(3rem, 8vw, 4.5rem);
   }
