@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -40,14 +39,9 @@ const ProjectPortfolio = () => {
         ))}
       </div>
       <div className="absolute inset-0 z-10 bg-white/50 backdrop-blur-[14px]"></div>
-      <div className="relative h-full w-full">
-        <Image
-          src="/project-placeholder.jpg"
-          fill
-          sizes="90vw"
-          alt="Under NDA Project"
-        />
-      </div>
+      {/* Confidential/NDA placeholder tile — intentionally has no real image;
+          a branded gradient sits behind the blur + reveal boxes. */}
+      <div className="relative h-full w-full bg-gradient-to-br from-primary to-accent"></div>
     </article>
   );
 };

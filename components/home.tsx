@@ -699,7 +699,7 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <div className="pin-element bg-red-900 fixed -top-full z-30 w-full scale-x-[500%]"></div>
+      <div className="pin-element fixed -top-full z-30 w-full scale-x-[500%] bg-accent"></div>
     </section>
   );
 };

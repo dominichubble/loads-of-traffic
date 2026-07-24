@@ -31,13 +31,18 @@ input:-webkit-autofill:active {
   --color-primary: #00007a;
   --color-accent: #ed1464;
   --background: #ffffff;
-  --foreground: #ffffff;
+  /* Default body text colour. Kept brand-navy so any un-styled copy is
+     legible on the white background instead of the old white-on-white. */
+  --foreground: #00007a;
   --color-red: #ed1464;
   --color-yellow: #ffa600;
   --pages-header-height: 80px;
   --sections-gap: 8rem;
-  --container-padding-x: 6.4rem;
+  /* Responsive gutter: never cramped on mobile, never excessive on desktop. */
+  --container-padding-x: clamp(1.5rem, 5vw, 6rem);
   --container-padding-y: 4rem;
+  /* Max width for centred page content so wide screens don't stretch or gap. */
+  --content-max-width: 90rem;
   color-scheme: light;
 }
 
@@ -69,11 +74,12 @@ html {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff;
-    --foreground: #ededed;
-  }
+/* Centres page content and caps its width so large screens keep a
+   comfortable measure instead of stretching edge-to-edge or gapping. */
+.content-container {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
 }
 
 .no-scrollbar ::-webkit-scrollbar,

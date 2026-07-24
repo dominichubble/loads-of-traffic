@@ -12,8 +12,8 @@ const Lottie = dynamic(() => import("react-lottie-player"), { ssr: false });
 const ServicesContent = () => {
   const isClient = useClient();
   return (
-    <main className="services bg-red px-6 pb-[--pages-header-height] pt-[calc(var(--pages-header-height)+3rem)] sm:px-[var(--container-padding-x)] xl:pb-[6rem] xl:pt-[calc(var(--pages-header-height)+var(--container-padding-y))]">
-      <section className="services-section relative z-0">
+    <main className="services bg-red px-6 pb-[--pages-header-height] pt-[calc(var(--pages-header-height)+3rem)] text-white sm:px-[var(--container-padding-x)] xl:pb-[6rem] xl:pt-[calc(var(--pages-header-height)+var(--container-padding-y))]">
+      <section className="services-section content-container relative z-0">
         <div className="flex flex-col-reverse gap-[3rem] xl:gap-[6rem]">
           <div className="flex items-center justify-between">
             <div className="hidden md:block">
@@ -41,8 +41,7 @@ const ServicesContent = () => {
         </div>
         <div id="services" className="py-[var(--pages-header-height)]">
           <div>
-            <h1 className="flex items-center gap-4 self-start text-[2rem] font-bold md:text-[2.8rem] xl:text-[3rem]">
-              <span className="mt-[0.2rem] inline-block h-[1rem] w-[1rem] rounded-full bg-white xl:h-[1.2rem] xl:w-[1.2rem]"></span>
+            <h1 className="self-start text-[2rem] font-bold md:text-[2.8rem] xl:text-[3rem]">
               Services
             </h1>
             <div className="mt-12 flex flex-col gap-2 md:gap-4">

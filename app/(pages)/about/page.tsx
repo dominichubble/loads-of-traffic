@@ -25,8 +25,7 @@ const AboutPage = () => {
                 Isle of Man
               </h2>
             </div>
-            <h1 className="flex items-center gap-4 self-start text-[2rem] font-bold md:text-[3rem] xl:text-[4rem]">
-              <span className="inline-block h-[0.8rem] w-[0.8rem] rounded-full bg-white xl:h-[1.2rem] xl:w-[1.2rem]"></span>
+            <h1 className="self-start text-[2rem] font-bold md:text-[3rem] xl:text-[4rem]">
               About
             </h1>
           </div>

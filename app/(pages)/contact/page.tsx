@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 
 const ContactPage = () => {
   return (
-    <main className="contact bg-accent px-6 pb-[--pages-header-height] pt-[calc(var(--pages-header-height)+var(--container-padding-y))] sm:px-[var(--container-padding-x)] xl:pb-[6rem]">
+    <main className="contact bg-accent px-6 pb-[--pages-header-height] pt-[calc(var(--pages-header-height)+var(--container-padding-y))] text-white sm:px-[var(--container-padding-x)] xl:pb-[6rem]">
+      <div className="content-container">
       <section className="contact-section">
         <div className="m:gap-0 mb-[2rem] flex flex-col items-start justify-between gap-[3rem] xl:mb-[6rem] xl:gap-[6rem]">
           <div className="md:max-w-[50%]">
@@ -19,12 +20,11 @@ const ContactPage = () => {
               competitors get their traffic from?
             </h2>
           </div>
-          <h1 className="flex items-center gap-4 self-start text-[2rem] font-bold md:text-[2rem] xl:text-[3rem]">
-            <span className="inline-block h-[0.8rem] w-[0.8rem] rounded-full bg-white xl:h-[1.2rem] xl:w-[1.2rem]"></span>
+          <h1 className="self-start text-[2rem] font-bold md:text-[2rem] xl:text-[3rem]">
             Contact
           </h1>
         </div>
-        <div className="mb-[2rem] flex flex-col gap-8 overflow-hidden rounded-2xl bg-primary p-6 text-primary text-white sm:p-8 xl:mb-[4rem]">
+        <div className="mb-[2rem] flex flex-col gap-8 overflow-hidden rounded-2xl bg-primary p-6 text-white sm:p-8 xl:mb-[4rem]">
           <div className="flex w-full flex-shrink flex-col justify-between gap-2 text-[1.4rem] sm:gap-6 md:text-[1.6rem] xl:text-[2.6rem]">
             <p className="font-bold md:max-w-[80%]">
               Let’s connect and explore how we can help your business grow.
@@ -62,6 +62,7 @@ const ContactPage = () => {
         </div>
       </section>
       <ContactForm />
+      </div>
     </main>
   );
 };

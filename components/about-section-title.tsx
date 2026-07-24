@@ -10,11 +10,10 @@ const AboutSectionTitle = ({ children, className }: AboutSectionTitleProps) => {
   return (
     <h2
       className={cn(
-        "mb-[3rem] flex items-center gap-4 self-start text-[2rem] font-bold sm:text-[3rem] xl:mb-[5rem] xl:text-[4.375rem]",
+        "mb-[3rem] self-start text-[2rem] font-bold sm:text-[3rem] xl:mb-[5rem] xl:text-[4.375rem]",
         className,
       )}
     >
-      <span className="inline-block h-[0.8rem] w-[0.8rem] rounded-full bg-white xl:h-[1.2rem] xl:w-[1.2rem]"></span>
       {children}
     </h2>
   );

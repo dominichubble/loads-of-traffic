@@ -360,7 +360,7 @@ gsap.to(articleRef.current, {
           className={cn(
             "flex items-center gap-8 min-w-0 shrink",
             "text-[1.2rem] md:text-[2rem]", // Keep original size for 768px+
-            "max-md:text-[clamp(1rem, 5vw, 1.5rem)]", // Shrink text only below 768px
+            "max-md:text-[clamp(1rem,5vw,1.5rem)]", // Shrink text only below 768px
             !isExpanded && "!text-white",
             isExpanded && "!text-primary md:!text-[rgb(0,0,114)]",
           )}
@@ -368,7 +368,7 @@ gsap.to(articleRef.current, {
           <span>{title}</span>
         </h3>
       </div>
-      <p className="accordion-description flex max-w-[90%] items-start pb-8 pl-[70px] text-[1rem] font-light text-primary md:max-w-[70%] md:pl-[200px] md:text-[1.6rem] md:text-[rgb(0,0,114)] max-md:text-[clamp(0.9rem, 4.5vw, 1.4rem)]">
+      <p className="accordion-description flex max-w-[90%] items-start pb-8 pl-[70px] text-[1rem] font-light text-primary md:max-w-[70%] md:pl-[200px] md:text-[1.6rem] md:text-[rgb(0,0,114)] max-md:text-[clamp(0.9rem,4.5vw,1.4rem)]">
         {description}
       </p>
     </div>
@@ -382,7 +382,7 @@ gsap.to(articleRef.current, {
           className={cn(
             "flex items-center gap-8 min-w-0 shrink",
             "text-[1.2rem] md:text-[2rem]", // Keep original size for 768px+
-            "max-md:text-[clamp(1rem, 5vw, 1.5rem)]", // Shrink text only below 768px
+            "max-md:text-[clamp(1rem,5vw,1.5rem)]", // Shrink text only below 768px
             !isExpanded && "!text-white",
             isExpanded && "!text-primary md:!text-[rgb(240,240,240)]",
           )}
@@ -390,7 +390,7 @@ gsap.to(articleRef.current, {
           <span>{title}</span>
         </h3>
       </div>
-      <p className="accordion-description flex max-w-[90%] items-start pb-8 pl-[70px] text-[1rem] font-light text-primary md:max-w-[70%] md:pl-[200px] md:text-[1.6rem] md:text-[rgb(240,240,240)] max-md:text-[clamp(0.9rem, 4.5vw, 1.4rem)]">
+      <p className="accordion-description flex max-w-[90%] items-start pb-8 pl-[70px] text-[1rem] font-light text-primary md:max-w-[70%] md:pl-[200px] md:text-[1.6rem] md:text-[rgb(240,240,240)] max-md:text-[clamp(0.9rem,4.5vw,1.4rem)]">
         {description}
       </p>
     </div>
@@ -403,7 +403,7 @@ gsap.to(articleRef.current, {
           onMouseEnter={handleCtaAreaEnter}
           onMouseLeave={handleCtaAreaLeave}
         ></TransitionLink>
-        <button className="cta absolute right-[8rem] top-1/2 hidden aspect-square h-[10rem] -translate-y-1/2 rounded-full bg-gray-100 text-[#00007A] md:block">
+        <button className="cta absolute right-[8rem] top-1/2 hidden aspect-square h-[10rem] -translate-y-1/2 rounded-full bg-white text-primary md:block">
           Let&apos;s Talk
           <span className="absolute bottom-6 left-1/2 aspect-square h-2 -translate-x-1/2 rounded-full bg-red"></span>
         </button>

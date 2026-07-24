@@ -231,7 +231,7 @@ const AboutContact = () => {
               onMouseEnter={handleCtaAreaEnter}
               onMouseLeave={handleCtaAreaLeave}
             ></TransitionLink>
-            <button className="cta absolute right-[8rem] top-1/2 hidden aspect-square h-[10rem] -translate-y-1/2 rounded-full bg-gray-100 text-[#00007A] md:block">
+            <button className="cta absolute right-[8rem] top-1/2 hidden aspect-square h-[10rem] -translate-y-1/2 rounded-full bg-white text-primary md:block">
               Let&apos;s Talk
               <span className="absolute bottom-6 left-1/2 aspect-square h-2 -translate-x-1/2 rounded-full bg-red"></span>
             </button>
