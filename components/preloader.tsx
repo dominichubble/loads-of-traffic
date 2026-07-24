@@ -4,8 +4,8 @@ import gsap from "gsap";
 import Image from "next/image";
 
 const STORAGE_KEY = "lot-preloader-seen";
-const ANIMATION_DURATION_MS = 800;
-const EXIT_DURATION_MS = 400;
+const ANIMATION_DURATION_MS = 1900;
+const EXIT_DURATION_MS = 600;
 const FALLBACK_TIMEOUT_MS = ANIMATION_DURATION_MS + EXIT_DURATION_MS + 1000;
 
 function shouldSkipAnimation() {
