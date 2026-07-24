@@ -5,6 +5,7 @@ import AboutMarquee from "@/components/about-marquee";
 import AboutMission from "@/components/about-mission";
 import AboutPortfolio from "@/components/about-portfolio";
 import AboutSection from "@/components/about-section";
+import PageIntro from "@/components/page-intro";
 import TextGradient from "@/components/shared/text-gradient";
 
 export const metadata: Metadata = {
@@ -15,25 +16,15 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <main className="about overflow-hidden bg-primary pt-[calc(var(--pages-header-height)+var(--container-padding-y))] text-white">
+    <main className="about page-shell overflow-hidden bg-primary text-white">
       <div className="space-y-[var(--sections-gap)]">
         <AboutSection>
-          <div className="grid gap-8 border-b border-white/15 pb-12 md:grid-cols-[0.7fr_1.3fr] md:items-end md:gap-12 md:pb-16">
-            <div>
-              <span className="page-kicker text-white/65">Who we are</span>
-              <h1 className="display-heading mt-6 text-white">About us</h1>
-            </div>
-            <div className="md:pb-2">
-              <h2 className="max-w-[30ch] text-xl font-medium leading-snug text-white/90 md:text-2xl xl:text-3xl">
-                A high-tech scale-up helping ambitious businesses understand
-                their markets and grow with confidence.
-              </h2>
-              <p className="mt-5 max-w-[58ch] text-sm leading-relaxed text-white/65 md:text-base">
-                Based in the Isle of Man and working across competitive global
-                sectors since 2010.
-              </p>
-            </div>
-          </div>
+          <PageIntro
+            kicker="Who we are"
+            title="About us"
+            headline="A high-tech scale-up helping ambitious businesses understand their markets and grow with confidence."
+            description="Based in the Isle of Man and working across competitive global sectors since 2010."
+          />
           <TextGradient className="mt-[var(--sections-gap)] text-center text-[clamp(1.75rem,5.5vw,4.5rem)] font-bold uppercase leading-[1.15] tracking-[-0.02em]">
             <div className="line flex items-center justify-center gap-2 whitespace-nowrap xl:gap-5">
               <p>Loads of Traffic</p>
@@ -55,7 +46,7 @@ const AboutPage = () => {
           <AboutMarquee />
           <AboutFeatures />
         </div>
-        <div className="bg-accent py-[var(--sections-gap)]">
+        <div className="bg-accent pb-[var(--sections-gap)] pt-10 md:pt-14">
           <AboutContact />
         </div>
       </div>

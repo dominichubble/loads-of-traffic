@@ -23,15 +23,17 @@ const Preloader = () => {
   const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
+    // Deliberately a single effect: checking shouldSkipAnimation() here and
+    // starting the GSAP animation only in the "don't skip" branch (rather
+    // than splitting this across two effects keyed off `isDone`) avoids a
+    // stale-closure race where the second effect would still read the
+    // pre-update `isDone` value and kick off the animation for a split
+    // second before the skip's setIsDone(true) takes effect.
     if (shouldSkipAnimation()) {
       setIsDone(true);
       return;
     }
     window.localStorage.setItem(STORAGE_KEY, "1");
-  }, []);
-
-  useEffect(() => {
-    if (isDone) return;
 
     const fallback = window.setTimeout(
       () => setIsDone(true),
@@ -55,7 +57,7 @@ const Preloader = () => {
     });
 
     return () => window.clearTimeout(fallback);
-  }, [isDone]);
+  }, []);
 
   if (isDone) return null;
 

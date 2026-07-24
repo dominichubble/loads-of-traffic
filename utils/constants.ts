@@ -119,6 +119,3 @@ export const NAV_ITEMS = [
     link: "/contact",
   },
 ];
-
-// Enough distance to comfortably reveal each of the four home panels once.
-export const HOME_SCROLLABLE_HEIGHT = 4800;

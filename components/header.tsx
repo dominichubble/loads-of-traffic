@@ -23,21 +23,25 @@ const Header = () => {
           />
         </span>
       </TransitionLink>
-      <nav aria-label="Primary navigation">
-        <ul className="flex items-center gap-1 whitespace-nowrap text-sm font-medium xl:text-base">
+      <nav aria-label="Primary navigation" className="w-full">
+        <ul className="flex w-full items-center justify-between gap-3 whitespace-nowrap text-sm font-medium xl:gap-4 xl:text-base">
           {NAV_ITEMS.map((item) => (
             <li key={item.label}>
               <TransitionLink
                 href={item.link}
                 aria-current={item.link === "/" ? "page" : undefined}
                 className={cn(
-                  "inline-flex min-h-10 items-center rounded-full px-3 transition-colors xl:px-4",
+                  "inline-flex min-h-10 items-center rounded-full px-3.5 transition-colors xl:px-5",
                   item.link === "/"
-                    ? "bg-white text-primary"
-                    : "text-white/80 hover:bg-white/10 hover:text-white",
+                    ? "bg-white text-[color:var(--hero-nav-ink,#00007A)]"
+                    : "text-white hover:bg-white/10",
                 )}
               >
-                {item.label}
+                {item.link === "/" ? (
+                  <span id="hero-nav-home-label">{item.label}</span>
+                ) : (
+                  item.label
+                )}
               </TransitionLink>
             </li>
           ))}

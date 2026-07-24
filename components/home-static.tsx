@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { servicesSectionContent } from "@/utils/constants";
-import Header from "./header";
 import TransitionLink from "./transition-link";
 
 const servicePosters = [
@@ -17,10 +16,8 @@ const HomeStatic = () => {
       className="min-h-screen overflow-hidden bg-primary text-white"
       aria-label="Our services"
     >
-      <div className="content-container px-5 pb-[var(--container-padding-y)] pt-[calc(var(--pages-header-height)+1.5rem)] sm:px-[var(--container-padding-x)] md:pt-10">
-        <Header />
-
-        <div className="mt-8 grid gap-8 border-b border-white/15 pb-10 md:mt-16 md:grid-cols-[0.7fr_1.3fr] md:items-end md:gap-12 md:pb-14">
+      <div className="content-container page-gutters page-shell">
+        <div className="mt-8 grid gap-6 border-b border-white/15 pb-10 md:mt-16 md:grid-cols-2 md:items-start md:gap-x-16 md:gap-y-8 md:pb-12 lg:gap-x-24">
           <div>
             <span className="page-kicker text-white/65">Our expertise</span>
             <h1 className="display-heading mt-6 text-white">What we do</h1>

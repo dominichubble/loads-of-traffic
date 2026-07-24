@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import MobileHeader from "@/components/mobile-header";
+import PagesHeader from "@/components/pages-header";
+import PageTransitionOverlay from "@/components/page-transition-overlay";
 import Preloader from "@/components/preloader";
 import Script from "next/script";
 
@@ -51,12 +53,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className} ${poppins.variable} antialiased`}>
-        {/* Runs before hydration so repeat visitors (or reduced-motion users)
-            never see the preloader painted, even for a single frame. Mirrors
-            the skip logic in components/preloader.tsx. */}
-        <Script
+        {/* Plain inline <script> (deliberately NOT next/script's
+            beforeInteractive strategy). In the App Router, beforeInteractive
+            scripts are not injected as real, immediately-executing <script>
+            tags — Next.js serializes their content into a `self.__next_s`
+            queue that is only read and executed once the async Next.js
+            runtime chunk has loaded, which can happen after the browser has
+            already painted this HTML. A raw <script> tag with no src/async/
+            defer blocks HTML parsing and runs synchronously exactly where it
+            appears, so the "preloader-skip" class lands on <html> before the
+            preloader markup below is ever parsed/painted. Mirrors the skip
+            logic in components/preloader.tsx. */}
+        <script
           id="preloader-skip-flag"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function () {
@@ -96,16 +105,11 @@ export default function RootLayout({
 
         <Preloader />
         <MobileHeader />
+        <PagesHeader />
         <div id="main-content" tabIndex={-1}>
           {children}
         </div>
-        <div
-          className="pointer-events-none fixed inset-0 z-[2000] hidden h-screen w-full grid-cols-[55%_1fr] sm:grid"
-          aria-hidden="true"
-        >
-          <div className="transition-left origin-top scale-y-0 bg-red"></div>
-          <div className="transition-right origin-bottom scale-y-0 bg-red"></div>
-        </div>
+        <PageTransitionOverlay />
       </body>
     </html>
   );

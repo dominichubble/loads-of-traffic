@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { NAV_ITEMS } from "@/utils/constants";
-import Link from "next/link";
+import TransitionLink from "./transition-link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/utils";
@@ -83,7 +83,7 @@ const MobileHeader = () => {
       aria-label="Mobile site header"
     >
       <div className="bg-primary relative z-20 flex min-h-14 items-center justify-between rounded-full border border-white/15 px-4 shadow-[0_12px_40px_rgba(0,0,79,0.25)] backdrop-blur-xl">
-        <Link
+        <TransitionLink
           href="/"
           className="relative flex min-h-11 min-w-11 items-center"
           aria-label="Loads of Traffic home"
@@ -98,7 +98,7 @@ const MobileHeader = () => {
               priority
             />
           </span>
-        </Link>
+        </TransitionLink>
         <button
           ref={menuButtonRef}
           type="button"
@@ -144,7 +144,7 @@ const MobileHeader = () => {
             const isActive = pathname === item.link;
             return (
               <li key={item.label}>
-                <Link
+                <TransitionLink
                   href={item.link}
                   tabIndex={isNavOpen ? 0 : -1}
                   aria-current={isActive ? "page" : undefined}
@@ -163,7 +163,7 @@ const MobileHeader = () => {
                     )}
                     aria-hidden="true"
                   />
-                </Link>
+                </TransitionLink>
               </li>
             );
           })}

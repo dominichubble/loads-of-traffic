@@ -1,495 +1,42 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
-import { useGSAP } from "@gsap/react";
-import {
-  HOME_SCROLLABLE_HEIGHT,
-  servicesSectionContent,
-} from "@/utils/constants";
-import { ArrowDown, ArrowRight, Pause, Play } from "lucide-react";
-import Header from "./header";
+import { servicesSectionContent } from "@/utils/constants";
+import { ArrowDown, ArrowRight, ArrowUp, Pause, Play } from "lucide-react";
 import HomeVideo from "./home-video";
-import { cn } from "@/utils";
+import HomeProgressBar from "./home-progress-bar";
 import TransitionLink from "./transition-link";
 import HomeStatic from "./home-static";
 
-gsap.registerPlugin(ScrollTrigger);
+const HERO_SLIDE_COUNT = servicesSectionContent.length;
+const HERO_SLIDE_DURATION = 1.35;
 
-function checkDirection({
-  oldTimeline,
-  lastTime,
-  forward,
-}: {
-  oldTimeline: gsap.core.Timeline;
-  lastTime: number;
-  forward: boolean;
-}): { lastTime: number; forward: boolean } {
-  const newTime = oldTimeline.time();
+const VIDEO_SOURCES = [
+  { src: "/0", poster: "/lottie-thumbnail-1.png" },
+  { src: "/1", poster: "/lottie-thumbnail-2.png" },
+  { src: "/2", poster: "/lottie-thumbnail-3.png" },
+  { src: "/3", poster: "/lottie-thumbnail-4.png" },
+] as const;
 
-  if (
-    (forward && newTime < lastTime && lastTime !== 1.2) ||
-    (!forward && newTime > lastTime)
-  ) {
-    forward = !forward;
-  }
-  return { lastTime: newTime, forward };
-}
-
-const createMobileTimeline = function ({
-  secondVideoClass,
-  timelineIndex,
-  previousTimelineIndex,
-  videoZIndex,
-  setActiveSection,
-}: {
-  secondVideoClass: string;
-  timelineIndex: number;
-  previousTimelineIndex: number;
-  videoZIndex: number;
-  setActiveSection: (_: number) => void;
-}) {
-  const mobileTimeline = gsap.timeline({
-    defaults: {
-      ease: "power1.out",
-    },
-  });
-
-  let lastTime = 0;
-  let forward = true;
-
-  mobileTimeline
-    .fromTo(
-      ".solid-mobile",
-      {
-        height: "0",
-        zIndex: videoZIndex,
-      },
-      {
-        height: "50vh",
-        onStart: function () {
-          gsap.to(
-            [
-              `.service-title-${previousTimelineIndex}`,
-              `.service-description-${previousTimelineIndex}`,
-              `.read-more-cta-${previousTimelineIndex}`,
-            ],
-            {
-              y: "100%",
-              opacity: "0",
-              duration: 0.6,
-              ease: "power.out",
-            },
-          );
-        },
-        onReverseComplete: function () {
-          setActiveSection(previousTimelineIndex);
-          gsap.to(
-            [
-              `.service-title-${previousTimelineIndex}`,
-              `.service-description-${previousTimelineIndex}`,
-              `.read-more-cta-${previousTimelineIndex}`,
-            ],
-            {
-              y: "0%",
-              opacity: "1",
-              duration: 0.6,
-              ease: "power.out",
-            },
-          );
-        },
-      },
-    )
-    .fromTo(
-      ".image-mask-0",
-      {
-        scale: 0,
-      },
-      {
-        scale: 1,
-      },
-      "<",
-    )
-    .fromTo(
-      `.${secondVideoClass}`,
-      {
-        transformOrigin: "top",
-        height: 0,
-        zIndex: videoZIndex,
-      },
-      {
-        height: "50vh",
-      },
-    )
-    // .fromTo(
-    //   ".solid-mobile",
-    //   {
-    //     height: "50vh",
-    //     transformOrigin: "top",
-    //   },
-    //   {
-    //     height: "0",
-    //   },
-    //   "<",
-    // )
-    .fromTo(
-      ".image-mask-0",
-      {
-        scale: 1,
-      },
-      {
-        scale: 0,
-        onUpdate: function () {
-          const direction = checkDirection({
-            oldTimeline: mobileTimeline,
-            forward,
-            lastTime,
-          });
-
-          if (!direction.forward) {
-            gsap.to(
-              [
-                `.service-title-${timelineIndex}`,
-                `.service-description-${timelineIndex}`,
-                `.read-more-cta-${timelineIndex}`,
-              ],
-              {
-                y: "100%",
-                opacity: "0",
-                duration: 0.6,
-                ease: "power.out",
-              },
-            );
-          }
-
-          forward = direction.forward;
-          lastTime = direction.lastTime;
-        },
-        onComplete: function () {
-          setActiveSection((videoZIndex + 1) % 4);
-          gsap.to(
-            [
-              `.service-title-${timelineIndex}`,
-              `.service-description-${timelineIndex}`,
-              `.read-more-cta-${timelineIndex}`,
-            ],
-            {
-              y: "0",
-              opacity: "1",
-              duration: 0.6,
-              ease: "power.out",
-            },
-          );
-        },
-      },
-      "<",
-    )
-    .fromTo(
-      ".pin-element",
-      {
-        scaleX: "500%",
-      },
-      {
-        scaleX: "0%",
-        duration: 0.2,
-      },
-    );
-
-  return mobileTimeline;
-};
-
-const createDesktopTimeline = function ({
-  firstVideoClass,
-  secondVideoClass,
-  previousTimelineIndex,
-  timelineIndex,
-  videoZIndex,
-  setActiveSection,
-}: {
-  firstVideoClass: string;
-  secondVideoClass: string;
-  previousTimelineIndex: number;
-  timelineIndex: number;
-  videoZIndex: number;
-  setActiveSection: (_: number) => void;
-}) {
-  const desktopTimeline = gsap.timeline({
-    defaults: {
-      ease: "power1.in",
-    },
-  });
-  let lastTime = 0;
-  let forward = true;
-  let solidAccentBackground;
-
-  if (
-    firstVideoClass === "first-video-mask" ||
-    firstVideoClass === "third-video-mask"
-  ) {
-    solidAccentBackground =
-      "radial-gradient(circle at center,#ED1464 0%, #730237 110%)";
-  } else if (
-    firstVideoClass === "fourth-video-mask" ||
-    firstVideoClass === "second-video-mask"
-  ) {
-    solidAccentBackground =
-      "radial-gradient(circle at center, #FFFFFF 0%, #BCBEC0 110%)";
-  }
-
-  desktopTimeline
-    .set(".solid-accent", {
-      background: solidAccentBackground,
-    })
-    .set(`.${firstVideoClass}`, {
-      zIndex: videoZIndex - 1,
-    })
-    .set(`.image-mask-${previousTimelineIndex % 2}`, {
-      zIndex: videoZIndex,
-    })
-    .set(`.${secondVideoClass}`, {
-      zIndex: videoZIndex + 1,
-    })
-    .set(`.service-right-${timelineIndex}`, {
-      zIndex: videoZIndex,
-    })
-    .fromTo(
-      `.${firstVideoClass}`,
-      {
-        scale: 1,
-        borderRadius: 0,
-      },
-      {
-        scale: 0,
-        borderRadius: "4rem",
-      },
-    )
-    .fromTo(
-      `.${firstVideoClass} div`,
-      {
-        scale: 1,
-      },
-      {
-        scale: 3,
-        onStart: function () {
-          gsap.to(
-            [
-              `.service-title-${previousTimelineIndex}`,
-              `.service-description-${previousTimelineIndex}`,
-              `.read-more-cta-${previousTimelineIndex}`,
-            ],
-            {
-              y: "100%",
-              opacity: "0",
-              duration: 0.6,
-              ease: "power1.out",
-            },
-          );
-        },
-        onReverseComplete: function () {
-          setActiveSection(previousTimelineIndex);
-          gsap.to(
-            [
-              `.service-title-${previousTimelineIndex}`,
-              `.service-description-${previousTimelineIndex}`,
-              `.read-more-cta-${previousTimelineIndex}`,
-            ],
-            {
-              y: "0%",
-              opacity: "1",
-              duration: 0.6,
-              ease: "power1.out",
-            },
-          );
-        },
-      },
-      "<",
-    )
-    .fromTo(
-      `.image-mask-${previousTimelineIndex}`,
-      {
-        scale: 0,
-      },
-      {
-        scale: 1,
-      },
-      "<",
-    )
-    .fromTo(
-      ".solid-accent",
-      {
-        scaleY: 1,
-        scaleX: 0,
-      },
-      {
-        scaleX: 1,
-        scaleY: 1,
-      },
-      "<",
-    )
-
-    .fromTo(
-      `.image-mask-${previousTimelineIndex}`,
-      {
-        scale: 1,
-      },
-      {
-        scale: 0,
-        duration: 0.1,
-      },
-    )
-    .fromTo(
-      ".solid-accent",
-      {
-        scaleY: 1,
-        scaleX: 1,
-      },
-      {
-        scaleY: 0,
-        scaleX: 1,
-        ease: "power1.out",
-      },
-      "<",
-    )
-    .fromTo(
-      `.${secondVideoClass}`,
-      {
-        scale: 0,
-        borderRadius: "4rem",
-      },
-      {
-        scale: 1,
-        borderRadius: "0rem",
-        ease: "power1.out",
-      },
-      "<",
-    )
-
-    .fromTo(
-      `.${secondVideoClass} div`,
-      {
-        scale: 3,
-      },
-      {
-        scale: 1,
-        ease: "power1.out",
-        onUpdate: function () {
-          const direction = checkDirection({
-            oldTimeline: desktopTimeline,
-            lastTime,
-            forward,
-          });
-          if (!direction.forward) {
-            gsap.to(
-              [
-                `.service-title-${timelineIndex}`,
-                `.service-description-${timelineIndex}`,
-                `.read-more-cta-${timelineIndex}`,
-              ],
-              {
-                y: "100%",
-                opacity: "0",
-                duration: 0.6,
-                ease: "power.out",
-              },
-            );
-          }
-
-          lastTime = direction.lastTime;
-          forward = direction.forward;
-        },
-        onComplete: function () {
-          if (videoZIndex === 0) {
-            gsap.set(".service-right-1", {
-              zIndex: 1,
-            });
-          }
-          setActiveSection((videoZIndex + 1) % 4);
-          gsap.to(
-            [
-              `.service-title-${timelineIndex}`,
-              `.service-description-${timelineIndex}`,
-              `.read-more-cta-${timelineIndex}`,
-            ],
-            {
-              y: "0",
-              opacity: "1",
-              duration: 0.6,
-              ease: "power.out",
-            },
-          );
-        },
-      },
-      "<",
-    )
-    .fromTo(
-      ".pin-element",
-      {
-        scaleX: "500%",
-      },
-      {
-        scaleX: "0%",
-        duration: 0.2,
-      },
-    );
-
-  return desktopTimeline;
-};
-const createServiceTimeline = ({
-  firstVideoClass,
-  secondVideoClass,
-  timelineIndex,
-  previousTimelineIndex,
-  videoZIndex,
-  setActiveSection,
-}: {
-  firstVideoClass: string;
-  secondVideoClass: string;
-  timelineIndex: number;
-  previousTimelineIndex: number;
-  videoZIndex: number;
-  setActiveSection: (_: number) => void;
-}) => {
-  let desktopTimeline = gsap.timeline();
-  let isDesktop = false;
-  const mm = gsap.matchMedia();
-
-  mm.add("(min-width: 640px)", () => {
-    isDesktop = true;
-    desktopTimeline = createDesktopTimeline({
-      firstVideoClass,
-      secondVideoClass,
-      timelineIndex,
-      previousTimelineIndex,
-      videoZIndex,
-      setActiveSection,
-    });
-  });
-
-  if (isDesktop) {
-    return desktopTimeline;
-  }
-
-  const mobileTimeline = createMobileTimeline({
-    secondVideoClass,
-    timelineIndex,
-    previousTimelineIndex,
-    videoZIndex,
-    setActiveSection,
-  });
-
-  return mobileTimeline;
-};
+// Alternating text-panel backgrounds (blue / pink).
+const PANEL_BACKGROUNDS = ["#00007A", "#ED1464", "#00007A", "#ED1464"] as const;
 
 const Home = () => {
   const containerRef = useRef<HTMLElement>(null);
+  const videoPanelRef = useRef<HTMLDivElement>(null);
+  const textPanelRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const textRefs = useRef<(HTMLElement | null)[]>([]);
+  const transitionTweenRef = useRef<gsap.core.Timeline | null>(null);
+  const isAnimatingRef = useRef(false);
+  const activeSectionRef = useRef(0);
+
   const [activeSection, setActiveSection] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMotionPaused, setIsMotionPaused] = useState(false);
-  const updateActiveSection = function (newActiveSection: number) {
-    setActiveSection(newActiveSection);
-  };
 
   useEffect(() => {
     const motionPreference = window.matchMedia(
@@ -506,48 +53,221 @@ const Home = () => {
       motionPreference.removeEventListener("change", updateMotionPreference);
   }, []);
 
-  useGSAP(
-    function () {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  // Initial stacking: slide 0 visible, others parked off-panel / faded out.
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    videoRefs.current.forEach((el, index) => {
+      if (!el) return;
+      gsap.set(el, {
+        yPercent: 0,
+        autoAlpha: index === 0 ? 1 : 0,
+        zIndex: index === 0 ? 2 : 0,
+      });
+    });
+
+    panelRefs.current.forEach((el, index) => {
+      if (!el) return;
+      gsap.set(el, {
+        yPercent: 0,
+        autoAlpha: index === 0 ? 1 : 0,
+        zIndex: index === 0 ? 2 : 0,
+      });
+    });
+
+    textRefs.current.forEach((el, index) => {
+      if (!el) return;
+      gsap.set(el, {
+        autoAlpha: index === 0 ? 1 : 0,
+        zIndex: index === 0 ? 2 : 0,
+      });
+    });
+
+    if (progressBarRef.current) {
+      gsap.set(progressBarRef.current, { scaleY: 0 });
+    }
+
+    if (textPanelRef.current) {
+      textPanelRef.current.style.setProperty(
+        "--hero-nav-ink",
+        PANEL_BACKGROUNDS[0],
+      );
+    }
+  }, [prefersReducedMotion]);
+
+  const stepToSlide = useCallback((direction: 1 | -1) => {
+    if (isAnimatingRef.current) return;
+
+    const from = activeSectionRef.current;
+    const to =
+      direction > 0
+        ? (from + 1) % HERO_SLIDE_COUNT
+        : (from - 1 + HERO_SLIDE_COUNT) % HERO_SLIDE_COUNT;
+
+    const fromVideo = videoRefs.current[from];
+    const toVideo = videoRefs.current[to];
+    const fromPanel = panelRefs.current[from];
+    const toPanel = panelRefs.current[to];
+    const fromText = textRefs.current[from];
+    const toText = textRefs.current[to];
+    if (
+      !fromVideo ||
+      !toVideo ||
+      !fromPanel ||
+      !toPanel ||
+      !fromText ||
+      !toText
+    ) {
+      return;
+    }
+
+    isAnimatingRef.current = true;
+    transitionTweenRef.current?.kill();
+
+    // Video and colour panels roll as a conveyor (opposite directions).
+    // Copy stays put and crossfades.
+    const progress =
+      HERO_SLIDE_COUNT <= 1 ? 0 : to / (HERO_SLIDE_COUNT - 1);
+
+    const colorFrom = PANEL_BACKGROUNDS[from];
+    const colorTo = PANEL_BACKGROUNDS[to];
+
+    const syncNavInkToWipe = () => {
+      const panel = textPanelRef.current;
+      const label = document.getElementById("hero-nav-home-label");
+      if (!panel || !label) return;
+
+      const panelRect = panel.getBoundingClientRect();
+      const labelRect = label.getBoundingClientRect();
+      const labelY =
+        labelRect.top + labelRect.height / 2 - panelRect.top;
+      const yPercent = Number(gsap.getProperty(toPanel, "yPercent"));
+
+      // Incoming panel edge that sweeps across the Home label.
+      let coveredByIncoming = false;
+      if (direction > 0) {
+        // Panel enters from above; its bottom edge moves top → bottom.
+        const wipeY = (1 + yPercent / 100) * panelRect.height;
+        coveredByIncoming = wipeY >= labelY;
+      } else {
+        // Panel enters from below; its top edge moves bottom → top.
+        const wipeY = (yPercent / 100) * panelRect.height;
+        coveredByIncoming = labelY >= wipeY;
+      }
+
+      panel.style.setProperty(
+        "--hero-nav-ink",
+        coveredByIncoming ? colorTo : colorFrom,
+      );
+    };
+
+    const tl = gsap.timeline({
+      defaults: { ease: "power2.inOut", duration: HERO_SLIDE_DURATION },
+      onUpdate: syncNavInkToWipe,
+      onComplete: () => {
+        textPanelRef.current?.style.setProperty("--hero-nav-ink", colorTo);
+        activeSectionRef.current = to;
+        setActiveSection(to);
+        isAnimatingRef.current = false;
+      },
+      onInterrupt: () => {
+        isAnimatingRef.current = false;
+      },
+    });
+
+    transitionTweenRef.current = tl;
+    textPanelRef.current?.style.setProperty("--hero-nav-ink", colorFrom);
+
+    if (progressBarRef.current) {
+      tl.to(progressBarRef.current, { scaleY: progress }, 0);
+    }
+
+    // Text fade: out quickly, in slightly delayed so it lands on the new colour.
+    tl.to(fromText, { autoAlpha: 0, duration: HERO_SLIDE_DURATION * 0.35 }, 0);
+    tl.set(toText, { zIndex: 2 }, 0);
+    tl.set(fromText, { zIndex: 0 }, 0);
+    tl.fromTo(
+      toText,
+      { autoAlpha: 0 },
+      { autoAlpha: 1, duration: HERO_SLIDE_DURATION * 0.45 },
+      HERO_SLIDE_DURATION * 0.4,
+    );
+
+    if (direction > 0) {
+      // Video rolls up; colour panel rolls down.
+      tl.set(toVideo, { yPercent: 100, autoAlpha: 1, zIndex: 1 }, 0);
+      tl.set(fromVideo, { zIndex: 2 }, 0);
+      tl.set(toPanel, { yPercent: -100, autoAlpha: 1, zIndex: 1 }, 0);
+      tl.set(fromPanel, { zIndex: 2 }, 0);
+
+      tl.to(fromVideo, { yPercent: -100 }, 0);
+      tl.to(toVideo, { yPercent: 0 }, 0);
+      tl.to(fromPanel, { yPercent: 100 }, 0);
+      tl.to(toPanel, { yPercent: 0 }, 0);
+
+      tl.set(fromVideo, { autoAlpha: 0, yPercent: 0, zIndex: 0 });
+      tl.set(toVideo, { zIndex: 2 });
+      tl.set(fromPanel, { autoAlpha: 0, yPercent: 0, zIndex: 0 });
+      tl.set(toPanel, { zIndex: 2 });
+    } else {
+      // Video rolls down; colour panel rolls up.
+      tl.set(toVideo, { yPercent: -100, autoAlpha: 1, zIndex: 1 }, 0);
+      tl.set(fromVideo, { zIndex: 2 }, 0);
+      tl.set(toPanel, { yPercent: 100, autoAlpha: 1, zIndex: 1 }, 0);
+      tl.set(fromPanel, { zIndex: 2 }, 0);
+
+      tl.to(fromVideo, { yPercent: 100 }, 0);
+      tl.to(toVideo, { yPercent: 0 }, 0);
+      tl.to(fromPanel, { yPercent: -100 }, 0);
+      tl.to(toPanel, { yPercent: 0 }, 0);
+
+      tl.set(fromVideo, { autoAlpha: 0, yPercent: 0, zIndex: 0 });
+      tl.set(toVideo, { zIndex: 2 });
+      tl.set(fromPanel, { autoAlpha: 0, yPercent: 0, zIndex: 0 });
+      tl.set(toPanel, { zIndex: 2 });
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      transitionTweenRef.current?.kill();
+    };
+  }, []);
+
+  // Discrete wheel / trackpad steps — same conveyor as Previous / Next.
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let accumulated = 0;
+    let idleResetTimer = 0;
+    const THRESHOLD = 48;
+
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      if (isAnimatingRef.current) {
+        accumulated = 0;
         return;
       }
 
-      const scrollLength = 3;
-      const masterTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top+=1 top",
-          end: `+=${HOME_SCROLLABLE_HEIGHT}`,
-          pin: true,
-          scrub: true,
-        },
-      });
+      window.clearTimeout(idleResetTimer);
+      idleResetTimer = window.setTimeout(() => {
+        accumulated = 0;
+      }, 180);
 
-      const masks = [
-        ["first-video-mask", "second-video-mask"],
-        ["second-video-mask", "third-video-mask"],
-        ["third-video-mask", "fourth-video-mask"],
-        ["fourth-video-mask", "first-video-mask"],
-      ];
+      accumulated += event.deltaY;
+      if (Math.abs(accumulated) < THRESHOLD) return;
 
-      let previousTimelineIndex = 0;
-      for (let i = 0; i < scrollLength; i++) {
-        const [mask1, mask2] = masks[i % 4];
-        masterTimeline.add(
-          createServiceTimeline({
-            firstVideoClass: mask1,
-            secondVideoClass: mask2,
-            timelineIndex: (i + 1) % 4,
-            previousTimelineIndex,
-            videoZIndex: i,
-            setActiveSection: updateActiveSection,
-          }),
-        );
-        previousTimelineIndex = (i + 1) % 4;
-      }
-    },
-    { scope: containerRef },
-  );
+      const direction: 1 | -1 = accumulated > 0 ? 1 : -1;
+      accumulated = 0;
+      stepToSlide(direction);
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      window.clearTimeout(idleResetTimer);
+      window.removeEventListener("wheel", onWheel);
+    };
+  }, [prefersReducedMotion, stepToSlide]);
 
   if (prefersReducedMotion) {
     return <HomeStatic />;
@@ -556,16 +276,17 @@ const Home = () => {
   return (
     <section
       ref={containerRef}
-      className="home inset-0 grid h-[100svh] max-h-[100svh] grid-cols-1 grid-rows-2 overflow-hidden bg-primary md:grid-cols-[55%_1fr] md:grid-rows-1"
+      className="home inset-0 grid h-[100svh] max-h-[100svh] grid-cols-1 grid-rows-2 overflow-hidden bg-primary md:grid-cols-[1fr_55%] md:grid-rows-1"
       aria-label="Our services"
     >
+      <HomeProgressBar ref={progressBarRef} />
       <h1 className="sr-only">
         Loads of Traffic digital marketing and growth services
       </h1>
-      <div className="fixed bottom-5 right-5 z-[900] flex items-center gap-2 md:bottom-8 md:right-8">
+      <div className="fixed bottom-5 right-5 z-[900] flex items-center gap-3 md:bottom-8 md:right-8">
         <button
           type="button"
-          className="bg-primary/80 inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-white/20 px-3 text-white shadow-lg backdrop-blur-xl transition-colors hover:bg-primary"
+          className="inline-flex min-h-12 min-w-12 items-center justify-center gap-2 rounded-full bg-primary px-5 text-white shadow-[0_10px_30px_rgba(0,0,79,0.45)] ring-2 ring-white/90 transition-transform hover:-translate-y-0.5"
           onClick={() => setIsMotionPaused((current) => !current)}
           aria-label={
             isMotionPaused
@@ -579,171 +300,135 @@ const Home = () => {
           ) : (
             <Pause className="h-4 w-4" aria-hidden="true" />
           )}
-          <span className="hidden text-xs font-semibold uppercase tracking-[0.12em] lg:inline">
+          <span className="hidden text-sm font-semibold uppercase tracking-[0.1em] lg:inline">
             {isMotionPaused ? "Play video" : "Pause video"}
           </span>
         </button>
-        <div className="scroll-reminder bg-primary/80 flex min-h-11 items-center gap-3 rounded-full border border-white/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-white shadow-lg backdrop-blur-xl">
-          <span>Scroll to explore</span>
-          <ArrowDown className="h-4 w-4" aria-hidden="true" />
-        </div>
+        <button
+          type="button"
+          onClick={() => stepToSlide(-1)}
+          aria-label="Previous expertise"
+          className="inline-flex min-h-12 items-center gap-2.5 rounded-full bg-white px-5 text-sm font-semibold uppercase tracking-[0.1em] text-primary shadow-[0_10px_30px_rgba(0,0,79,0.35)] transition-transform hover:-translate-y-0.5"
+        >
+          <ArrowUp className="h-5 w-5" aria-hidden="true" />
+          <span>Previous</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => stepToSlide(1)}
+          aria-label="Next expertise"
+          className="inline-flex min-h-12 items-center gap-2.5 rounded-full bg-accent px-6 text-sm font-semibold uppercase tracking-[0.1em] text-white shadow-[0_10px_30px_rgba(237,20,100,0.45)] transition-transform hover:-translate-y-0.5"
+        >
+          <span>Next</span>
+          <ArrowDown className="h-5 w-5" aria-hidden="true" />
+        </button>
       </div>
-      {/*Left*/}
-      <div className="pointer-events-none relative h-[50svh] overflow-hidden md:h-[100svh]">
-        <div className="solid-mobile pointer-events-none absolute left-0 top-0 z-0 h-0 w-full bg-primary md:hidden"></div>
-        <div className="image-mask-0 absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden">
-          <div className="relative mx-auto aspect-[0.64] w-[36%] scale-100 overflow-hidden rounded-[clamp(8px,1.5rem,24px)]">
-            <Image
-              className="h-full w-full object-cover"
-              src="/in-between-2.svg"
-              alt=""
-              fill
-              sizes="(min-width: 768px) 20vw, 36vw"
-            />
-          </div>
-        </div>
-        <div className="image-mask-1 absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden">
-          <div className="relative mx-auto aspect-[0.64] w-[36%] scale-100 overflow-hidden rounded-[clamp(8px,1.5rem,24px)]">
-            <Image
-              className="h-full w-full object-cover"
-              src="/in-between-1.svg"
-              alt=""
-              fill
-              sizes="(min-width: 768px) 20vw, 36vw"
-            />
-          </div>
-        </div>
-        <div className="image-mask-2 absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden">
-          <div className="relative mx-auto aspect-[0.64] w-[36%] scale-100 overflow-hidden rounded-[clamp(8px,1.5rem,24px)]">
-            <Image
-              className="h-full w-full object-cover"
-              src="/in-between-3.svg"
-              alt=""
-              fill
-              sizes="(min-width: 768px) 20vw, 36vw"
-            />
-          </div>
-        </div>
-        <div className="image-mask-3 absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden">
-          <div className="relative mx-auto aspect-[0.64] w-[36%] scale-100 overflow-hidden rounded-[clamp(8px,1.5rem,24px)]">
-            <Image
-              className="h-full w-full object-cover"
-              src="/in-between-0.svg"
-              alt=""
-              fill
-              sizes="(min-width: 768px) 20vw, 36vw"
-            />
-          </div>
-        </div>
-        <div className="first-video-mask-hidden absolute inset-0 z-[-10] block h-[50vh] overflow-hidden md:hidden md:h-auto md:scale-100">
-          <HomeVideo
-            videoSrc="/0"
-            posterSrc="/lottie-thumbnail-1.png"
-            isPaused={isMotionPaused}
+
+      {/* Left — sliding colour panels + fading copy */}
+      <div
+        ref={textPanelRef}
+        className="relative min-h-[50svh] overflow-hidden border-b border-white/10 md:min-h-[100svh] md:border-b-0 md:border-r"
+        style={
+          {
+            "--hero-nav-ink": PANEL_BACKGROUNDS[0],
+          } as React.CSSProperties
+        }
+      >
+        {PANEL_BACKGROUNDS.map((color, i) => (
+          <div
+            key={`panel-${color}-${i}`}
+            ref={(el) => {
+              panelRefs.current[i] = el;
+            }}
+            className="absolute inset-0 will-change-transform"
+            style={{
+              zIndex: i === 0 ? 2 : 0,
+              backgroundColor: color,
+            }}
+            aria-hidden="true"
           />
-        </div>
-        <div className="first-video-mask absolute inset-0 h-[50vh] overflow-hidden md:h-auto md:scale-100">
-          <HomeVideo
-            videoSrc="/0"
-            posterSrc="/lottie-thumbnail-1.png"
-            isPaused={isMotionPaused}
-          />
-        </div>
-        <div className="second-video-mask absolute inset-0 h-0 overflow-hidden md:h-auto md:scale-0">
-          <HomeVideo
-            videoSrc="/1"
-            posterSrc="/lottie-thumbnail-2.png"
-            isPaused={isMotionPaused}
-          />
-        </div>
-        <div className="third-video-mask absolute inset-0 h-0 overflow-hidden md:h-auto md:scale-0">
-          <HomeVideo
-            videoSrc="/2"
-            posterSrc="/lottie-thumbnail-3.png"
-            isPaused={isMotionPaused}
-          />
-        </div>
-        <div className="fourth-video-mask absolute inset-0 overflow-hidden md:h-auto md:scale-0">
-          <HomeVideo
-            videoSrc="/3"
-            posterSrc="/lottie-thumbnail-4.png"
-            isPaused={isMotionPaused}
-          />
-        </div>
-      </div>
-      {/*Right*/}
-      <div className="relative min-h-[50svh] border-t border-white/10 bg-primary md:min-h-[100svh] md:border-l md:border-t-0">
-        <div className="solid-accent pointer-events-none absolute inset-0 z-10 hidden h-screen scale-x-0 bg-accent md:block"></div>
-        <div className="absolute inset-x-5 top-6 z-50 flex flex-col items-start md:left-1/2 md:right-auto md:top-[clamp(2rem,6vh,4rem)] md:w-[80%] md:-translate-x-1/2">
-          <Header />
-          <div className="relative mt-1 min-h-[18rem] w-full md:mt-12 xl:min-h-[22rem]">
-            {servicesSectionContent.map((section, i) => (
-              <article
-                key={section.title}
-                className={cn(
-                  `service-right-${i} absolute inset-0 z-[1] flex flex-col items-start`,
-                  i !== 0 && "z-0",
-                )}
-                aria-hidden={activeSection !== i}
-              >
-                <div
-                  className={cn(
-                    `service-title-${i} w-full`,
-                    i !== 0 && "translate-y-full opacity-0",
-                  )}
+        ))}
+
+        <div className="pointer-events-none absolute inset-0 z-40 flex flex-col px-5 pb-10 pt-[calc(var(--pages-header-height)+1.25rem)] md:px-[10%] md:pb-14">
+          <div className="relative min-h-0 w-full flex-1">
+            {servicesSectionContent.map((section, i) => {
+              const isPink = i % 2 === 1;
+              return (
+                <article
+                  key={section.title}
+                  ref={(el) => {
+                    textRefs.current[i] = el;
+                  }}
+                  className="pointer-events-auto absolute inset-0 z-[1] flex flex-col"
+                  style={{ zIndex: i === 0 ? 2 : 0 }}
+                  aria-hidden={activeSection !== i}
                 >
-                  <div className="flex items-center justify-between border-b border-white/20 pb-3">
-                    <span className="page-kicker text-white/70">
-                      Our expertise
-                    </span>
-                    <span className="text-xs font-semibold tabular-nums text-white/60">
-                      0{i + 1} / 04
-                    </span>
-                  </div>
-                  <div className="mt-5 overflow-hidden">
-                    <h2 className="text-[clamp(1.65rem,3.2vw,3rem)] font-semibold leading-[1.05] tracking-[-0.035em]">
+                  <div className="w-full">
+                    <div className="flex items-center justify-between border-b border-white/20 pb-4">
+                      <span className="page-kicker text-white">
+                        Our expertise
+                      </span>
+                      <span className="text-sm font-semibold tabular-nums text-white">
+                        0{i + 1} / 04
+                      </span>
+                    </div>
+                    <h2 className="mt-6 text-[clamp(2.25rem,4.5vw,4.25rem)] font-semibold leading-[1.02] tracking-[-0.02em]">
                       {section.title}
                     </h2>
+                    <ul className="mt-5 w-full max-w-[36rem] space-y-3 text-base leading-relaxed text-white md:mt-6 md:text-lg">
+                      {section.description.map((line) => (
+                        <li key={line} className="flex gap-3.5">
+                          <span
+                            className={`mt-[0.7em] h-2 w-2 shrink-0 rounded-full ${isPink ? "bg-white" : "bg-accent"}`}
+                            aria-hidden="true"
+                          />
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-                <div className="mt-4 w-full overflow-hidden">
-                  <ul
-                    className={cn(
-                      `service-description-${i} space-y-2 text-sm leading-relaxed text-white xl:text-base`,
-                      i !== 0 && "translate-y-full opacity-0",
-                    )}
-                  >
-                    {section.description.map((line) => (
-                      <li key={line} className="flex max-w-[34rem] gap-3">
-                        <span
-                          className="mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
-                          aria-hidden="true"
-                        />
-                        <span>{line}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="relative mt-5">
-                  <TransitionLink
-                    href={section.readMoreLink}
-                    tabIndex={activeSection === i ? 0 : -1}
-                    className={cn(
-                      `read-more-cta-${i} inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-primary shadow-lg transition-transform hover:-translate-y-0.5`,
-                      i !== 0 &&
-                        "-translate-y-full opacity-0 md:translate-y-full",
-                    )}
-                  >
-                    <span>Explore service</span>
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  </TransitionLink>
-                </div>
-              </article>
-            ))}
+
+                  <div className="mt-auto flex justify-center pb-2 pt-10">
+                    <TransitionLink
+                      href={section.readMoreLink}
+                      tabIndex={activeSection === i ? 0 : -1}
+                      className={`group inline-flex min-h-14 items-center gap-3 rounded-full bg-white px-8 text-base font-semibold shadow-lg md:min-h-16 md:px-10 md:text-lg ${isPink ? "text-accent" : "text-primary"}`}
+                    >
+                      <span className="inline-flex items-center gap-3 transition-transform duration-300 ease-out group-hover:-translate-y-0.5">
+                        <span>Explore service</span>
+                        <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                    </TransitionLink>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </div>
-      <div className="pin-element fixed -top-full z-30 w-full scale-x-[500%] bg-accent"></div>
+
+      {/* Right — videos */}
+      <div
+        ref={videoPanelRef}
+        className="pointer-events-none relative h-[50svh] overflow-hidden md:h-[100svh]"
+      >
+        {VIDEO_SOURCES.map((video, index) => (
+          <div
+            key={video.src}
+            ref={(el) => {
+              videoRefs.current[index] = el;
+            }}
+            className="absolute inset-0 h-full w-full overflow-hidden"
+            style={{ zIndex: index === 0 ? 2 : 0 }}
+          >
+            <HomeVideo
+              videoSrc={video.src}
+              posterSrc={video.poster}
+              isPaused={isMotionPaused}
+            />
+          </div>
+        ))}
+      </div>
     </section>
   );
 };

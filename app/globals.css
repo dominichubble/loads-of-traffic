@@ -29,6 +29,16 @@ html.preloader-skip #site-preloader {
   display: none !important;
 }
 
+/* Freeze scroll while the page-to-page conveyor runs. */
+html.page-transitioning,
+html.page-transitioning body {
+  overflow: hidden !important;
+}
+
+html.page-transitioning #main-content {
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -39,7 +49,6 @@ html.preloader-skip #site-preloader {
     scroll-behavior: auto !important;
   }
 
-  .scroll-reminder,
   .custom-cursor {
     display: none !important;
   }
@@ -99,6 +108,17 @@ html {
   width: 100%;
   max-width: var(--content-max-width);
   margin-inline: auto;
+}
+
+/* Shared page frame: header offset + bottom breathing room. */
+.page-shell {
+  padding-top: calc(var(--pages-header-height) + var(--container-padding-y));
+  padding-bottom: var(--container-padding-y);
+}
+
+/* Shared horizontal page gutters — use with .content-container. */
+.page-gutters {
+  padding-inline: var(--container-padding-x);
 }
 
 .no-scrollbar ::-webkit-scrollbar,
@@ -185,7 +205,7 @@ a[href] {
   max-width: 16ch;
   font-size: clamp(2.5rem, 7vw, 5.75rem);
   font-weight: 700;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.015em;
   line-height: 0.98;
   text-wrap: balance;
 }
@@ -194,7 +214,7 @@ a[href] {
   max-width: 20ch;
   font-size: clamp(2rem, 4.5vw, 3.75rem);
   font-weight: 700;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.01em;
   line-height: 1.05;
   text-wrap: balance;
 }

@@ -1,14 +1,16 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { sleep } from "@/utils";
 import gsap from "gsap";
+import { ComponentPropsWithoutRef, MouseEvent, useCallback } from "react";
 import {
-  ComponentPropsWithoutRef,
-  MouseEvent,
-  useCallback,
-  useRef,
-} from "react";
+  OUTGOING_LAYER_ID,
+  PAGE_SHELL,
+  navBgForPath,
+  resolveTransition,
+  transitionState,
+} from "@/utils/transition-state";
 
 type TransitionLinkPropsType = {
   children?: React.ReactNode;
@@ -16,13 +18,46 @@ type TransitionLinkPropsType = {
   className?: string;
 } & ComponentPropsWithoutRef<typeof Link>;
 
-const backgroundMap: { [key: string]: string } = {
-  "/services": "#ED1464",
-  "/services#services": "#ED1464",
-  "/": "#00007A",
-  "/contact": "#ED1464",
-  "/about": "#00007A",
-};
+/**
+ * Freeze a visual copy of the current page in a viewport-sized layer so the
+ * real #main-content can unmount/remount underneath while the slide runs.
+ * Site chrome (PagesHeader) lives outside #main-content and stays put.
+ */
+function captureOutgoingLayer() {
+  const main = document.querySelector(PAGE_SHELL) as HTMLElement | null;
+  if (!main) return null;
+
+  document.getElementById(OUTGOING_LAYER_ID)?.remove();
+
+  const scrollY = window.scrollY;
+  const distanceY = window.innerHeight;
+  const distanceX = window.innerWidth;
+  const layer = document.createElement("div");
+  layer.id = OUTGOING_LAYER_ID;
+  layer.setAttribute("aria-hidden", "true");
+  layer.style.cssText = [
+    "position:fixed",
+    "inset:0",
+    `width:${distanceX}px`,
+    `height:${distanceY}px`,
+    "z-index:1600",
+    "overflow:hidden",
+    "pointer-events:none",
+  ].join(";");
+
+  const clone = main.cloneNode(true) as HTMLElement;
+  clone.removeAttribute("id");
+  clone.removeAttribute("tabindex");
+  clone.style.marginTop = `-${scrollY}px`;
+  clone.querySelectorAll("video").forEach((video) => {
+    video.pause();
+    video.removeAttribute("autoplay");
+  });
+
+  layer.appendChild(clone);
+  document.body.appendChild(layer);
+  return layer;
+}
 
 const TransitionLink = ({
   children,
@@ -33,49 +68,38 @@ const TransitionLink = ({
 }: TransitionLinkPropsType) => {
   const router = useRouter();
   const pathname = usePathname();
-  const isTransitioning = useRef(false);
 
   const handleTransition = useCallback(
-    async (href: string) => {
-      if (isTransitioning.current) return;
-      isTransitioning.current = true;
+    (destination: string) => {
+      if (transitionState.isCoverActive) return;
+      transitionState.isCoverActive = true;
 
-      const panels = [".transition-right", ".transition-left"];
-      gsap.set(panels, {
-        background: backgroundMap[href] || "#ED1464",
-      });
+      const { axis, direction } = resolveTransition(pathname, destination);
+      transitionState.axis = axis;
+      transitionState.direction = direction;
+      transitionState.fromNavBg = navBgForPath(pathname);
+      transitionState.toNavBg = navBgForPath(destination);
 
-      await new Promise<void>((resolve) => {
-        gsap.fromTo(
-          panels,
-          { opacity: 1, scaleY: 0 },
-          {
-            opacity: 1,
-            scaleY: 1,
-            duration: 0.42,
-            ease: "power3.inOut",
-            onComplete: resolve,
-          },
-        );
-      });
+      document.documentElement.classList.add("page-transitioning");
 
-      router.push(href);
-      await sleep(220);
+      const outgoing = captureOutgoingLayer();
+      if (!outgoing) {
+        transitionState.isCoverActive = false;
+        document.documentElement.classList.remove("page-transitioning");
+        router.push(destination);
+        return;
+      }
 
-      gsap.to(panels, {
-        opacity: 0,
-        scaleY: 0,
-        duration: 0.36,
-        ease: "power2.out",
-        onComplete: () => {
-          isTransitioning.current = false;
-        },
-      });
+      transitionState.outgoingLayer = outgoing;
+
+      gsap.set(PAGE_SHELL, { autoAlpha: 0 });
+      window.scrollTo(0, 0);
+      router.push(destination);
     },
-    [router],
+    [pathname, router],
   );
 
-  const handleLinkClick = async (event: MouseEvent<HTMLAnchorElement>) => {
+  const handleLinkClick = (event: MouseEvent<HTMLAnchorElement>) => {
     onClick?.(event);
     if (
       event.defaultPrevented ||
@@ -106,7 +130,7 @@ const TransitionLink = ({
     }
 
     event.preventDefault();
-    await handleTransition(href);
+    handleTransition(href);
   };
 
   return (

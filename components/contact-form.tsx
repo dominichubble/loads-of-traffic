@@ -47,7 +47,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="contact-form rounded-[2rem] border border-white/40 bg-white p-7 text-primary shadow-[0_24px_70px_rgba(83,0,32,0.18)] sm:p-9 lg:p-10"
+      className="contact-form rounded-[2rem] border border-white/40 bg-white p-7 text-primary shadow-[0_24px_70px_rgba(83,0,32,0.18)] sm:p-10 lg:p-14"
       aria-busy={status === "submitting"}
     >
       {/* Honeypot field: hidden from real visitors, bots tend to fill every field in */}

@@ -8,12 +8,7 @@ type AboutSectionProps = {
 
 const AboutSection = ({ children, className }: AboutSectionProps) => {
   return (
-    <section
-      className={cn(
-        "content-container px-6 sm:px-[var(--container-padding-x)]",
-        className,
-      )}
-    >
+    <section className={cn("content-container page-gutters", className)}>
       {children}
     </section>
   );

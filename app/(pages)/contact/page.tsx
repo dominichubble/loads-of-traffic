@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ContactForm from "@/components/contact-form";
+import PageIntro from "@/components/page-intro";
 import { Mail, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -11,28 +12,18 @@ export const metadata: Metadata = {
 
 const ContactPage = () => {
   return (
-    <main className="contact min-h-screen bg-accent px-5 pb-[var(--container-padding-y)] pt-[calc(var(--pages-header-height)+var(--container-padding-y))] text-white sm:px-[var(--container-padding-x)]">
-      <div className="content-container">
+    <main className="contact page-shell min-h-screen bg-accent text-white">
+      <div className="content-container page-gutters">
         <section className="contact-section">
-          <div className="grid gap-8 border-b border-white/25 pb-10 md:grid-cols-[0.7fr_1.3fr] md:items-end md:gap-12 md:pb-14">
-            <div>
-              <span className="page-kicker text-[#000036]">Get in touch</span>
-              <h1 className="display-heading mt-6 text-white">Contact</h1>
-            </div>
-            <div className="md:pb-2">
-              <h2 className="max-w-[30ch] text-xl font-medium leading-snug text-white md:text-2xl xl:text-3xl">
-                Ready to understand your market, your competitors, and your next
-                growth opportunity?
-              </h2>
-              <p className="mt-5 max-w-[58ch] text-sm font-medium leading-relaxed text-[#000036] md:text-base">
-                Share a little about your business and what you want to achieve.
-                We&apos;ll respond with a clear next step.
-              </p>
-            </div>
-          </div>
+          <PageIntro
+            kicker="Get in touch"
+            title="Contact"
+            headline="Ready to understand your market, your competitors, and your next growth opportunity?"
+            description="Share a little about your business and what you want to achieve. We'll respond with a clear next step."
+          />
 
-          <div className="mt-10 grid items-start gap-8 lg:mt-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12">
-            <aside className="overflow-hidden rounded-[2rem] border border-white/15 bg-primary p-7 shadow-[0_24px_70px_rgba(83,0,32,0.2)] sm:p-9">
+          <div className="mt-10 grid items-start gap-8 lg:mt-14 lg:grid-cols-2 lg:gap-x-16 xl:gap-x-24">
+            <aside className="overflow-hidden rounded-[2rem] border border-white/15 bg-primary p-7 shadow-[0_24px_70px_rgba(83,0,32,0.2)] sm:p-10 lg:p-14">
               <span className="page-kicker text-white/60">What to include</span>
               <h2 className="mt-6 text-2xl font-semibold leading-tight tracking-[-0.03em] md:text-3xl">
                 Let&apos;s explore how we can help your business grow.

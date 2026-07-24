@@ -39,9 +39,11 @@ export function horizontalLoop(target: gsap.TweenTarget, config: Record<string, 
   gsap.set(items, {
     // convert "x" to "xPercent" to make things responsive, and populate the widths/xPercents Arrays to make lookups faster.
     xPercent: (i: number, el: Element) => {
-      const w = (widths[i] = Number(gsap.getProperty(el, "width", "px")));
+      // gsap.getProperty returns a string (e.g. "631px") when a unit is requested,
+      // so this must use parseFloat rather than Number (which yields NaN for "631px").
+      const w = (widths[i] = parseFloat(gsap.getProperty(el, "width", "px") as string));
       xPercents[i] = snap(
-        (Number(gsap.getProperty(el, "x", "px")) / w) * 100 +
+        (parseFloat(gsap.getProperty(el, "x", "px") as string) / w) * 100 +
         Number(gsap.getProperty(el, "xPercent")),
       );
       return xPercents[i];
