@@ -36,7 +36,7 @@ const AboutPage = () => {
               </span>
             </div>
             <p className="line mt-2">of combined expertise</p>
-            <p className="line mt-2 text-white/75">to digital growth</p>
+            <p className="line mt-2 text-white">to digital growth</p>
           </TextGradient>
         </AboutSection>
         <AboutMission />

@@ -34,7 +34,7 @@ const AboutMission = () => {
           </div>
 
           <div className="min-w-0 space-y-5 lg:pl-10">
-            <p className="body-copy max-w-none text-white/90">
+            <p className="body-copy max-w-none text-white">
               Loads of Traffic excels at innovation, strategy, and results-driven
               digital marketing. Since 2010, we&apos;ve helped businesses thrive
               by providing advanced competitive intelligence and focused digital

@@ -40,7 +40,7 @@ const ContactPage = () => {
                 <h2 className="mt-3 text-xl font-semibold leading-tight tracking-[-0.03em] md:mt-4 md:text-2xl">
                   Let&apos;s explore how we can help your business grow.
                 </h2>
-                <ul className="mt-4 space-y-2.5 text-sm leading-snug text-white/80 md:mt-5 md:space-y-3">
+                <ul className="mt-4 space-y-2.5 text-sm leading-snug text-white md:mt-5 md:space-y-3">
                   <li className="flex gap-3">
                     <span className="font-bold tabular-nums text-yellow">01</span>
                     <span>Which services or challenges can we help with?</span>
@@ -82,7 +82,7 @@ const ContactPage = () => {
                       <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-white/50">
                         Office
                       </p>
-                      <address className="mt-0.5 max-w-[34ch] text-sm not-italic leading-snug text-white/80">
+                      <address className="mt-0.5 max-w-[34ch] text-sm not-italic leading-snug text-white">
                         Loads of Traffic Ltd
                         <br />
                         Winchester Court, Second Avenue

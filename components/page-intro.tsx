@@ -35,10 +35,10 @@ const PageIntro = ({
           <h1 className="display-heading mt-5 max-w-none text-white">{title}</h1>
         </div>
         <div className="page-rise page-rise-delay-1 min-w-0 space-y-5 md:pt-1">
-          <h2 className="text-xl font-medium leading-snug text-balance text-white/90 md:text-2xl xl:text-[1.85rem] xl:leading-snug">
+          <h2 className="text-xl font-medium leading-snug text-balance text-white md:text-2xl xl:text-[1.85rem] xl:leading-snug">
             {headline}
           </h2>
-          <p className="max-w-[62ch] text-sm leading-relaxed text-white/75 md:text-base md:leading-relaxed lg:text-lg">
+          <p className="max-w-[62ch] text-sm leading-relaxed text-white md:text-base md:leading-relaxed lg:text-lg">
             {description}
           </p>
         </div>

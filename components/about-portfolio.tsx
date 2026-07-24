@@ -55,7 +55,7 @@ const AboutPortfolio = () => {
                   <p className="text-2xl font-semibold leading-tight tracking-[-0.03em] sm:text-3xl">
                     Confidential by design
                   </p>
-                  <p className="mt-4 max-w-[34ch] text-sm leading-relaxed text-white/70 md:text-base">
+                  <p className="mt-4 max-w-[34ch] text-sm leading-relaxed text-white md:text-base">
                     Every engagement is covered by robust NDAs, so clients can
                     share sensitive data and pursue ambitious ideas with
                     confidence.
@@ -77,7 +77,7 @@ const AboutPortfolio = () => {
                     <span className="text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl">
                       {item.title}
                     </span>
-                    <span className="max-w-[32ch] text-sm leading-relaxed text-white/75 sm:text-right">
+                    <span className="max-w-[32ch] text-sm leading-relaxed text-white sm:text-right">
                       {item.detail}
                     </span>
                   </li>

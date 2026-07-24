@@ -36,7 +36,7 @@ const AboutFeature = ({
         <h3 className="text-2xl font-semibold tracking-[-0.03em] lg:text-3xl">
           {title}
         </h3>
-        <p className="mt-4 text-sm leading-relaxed text-white/85 lg:text-base">
+        <p className="mt-4 text-sm leading-relaxed text-white lg:text-base">
           {description}
         </p>
       </div>

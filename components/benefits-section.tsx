@@ -12,7 +12,7 @@ const BenefitsSection = () => {
             A clear path
           </h2>
         </div>
-        <p className="body-copy max-w-none text-white/80 md:pt-1">
+        <p className="body-copy max-w-none text-white md:pt-1">
           A clear path from first conversation to measurable growth — so every
           engagement stays focused, accountable, and built around outcomes.
         </p>

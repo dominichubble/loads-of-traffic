@@ -27,7 +27,7 @@ const ServicesContent = () => {
                 Built around your next move
               </h2>
             </div>
-            <p className="body-copy max-w-none text-white/85 md:pt-1">
+            <p className="body-copy max-w-none text-white md:pt-1">
               Choose focused support for a specific challenge or combine our
               capabilities into a complete growth programme. Each engagement is
               shaped around your goals, market, and success measures.
