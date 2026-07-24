@@ -71,8 +71,13 @@ const ContactPage = () => {
                       Office
                     </p>
                     <address className="mt-1 max-w-[34ch] not-italic text-white/80">
-                      Loads of Traffic Ltd, Floor 2, Hillary House, Prospect
-                      Hill, Douglas, IM1 1EQ
+                      Loads of Traffic Ltd
+                      <br />
+                      Winchester Court, Second Avenue
+                      <br />
+                      Onchan, IM3 4LT
+                      <br />
+                      Isle of Man
                     </address>
                   </div>
                 </div>
