@@ -1,13 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import Image from "next/image";
 
 const STORAGE_KEY = "lot-preloader-seen";
-const ANIMATION_DURATION_MS = 5000;
-const EXIT_DURATION_MS = 1600;
-// Hard safety net: if the GSAP tween is ever interrupted and its onComplete
-// never fires, this forces the full-viewport overlay to unmount anyway
-// instead of permanently blocking every click on the page.
+const ANIMATION_DURATION_MS = 800;
+const EXIT_DURATION_MS = 400;
 const FALLBACK_TIMEOUT_MS = ANIMATION_DURATION_MS + EXIT_DURATION_MS + 1000;
 
 function shouldSkipAnimation() {
@@ -22,17 +20,23 @@ function shouldSkipAnimation() {
 const Preloader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
-  const [isDone, setIsDone] = useState(true);
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
-    setIsDone(shouldSkipAnimation());
+    if (shouldSkipAnimation()) {
+      setIsDone(true);
+      return;
+    }
     window.localStorage.setItem(STORAGE_KEY, "1");
   }, []);
 
   useEffect(() => {
     if (isDone) return;
 
-    const fallback = window.setTimeout(() => setIsDone(true), FALLBACK_TIMEOUT_MS);
+    const fallback = window.setTimeout(
+      () => setIsDone(true),
+      FALLBACK_TIMEOUT_MS,
+    );
     const progressObj = { value: 0 };
 
     gsap.to(progressObj, {
@@ -58,9 +62,34 @@ const Preloader = () => {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] grid place-content-center bg-accent"
+      className="fixed inset-0 z-[3000] grid place-content-center bg-accent px-6 text-white"
+      role="status"
+      aria-label="Loading website"
     >
-      <p className="text-[2.4rem] font-light">{Math.round(progress)}%</p>
+      <div className="flex w-[min(24rem,80vw)] flex-col items-center gap-8">
+        <div className="relative h-16 w-full">
+          <Image
+            src="/logo.png"
+            alt="Loads of Traffic"
+            fill
+            sizes="384px"
+            className="object-contain"
+            priority
+          />
+        </div>
+        <div
+          className="h-1 w-full overflow-hidden rounded-full bg-white/25"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress)}
+        >
+          <div
+            className="h-full origin-left rounded-full bg-white"
+            style={{ transform: `scaleX(${progress / 100})` }}
+          />
+        </div>
+      </div>
     </div>
   );
 };

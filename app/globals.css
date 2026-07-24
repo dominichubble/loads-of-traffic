@@ -2,18 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-text-fill-color: #00007A !important;
+  -webkit-text-fill-color: #00007a !important;
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 3px solid white;
   outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--color-primary);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -25,39 +32,48 @@ input:-webkit-autofill:active {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  .scroll-reminder,
+  .custom-cursor {
+    display: none !important;
+  }
 }
 
 :root {
   --color-primary: #00007a;
+  --color-primary-deep: #00004f;
+  --color-primary-soft: #ededf8;
   --color-accent: #ed1464;
+  --color-accent-deep: #bd0e4c;
+  --color-on-accent: #000036;
   --background: #ffffff;
-  /* Default body text colour. Kept brand-navy so any un-styled copy is
-     legible on the white background instead of the old white-on-white. */
   --foreground: #00007a;
   --color-red: #ed1464;
   --color-yellow: #ffa600;
-  --pages-header-height: 80px;
-  --sections-gap: 8rem;
-  /* Responsive gutter: never cramped on mobile, never excessive on desktop. */
-  --container-padding-x: clamp(1.5rem, 5vw, 6rem);
-  --container-padding-y: 4rem;
-  /* Max width for centred page content so wide screens don't stretch or gap. */
-  --content-max-width: 90rem;
+  --color-ink: #17172f;
+  --color-muted: #5d5d75;
+  --color-border: rgba(0, 0, 122, 0.14);
+  --pages-header-height: 88px;
+  --sections-gap: clamp(5rem, 10vw, 9rem);
+  --container-padding-x: clamp(1.25rem, 5vw, 5rem);
+  --container-padding-y: clamp(2.5rem, 6vw, 5rem);
+  --content-max-width: 80rem;
+  --radius-card: 1.5rem;
+  --shadow-card: 0 24px 70px rgba(0, 0, 79, 0.14);
+  --shadow-soft: 0 12px 34px rgba(0, 0, 79, 0.1);
   color-scheme: light;
 }
 
 @media screen and (min-width: 2560px) {
   :root {
-    --pages-header-height: 180px;
-  }
-
-  html {
-    font-size: 120% !important;
+    --pages-header-height: 104px;
   }
 }
 
 html {
-  font-size: 100% !important;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--pages-header-height) + 1rem);
+  text-rendering: optimizeLegibility;
 }
 
 @media screen and (max-width: 1536px) {
@@ -68,14 +84,11 @@ html {
 
 @media screen and (max-width: 768px) {
   :root {
-    --sections-gap: 6rem;
-    --pages-header-height: 100px;
-    --container-padding-y: 1rem;
+    --pages-header-height: 76px;
+    --container-padding-y: 2rem;
   }
 }
 
-/* Centres page content and caps its width so large screens keep a
-   comfortable measure instead of stretching edge-to-edge or gapping. */
 .content-container {
   width: 100%;
   max-width: var(--content-max-width);
@@ -87,86 +100,144 @@ html {
   display: none;
 }
 
-/* Chrome, Safari, Opera */
 .no-scrollbar {
   -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-
-/* IE & Edge */
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Poppins", Helvetica, sans-serif;
+  font-family: var(--font-poppins, "Poppins", Helvetica, Arial, sans-serif);
+  line-height: 1.6;
+  min-width: 320px;
+  overflow-x: clip;
+}
+
+body,
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled),
+a[href] {
+  cursor: pointer;
+}
+
+::selection {
+  color: white;
+  background: var(--color-accent);
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 99999;
+  transform: translateY(-160%);
+  border-radius: 999px;
+  background: white;
+  color: var(--color-primary);
+  padding: 0.75rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-soft);
+  transition: transform 180ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.page-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.page-kicker::before {
+  width: 1.75rem;
+  height: 2px;
+  background: currentColor;
+  content: "";
+  opacity: 0.7;
+}
+
+.display-heading {
+  max-width: 16ch;
+  font-size: clamp(2.5rem, 7vw, 5.75rem);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.section-heading {
+  max-width: 20ch;
+  font-size: clamp(2rem, 4.5vw, 3.75rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.body-copy {
+  max-width: 64ch;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.75;
+}
+
+.surface-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: white;
+  box-shadow: var(--shadow-card);
 }
 
 .color-shift-hover {
-  color: var(--color-primary);
   position: relative;
+  transition: color 180ms ease;
 }
 
 .color-shift-hover::after {
-  content: attr(data-hover);
-  color: white;
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  content: "";
   position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
+  right: 0;
+  bottom: -0.3rem;
   left: 0;
-  transition:
-    clip-path 1s cubic-bezier(0.19, 1, 0.22, 1),
-    color 0.25s ease-out;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 220ms ease;
 }
 
-.color-shift-hover::before {
-  content: attr(data-hover);
-  color: var(--color-primary);
-  clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transition:
-    clip-path 1s cubic-bezier(0.19, 1, 0.22, 1),
-    color 0.25s ease-out;
+.color-shift-hover:hover::after,
+.color-shift-hover:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-.color-shift-hover-accent.color-shift-hover::before {
-  content: attr(data-hover);
+.color-shift-hover-accent:hover,
+.color-shift-hover-accent:focus-visible {
   color: var(--color-accent);
-  clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transition:
-    clip-path 1s cubic-bezier(0.19, 1, 0.22, 1),
-    color 0.25s ease-out;
 }
 
-.color-shift-hover-black.color-shift-hover::before {
-  content: attr(data-hover);
-  color: black;
-  clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transition:
-    clip-path 1s cubic-bezier(0.19, 1, 0.22, 1),
-    color 0.25s ease-out;
-}
-
-.color-shift-hover:hover::after {
-  clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-}
-
-.color-shift-hover:hover::before {
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+.color-shift-hover-black:hover,
+.color-shift-hover-black:focus-visible {
+  color: var(--color-ink);
 }
 
 a:hover .hover-element {

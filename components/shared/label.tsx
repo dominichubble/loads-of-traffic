@@ -1,9 +1,17 @@
 import React, { LabelHTMLAttributes } from "react";
+import { cn } from "@/utils";
 
-const Label = (props: LabelHTMLAttributes<HTMLLabelElement>) => {
+const Label = ({
+  className,
+  children,
+  ...props
+}: LabelHTMLAttributes<HTMLLabelElement>) => {
   return (
-    <label className="sr-only" {...props}>
-      {props.children}
+    <label
+      className={cn("text-sm font-semibold text-primary", className)}
+      {...props}
+    >
+      {children}
     </label>
   );
 };

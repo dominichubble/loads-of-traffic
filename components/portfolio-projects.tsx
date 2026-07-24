@@ -6,7 +6,7 @@ const PortfolioProjects = () => {
     <ul className="flex flex-col gap-[1rem] sm:flex-row xl:gap-[2rem]">
       {[...new Array(3)].map((_, i) => (
         <li key={i} className="w-full">
-          <ProjectPortfolio />
+          <ProjectPortfolio index={i + 1} />
         </li>
       ))}
     </ul>

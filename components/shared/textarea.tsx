@@ -1,11 +1,17 @@
 import React, { TextareaHTMLAttributes } from "react";
+import { cn } from "@/utils";
 
-const Textarea = (props: TextareaHTMLAttributes<HTMLTextAreaElement>) => {
+const Textarea = ({
+  className,
+  ...props
+}: TextareaHTMLAttributes<HTMLTextAreaElement>) => {
   return (
     <textarea
-      className="w-full rounded-2xl border-2 border-primary px-8 py-4 text-sm font-bold uppercase text-primary placeholder:text-primary md:text-base"
+      className={cn(
+        "border-primary/20 bg-primary/[0.025] placeholder:text-primary/60 hover:border-primary/35 w-full resize-y rounded-xl border px-4 py-3 text-base font-medium leading-relaxed text-primary transition-colors placeholder:font-normal focus:border-primary",
+        className,
+      )}
       {...props}
-      placeholder={`${props.placeholder}${props.required ? "*" : ""}`}
     />
   );
 };

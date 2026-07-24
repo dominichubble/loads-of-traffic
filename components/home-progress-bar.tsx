@@ -7,17 +7,16 @@ import { HOME_SCROLLABLE_HEIGHT } from "@/utils/constants";
 const HomeProgressBar = () => {
   const progressBarRef = useRef<HTMLDivElement>(null);
   useGSAP(
-    function() {
+    function () {
       gsap.to(progressBarRef.current, {
-        scaleY: 1,
+        scaleX: 1,
         scrollTrigger: {
           trigger: document.body,
           start: "top top",
-          end: `end+=${(HOME_SCROLLABLE_HEIGHT * 100) / 25}`,
-          scrub: 1,
+          end: `+=${HOME_SCROLLABLE_HEIGHT}`,
+          scrub: true,
         },
         ease: "none",
-        repeat: 100,
       });
     },
     {
@@ -27,8 +26,9 @@ const HomeProgressBar = () => {
   return (
     <div
       ref={progressBarRef}
-      className="fixed left-0 top-0 z-[999] h-screen w-1 origin-top scale-y-0 bg-white"
-    ></div>
+      className="fixed left-0 top-0 z-[1100] h-1 w-full origin-left scale-x-0 bg-yellow"
+      aria-hidden="true"
+    />
   );
 };
 

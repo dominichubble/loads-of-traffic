@@ -13,29 +13,28 @@ const AboutFeature = ({
   feature: { title, description, index },
 }: AboutFeatureProps) => {
   return (
-    <article className="group relative h-[20rem] max-w-[25rem] overflow-hidden rounded-[1rem] border-[1px] border-white xl:h-[34rem]">
-      <div className="grid h-full place-content-center">
-        <h3
+    <article className="group flex min-h-[20rem] w-full flex-col justify-between overflow-hidden rounded-[1.5rem] border border-white/15 bg-white/[0.06] p-6 transition-transform duration-200 hover:-translate-y-1 hover:bg-white/[0.09] lg:min-h-[24rem] lg:p-8">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/55">
+          0{index + 1}
+        </span>
+        <span
           className={cn(
-            "relative z-10 text-[1.2rem] font-bold uppercase tracking-[5%] duration-500 group-hover:scale-90 group-hover:text-white xl:text-[2.5rem]",
-            index === 0 && "group-hover:text-accent",
-            index === 1 && "group-hover:text-primary",
+            "h-3 w-3 rounded-full",
+            index === 0 && "bg-accent",
+            index === 1 && "bg-white",
+            index === 2 && "bg-yellow",
           )}
-        >
+          aria-hidden="true"
+        />
+      </div>
+      <div>
+        <h3 className="text-2xl font-semibold tracking-[-0.03em] lg:text-3xl">
           {title}
         </h3>
-        <div
-          className={cn(
-            "custom-cursor-hover absolute inset-0 grid scale-90 place-content-end rounded-[1rem] p-4 py-8 text-center leading-[150%] transition-all duration-500 hover:-translate-y-2 group-hover:bg-primary group-hover:text-white",
-            index === 0 && "group-hover:bg-white group-hover:text-accent",
-            index === 1 && "group-hover:bg-accent group-hover:text-primary",
-            index === 2 && "group-hover:bg-yellow",
-          )}
-        >
-          <p className="transition-opacity duration-500 group-hover:opacity-100">
-            {description}
-          </p>
-        </div>
+        <p className="mt-4 text-sm leading-relaxed text-white/70 lg:text-base">
+          {description}
+        </p>
       </div>
     </article>
   );

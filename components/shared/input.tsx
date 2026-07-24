@@ -1,11 +1,17 @@
 import React, { InputHTMLAttributes } from "react";
+import { cn } from "@/utils";
 
-const Input = (props: InputHTMLAttributes<HTMLInputElement>) => {
+const Input = ({
+  className,
+  ...props
+}: InputHTMLAttributes<HTMLInputElement>) => {
   return (
     <input
-      className="w-full rounded-full border-2 border-primary px-8 py-4 text-sm font-bold uppercase text-black text-primary placeholder:text-primary md:text-base"
+      className={cn(
+        "border-primary/20 bg-primary/[0.025] placeholder:text-primary/60 hover:border-primary/35 min-h-12 w-full rounded-xl border px-4 py-3 text-base font-medium text-primary transition-colors placeholder:font-normal focus:border-primary",
+        className,
+      )}
       {...props}
-      placeholder={`${props.placeholder}${props.required ? "*" : ""}`}
     />
   );
 };

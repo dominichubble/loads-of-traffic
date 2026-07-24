@@ -6,11 +6,12 @@ import AboutFeature from "./about-feature";
 
 const AboutFeatures = () => {
   return (
-    <AboutSection className="bg-primary py-[5rem] text-white">
-      <AboutSectionTitle>What sets us apart</AboutSectionTitle>
-      <ul className="flex flex-col items-center justify-center gap-[1rem] sm:flex-row xl:gap-[2rem]">
+    <AboutSection className="bg-primary py-[var(--sections-gap)] text-white">
+      <span className="page-kicker text-white/60">Why Loads of Traffic</span>
+      <AboutSectionTitle className="mt-5">What sets us apart</AboutSectionTitle>
+      <ul className="grid gap-4 sm:grid-cols-3 xl:gap-6">
         {AboutFeaturesItems.map((feature, index) => (
-          <li key={feature.title} className="w-full max-w-[25rem]">
+          <li key={feature.title} className="flex">
             <AboutFeature feature={{ ...feature, index }} />
           </li>
         ))}

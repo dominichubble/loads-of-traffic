@@ -1,9 +1,14 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { sleep } from "@/utils";
 import gsap from "gsap";
-import { ComponentPropsWithoutRef, useCallback } from "react";
+import {
+  ComponentPropsWithoutRef,
+  MouseEvent,
+  useCallback,
+  useRef,
+} from "react";
 
 type TransitionLinkPropsType = {
   children?: React.ReactNode;
@@ -13,95 +18,94 @@ type TransitionLinkPropsType = {
 
 const backgroundMap: { [key: string]: string } = {
   "/services": "#ED1464",
-  "/": "#0007a0",
+  "/services#services": "#ED1464",
+  "/": "#00007A",
   "/contact": "#ED1464",
-  "/about": "#0007a0",
-};
-const classMap: { [key: string]: string } = {
-  "/services": "services",
-  "/services#services": "services",
-  "/": "home",
-  "/contact": "contact",
-  "/about": "about",
+  "/about": "#00007A",
 };
 
 const TransitionLink = ({
   children,
   href,
   className,
+  onClick,
   ...props
 }: TransitionLinkPropsType) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const isTransitioning = useRef(false);
+
   const handleTransition = useCallback(
     async (href: string) => {
-      const transitionDuration = 1;
-      const timeline = gsap.timeline({
-        defaults: {
-          ease: "power2.inOut",
-          duration: transitionDuration,
-        },
-      });
+      if (isTransitioning.current) return;
+      isTransitioning.current = true;
 
-      // Set background based on destination
-      timeline.set([".transition-right", ".transition-left"], {
+      const panels = [".transition-right", ".transition-left"];
+      gsap.set(panels, {
         background: backgroundMap[href] || "#ED1464",
       });
 
-      // Transition in animation
-      timeline.fromTo(
-        [".transition-right", ".transition-left"],
-        {
-          opacity: 1,
-          scaleY: 0,
-        },
-        {
-          opacity: 1,
-          scaleY: 1,
-        },
-      );
-
-      // Wait for transition in
-      await sleep(transitionDuration * 1000);
-
-      // Navigate to new page
-      router.push(href);
-
-      // Wait for potential page load and then transition out
-      await new Promise((resolve) => {
-        const checkPageLoad = () => {
-          // Check if the page content is loaded
-          const mainContent = document.querySelector(`.${classMap[href]}`);
-
-          if (mainContent) {
-            resolve(true);
-          } else {
-            // If not loaded, check again after a short delay
-            setTimeout(checkPageLoad, 100);
-          }
-        };
-        checkPageLoad();
+      await new Promise<void>((resolve) => {
+        gsap.fromTo(
+          panels,
+          { opacity: 1, scaleY: 0 },
+          {
+            opacity: 1,
+            scaleY: 1,
+            duration: 0.42,
+            ease: "power3.inOut",
+            onComplete: resolve,
+          },
+        );
       });
 
-      // Transition out animation
-      timeline.fromTo(
-        [".transition-right", ".transition-left"],
-        {
-          opacity: 1,
-          scaleY: 1,
+      router.push(href);
+      await sleep(220);
+
+      gsap.to(panels, {
+        opacity: 0,
+        scaleY: 0,
+        duration: 0.36,
+        ease: "power2.out",
+        onComplete: () => {
+          isTransitioning.current = false;
         },
-        {
-          opacity: 0,
-          scaleY: 1,
-        },
-      );
+      });
     },
     [router],
   );
 
-  const handleLinkClick = async function(
-    e: React.MouseEvent<HTMLAnchorElement>,
-  ) {
-    e.preventDefault();
+  const handleLinkClick = async (event: MouseEvent<HTMLAnchorElement>) => {
+    onClick?.(event);
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      props.target === "_blank" ||
+      href.startsWith("#") ||
+      href.startsWith("mailto:") ||
+      href.startsWith("tel:")
+    ) {
+      return;
+    }
+
+    const destinationPath = href.split("#")[0] || pathname;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (
+      prefersReducedMotion ||
+      window.innerWidth < 640 ||
+      destinationPath === pathname
+    ) {
+      return;
+    }
+
+    event.preventDefault();
     await handleTransition(href);
   };
 

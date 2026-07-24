@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ContactForm from "@/components/contact-form";
+import { Mail, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -10,58 +11,86 @@ export const metadata: Metadata = {
 
 const ContactPage = () => {
   return (
-    <main className="contact bg-accent px-6 pb-[--pages-header-height] pt-[calc(var(--pages-header-height)+var(--container-padding-y))] text-white sm:px-[var(--container-padding-x)] xl:pb-[6rem]">
+    <main className="contact min-h-screen bg-accent px-5 pb-[var(--container-padding-y)] pt-[calc(var(--pages-header-height)+var(--container-padding-y))] text-white sm:px-[var(--container-padding-x)]">
       <div className="content-container">
-      <section className="contact-section">
-        <div className="m:gap-0 mb-[2rem] flex flex-col items-start justify-between gap-[3rem] xl:mb-[6rem] xl:gap-[6rem]">
-          <div className="md:max-w-[50%]">
-            <h2 className="text-[1.6rem] font-bold xl:text-[2.4rem]">
-              Want to know what your market trends are, or where your
-              competitors get their traffic from?
-            </h2>
-          </div>
-          <h1 className="self-start text-[2rem] font-bold md:text-[2rem] xl:text-[3rem]">
-            Contact
-          </h1>
-        </div>
-        <div className="mb-[2rem] flex flex-col gap-8 overflow-hidden rounded-2xl bg-primary p-6 text-white sm:p-8 xl:mb-[4rem]">
-          <div className="flex w-full flex-shrink flex-col justify-between gap-2 text-[1.4rem] sm:gap-6 md:text-[1.6rem] xl:text-[2.6rem]">
-            <p className="font-bold md:max-w-[80%]">
-              Let’s connect and explore how we can help your business grow.
-            </p>
-            <span className="inline-block text-[0.8rem] md:text-[1.2rem]">
-              <span className="mb-2 inline-block">
-                All we need to know to begin helping you build your industry
-                knowledge and brand presence is:
-              </span>
-              <ul className="ml-8 list-disc">
-                <li>What services can we help you with?</li>
-                <li>How much help do you want?</li>
-                <li>What do you see as the next steps?</li>
-              </ul>
-            </span>
-          </div>
-          <div className="flex w-full flex-col justify-between gap-2 text-[0.8rem] text-white sm:gap-6 md:text-[1.6rem]">
-            <p>
-              <span className="font-bold">Email: </span>
-              <Link
-                className="underline"
-                href="mailto:Enquiries@loadsoftraffic.com"
-              >
-                Enquiries@loadsoftraffic.com
-              </Link>
-            </p>
-            <div className="flex flex-col items-start">
-              <p>
-                <span className="font-bold">Address: </span>
-                Loads of Traffic Ltd, Floor 2, Hillary House, Prospect Hill,
-                Douglas, IM1 1EQ
+        <section className="contact-section">
+          <div className="grid gap-8 border-b border-white/25 pb-10 md:grid-cols-[0.7fr_1.3fr] md:items-end md:gap-12 md:pb-14">
+            <div>
+              <span className="page-kicker text-[#000036]">Get in touch</span>
+              <h1 className="display-heading mt-6 text-white">Contact</h1>
+            </div>
+            <div className="md:pb-2">
+              <h2 className="max-w-[30ch] text-xl font-medium leading-snug text-white md:text-2xl xl:text-3xl">
+                Ready to understand your market, your competitors, and your next
+                growth opportunity?
+              </h2>
+              <p className="mt-5 max-w-[58ch] text-sm font-medium leading-relaxed text-[#000036] md:text-base">
+                Share a little about your business and what you want to achieve.
+                We&apos;ll respond with a clear next step.
               </p>
             </div>
           </div>
-        </div>
-      </section>
-      <ContactForm />
+
+          <div className="mt-10 grid items-start gap-6 lg:mt-14 lg:grid-cols-[0.8fr_1.2fr]">
+            <aside className="overflow-hidden rounded-[2rem] border border-white/15 bg-primary p-7 shadow-[0_24px_70px_rgba(83,0,32,0.2)] sm:p-9">
+              <span className="page-kicker text-white/60">What to include</span>
+              <h2 className="mt-6 text-2xl font-semibold leading-tight tracking-[-0.03em] md:text-3xl">
+                Let&apos;s explore how we can help your business grow.
+              </h2>
+              <ul className="mt-7 space-y-4 text-sm leading-relaxed text-white/75 md:text-base">
+                <li className="flex gap-3">
+                  <span className="font-bold text-accent">01</span>
+                  <span>Which services or challenges can we help with?</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-accent">02</span>
+                  <span>What level of support are you looking for?</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-accent">03</span>
+                  <span>What would a successful next step look like?</span>
+                </li>
+              </ul>
+
+              <div className="mt-9 space-y-5 border-t border-white/15 pt-7 text-sm">
+                <div className="flex items-start gap-3">
+                  <Mail
+                    className="mt-0.5 h-5 w-5 shrink-0 text-accent"
+                    aria-hidden="true"
+                  />
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-white/50">
+                      Email
+                    </p>
+                    <Link
+                      className="mt-1 inline-block font-medium underline decoration-white/30 underline-offset-4 hover:decoration-white"
+                      href="mailto:enquiries@loadsoftraffic.com"
+                    >
+                      enquiries@loadsoftraffic.com
+                    </Link>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <MapPin
+                    className="mt-0.5 h-5 w-5 shrink-0 text-accent"
+                    aria-hidden="true"
+                  />
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-white/50">
+                      Office
+                    </p>
+                    <address className="mt-1 max-w-[34ch] not-italic text-white/80">
+                      Loads of Traffic Ltd, Floor 2, Hillary House, Prospect
+                      Hill, Douglas, IM1 1EQ
+                    </address>
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            <ContactForm />
+          </div>
+        </section>
       </div>
     </main>
   );

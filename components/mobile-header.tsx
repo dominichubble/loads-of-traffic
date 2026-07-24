@@ -1,129 +1,174 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { NAV_ITEMS } from "@/utils/constants";
 import Link from "next/link";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { useRouter } from "next/navigation";
-import { sleep } from "@/utils";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+import { cn } from "@/utils";
 
 const MobileHeader = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const headerRef = useRef<HTMLElement>(null);
-  const navBtnTimeline = useRef<gsap.core.Timeline | undefined>(undefined);
-  const router = useRouter();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
 
-  const { contextSafe } = useGSAP(function() { }, { scope: headerRef });
+  useEffect(() => {
+    setIsNavOpen(false);
+  }, [pathname]);
 
-  const handleNavToggle = contextSafe(function() {
-    if (!isNavOpen) {
-      navBtnTimeline.current = gsap
-        .timeline({
-          defaults: {
-            duration: 0.4,
-            ease: "power2.out",
-          },
-        })
-        .to(".bar-1", {
-          rotateZ: "45",
-          top: "50%",
-          y: "-50%",
-        })
-        .to(
-          ".bar-2",
-          {
-            scaleX: "0",
-          },
-          "<",
-        )
-        .to(
-          ".bar-3",
-          {
-            rotateZ: "-45",
-            top: "50%",
-          },
-          "<",
-        )
-        .to(
-          ".mobile-nav",
-          {
-            opacity: 1,
-            y: 0,
-            pointerEvents: "auto",
-          },
-          "<",
-        )
-        .to(
-          ".mobile-nav a",
-          {
-            y: 0,
-            opacity: 1,
-            stagger: 0.05,
-          },
-          "<",
+  useEffect(() => {
+    if (!isNavOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const pageContent = document.getElementById("main-content");
+    const wasPageContentInert = pageContent?.inert ?? false;
+    const menuButton = menuButtonRef.current;
+    document.body.style.overflow = "hidden";
+    if (pageContent) pageContent.inert = true;
+    navRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsNavOpen(false);
+        menuButton?.focus();
+        return;
+      }
+
+      if (event.key === "Tab") {
+        const focusableElements = [
+          menuButton,
+          ...Array.from(
+            navRef.current?.querySelectorAll<HTMLAnchorElement>("a[href]") ??
+              [],
+          ),
+        ].filter(
+          (element): element is HTMLButtonElement | HTMLAnchorElement =>
+            element !== null,
         );
-    } else {
-      if (!navBtnTimeline.current) return;
-      navBtnTimeline.current.reverse();
-    }
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements.at(-1);
 
-    setIsNavOpen((isNavOpen) => !isNavOpen);
-  });
+        if (
+          event.shiftKey &&
+          document.activeElement === firstElement &&
+          lastElement
+        ) {
+          event.preventDefault();
+          lastElement.focus();
+        } else if (
+          !event.shiftKey &&
+          document.activeElement === lastElement &&
+          firstElement
+        ) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    };
 
-  const handleClick = async function(e: React.MouseEvent<HTMLAnchorElement>) {
-    e.preventDefault();
-    navBtnTimeline.current?.reverse();
-    if (!e.target) return;
-    const element = e.target as HTMLAnchorElement;
-    await sleep(300);
-    router.push(element.href);
-  };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      if (pageContent) pageContent.inert = wasPageContentInert;
+      window.removeEventListener("keydown", handleKeyDown);
+      menuButton?.focus();
+    };
+  }, [isNavOpen]);
 
   return (
     <header
-      className="fixed right-0 top-0 z-[9999] flex w-full items-center justify-between px-4 pt-8 md:hidden"
-      ref={headerRef}
+      className="fixed inset-x-0 top-0 z-[1000] px-4 pt-3 md:hidden"
+      aria-label="Mobile site header"
     >
-      <Link href="/" className="relative z-50">
-        <div className="relative h-8 w-16">
-          <Image
-            src="/mobile-logo.png"
-            alt="loads of traffic logo"
-            fill
-            sizes="100%"
-            className="h-auto w-full object-contain"
-          ></Image>
-        </div>
-      </Link>
-      <div className="relative z-0">
-        <button
-          className="nav-btn relative z-10 aspect-square h-10 rounded-full border-2 border-white text-white"
-          onClick={handleNavToggle}
-          aria-label={isNavOpen ? "Close Navigation" : "Open Navigation"}
+      <div className="bg-primary/95 relative z-20 flex min-h-14 items-center justify-between rounded-full border border-white/15 px-4 shadow-[0_12px_40px_rgba(0,0,79,0.25)] backdrop-blur-xl">
+        <Link
+          href="/"
+          className="relative flex min-h-11 min-w-11 items-center"
+          aria-label="Loads of Traffic home"
         >
-          <span className="bar-1 absolute bottom-6 left-1/2 h-[2px] w-[50%] -translate-x-1/2 translate-y-1/2 bg-current"></span>
-          <span className="bar-2 absolute left-1/2 top-1/2 h-[2px] w-[50%] -translate-x-1/2 -translate-y-1/2 bg-current"></span>
-          <span className="bar-3 absolute left-1/2 top-6 h-[2px] w-[50%] -translate-x-1/2 -translate-y-1/2 bg-current"></span>
+          <span className="relative block h-8 w-[4.75rem]">
+            <Image
+              src="/mobile-logo.png"
+              alt=""
+              fill
+              sizes="76px"
+              className="object-contain object-left"
+              priority
+            />
+          </span>
+        </Link>
+        <button
+          ref={menuButtonRef}
+          type="button"
+          className="grid min-h-11 min-w-11 place-content-center rounded-full border border-white/25 bg-white/10 text-white transition-colors hover:bg-white/20"
+          onClick={() => setIsNavOpen((current) => !current)}
+          aria-label={isNavOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={isNavOpen}
+          aria-controls="mobile-navigation"
+        >
+          {isNavOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
         </button>
-        <nav className="mobile-nav pointer-events-none fixed inset-0 grid translate-y-[-2%] place-content-center bg-primary opacity-0">
-          <ul className="mobile-nav-list flex flex-col items-center gap-[0.6rem] text-[2rem]">
-            {NAV_ITEMS.map((item) => (
-              <li className="overflow-hidden" key={item.label}>
+      </div>
+
+      <button
+        type="button"
+        tabIndex={-1}
+        disabled={!isNavOpen}
+        aria-hidden={!isNavOpen}
+        aria-label="Close navigation"
+        onClick={() => setIsNavOpen(false)}
+        className={cn(
+          "bg-primary/55 fixed inset-0 z-0 backdrop-blur-sm transition-opacity duration-200",
+          isNavOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0",
+        )}
+      />
+
+      <nav
+        id="mobile-navigation"
+        ref={navRef}
+        aria-label="Primary navigation"
+        aria-hidden={!isNavOpen}
+        className={cn(
+          "absolute left-4 right-4 top-[5.25rem] z-10 overflow-hidden rounded-3xl border border-white/15 bg-primary p-3 text-white shadow-[0_24px_70px_rgba(0,0,79,0.35)] transition-all duration-200",
+          isNavOpen
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0",
+        )}
+      >
+        <ul className="flex flex-col">
+          {NAV_ITEMS.map((item) => {
+            const isActive = pathname === item.link;
+            return (
+              <li key={item.label}>
                 <Link
-                  className="inline-block translate-y-full opacity-0"
                   href={item.link}
-                  onClick={handleClick}
+                  tabIndex={isNavOpen ? 0 : -1}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "flex min-h-14 items-center justify-between rounded-2xl px-5 text-lg font-medium transition-colors",
+                    isActive
+                      ? "bg-white text-primary"
+                      : "text-white hover:bg-white/10",
+                  )}
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  <span
+                    className={cn(
+                      "h-2 w-2 rounded-full",
+                      isActive ? "bg-accent" : "bg-white/30",
+                    )}
+                    aria-hidden="true"
+                  />
                 </Link>
               </li>
-            ))}
-            <li></li>
-          </ul>
-        </nav>
-      </div>
+            );
+          })}
+        </ul>
+      </nav>
     </header>
   );
 };

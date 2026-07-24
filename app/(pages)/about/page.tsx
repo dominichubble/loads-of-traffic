@@ -15,33 +15,36 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <main className="about bg-primary pt-[calc(var(--pages-header-height)+var(--container-padding-y))] text-white">
+    <main className="about overflow-hidden bg-primary pt-[calc(var(--pages-header-height)+var(--container-padding-y))] text-white">
       <div className="space-y-[var(--sections-gap)]">
         <AboutSection>
-          <div className="m:gap-0 flex flex-col items-start justify-between gap-[3rem] xl:gap-[6rem]">
-            <div className="mx-auto md:max-w-[50%]">
-              <h2 className="text-center text-[1.6rem] font-bold md:mb-[1rem] xl:text-[2.4rem]">
-                Loads of Traffic is a high-tech scale-up business based in the
-                Isle of Man
+          <div className="grid gap-8 border-b border-white/15 pb-12 md:grid-cols-[0.7fr_1.3fr] md:items-end md:gap-12 md:pb-16">
+            <div>
+              <span className="page-kicker text-white/65">Who we are</span>
+              <h1 className="display-heading mt-6 text-white">About us</h1>
+            </div>
+            <div className="md:pb-2">
+              <h2 className="max-w-[30ch] text-xl font-medium leading-snug text-white/90 md:text-2xl xl:text-3xl">
+                A high-tech scale-up helping ambitious businesses understand
+                their markets and grow with confidence.
               </h2>
+              <p className="mt-5 max-w-[58ch] text-sm leading-relaxed text-white/65 md:text-base">
+                Based in the Isle of Man and working across competitive global
+                sectors since 2010.
+              </p>
             </div>
-            <h1 className="self-start text-[2rem] font-bold md:text-[3rem] xl:text-[4rem]">
-              About
-            </h1>
           </div>
-          <TextGradient className="invisible text-center text-[2rem] font-bold uppercase leading-[150%] md:text-[4.6rem] 2xl:text-[7.125rem]">
-            <div className="line flex items-center justify-center gap-2 whitespace-nowrap xl:gap-6">
-              <p>Loads of traffic</p>
-              <span>,</span>
+          <TextGradient className="mt-[var(--sections-gap)] text-center text-[clamp(2rem,7vw,6.5rem)] font-bold uppercase leading-[1.02] tracking-[-0.055em]">
+            <div className="line flex items-center justify-center gap-2 whitespace-nowrap xl:gap-5">
+              <p>Loads of Traffic</p>
             </div>
-            <div className="line flex items-center justify-center gap-2 whitespace-nowrap xl:gap-6">
+            <div className="line mt-2 flex items-center justify-center gap-2 whitespace-nowrap xl:gap-5">
               <span>
-                Boasts <span className="text-accent">80+ Years </span>
+                brings <span className="text-accent">80+ years</span>
               </span>
             </div>
-            <p className="line">of Expertise</p>
-            <p className="line">In Innovative</p>
-            <p className="line">Digital Marketing</p>
+            <p className="line mt-2">of combined expertise</p>
+            <p className="line mt-2 text-white/75">to digital growth</p>
           </TextGradient>
         </AboutSection>
         <AboutMission />
@@ -52,7 +55,7 @@ const AboutPage = () => {
           <AboutMarquee />
           <AboutFeatures />
         </div>
-        <div className="bg-accent py-24 md:py-48">
+        <div className="bg-accent py-[var(--sections-gap)]">
           <AboutContact />
         </div>
       </div>

@@ -9,12 +9,12 @@ import {
   HOME_SCROLLABLE_HEIGHT,
   servicesSectionContent,
 } from "@/utils/constants";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowRight, Pause, Play } from "lucide-react";
 import Header from "./header";
 import HomeVideo from "./home-video";
 import { cn } from "@/utils";
-import EmblaCarousel from "./embla-carousel";
 import TransitionLink from "./transition-link";
+import HomeStatic from "./home-static";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,7 +38,7 @@ function checkDirection({
   return { lastTime: newTime, forward };
 }
 
-const createMobileTimeline = function({
+const createMobileTimeline = function ({
   secondVideoClass,
   timelineIndex,
   previousTimelineIndex,
@@ -69,7 +69,7 @@ const createMobileTimeline = function({
       },
       {
         height: "50vh",
-        onStart: function() {
+        onStart: function () {
           gsap.to(
             [
               `.service-title-${previousTimelineIndex}`,
@@ -84,7 +84,7 @@ const createMobileTimeline = function({
             },
           );
         },
-        onReverseComplete: function() {
+        onReverseComplete: function () {
           setActiveSection(previousTimelineIndex);
           gsap.to(
             [
@@ -141,7 +141,7 @@ const createMobileTimeline = function({
       },
       {
         scale: 0,
-        onUpdate: function() {
+        onUpdate: function () {
           const direction = checkDirection({
             oldTimeline: mobileTimeline,
             forward,
@@ -167,7 +167,7 @@ const createMobileTimeline = function({
           forward = direction.forward;
           lastTime = direction.lastTime;
         },
-        onComplete: function() {
+        onComplete: function () {
           setActiveSection((videoZIndex + 1) % 4);
           gsap.to(
             [
@@ -200,7 +200,7 @@ const createMobileTimeline = function({
   return mobileTimeline;
 };
 
-const createDesktopTimeline = function({
+const createDesktopTimeline = function ({
   firstVideoClass,
   secondVideoClass,
   previousTimelineIndex,
@@ -272,7 +272,7 @@ const createDesktopTimeline = function({
       },
       {
         scale: 3,
-        onStart: function() {
+        onStart: function () {
           gsap.to(
             [
               `.service-title-${previousTimelineIndex}`,
@@ -287,7 +287,7 @@ const createDesktopTimeline = function({
             },
           );
         },
-        onReverseComplete: function() {
+        onReverseComplete: function () {
           setActiveSection(previousTimelineIndex);
           gsap.to(
             [
@@ -374,7 +374,7 @@ const createDesktopTimeline = function({
       {
         scale: 1,
         ease: "power1.out",
-        onUpdate: function() {
+        onUpdate: function () {
           const direction = checkDirection({
             oldTimeline: desktopTimeline,
             lastTime,
@@ -399,7 +399,7 @@ const createDesktopTimeline = function({
           lastTime = direction.lastTime;
           forward = direction.forward;
         },
-        onComplete: function() {
+        onComplete: function () {
           if (videoZIndex === 0) {
             gsap.set(".service-right-1", {
               zIndex: 1,
@@ -485,28 +485,34 @@ const createServiceTimeline = ({
 const Home = () => {
   const containerRef = useRef<HTMLElement>(null);
   const [activeSection, setActiveSection] = useState(0);
-  const updateActiveSection = function(newActiveSection: number) {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isMotionPaused, setIsMotionPaused] = useState(false);
+  const updateActiveSection = function (newActiveSection: number) {
     setActiveSection(newActiveSection);
   };
 
   useEffect(() => {
-    document.body.classList.add("no-scrollbar");
-    if (document.readyState !== "loading") {
-      document.querySelectorAll("video").forEach((video) => video.play());
-    } else {
-      document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll("video").forEach((video) => video.play());
-      });
-    }
-
-    return function() {
-      document.body.classList.remove("no-scrollbar");
+    const motionPreference = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    const updateMotionPreference = () => {
+      setPrefersReducedMotion(motionPreference.matches);
+      if (motionPreference.matches) setIsMotionPaused(true);
     };
+
+    updateMotionPreference();
+    motionPreference.addEventListener("change", updateMotionPreference);
+    return () =>
+      motionPreference.removeEventListener("change", updateMotionPreference);
   }, []);
 
   useGSAP(
-    function() {
-      const scrollLength = 100;
+    function () {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
+
+      const scrollLength = 3;
       const masterTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
@@ -543,160 +549,198 @@ const Home = () => {
     { scope: containerRef },
   );
 
+  if (prefersReducedMotion) {
+    return <HomeStatic />;
+  }
+
   return (
     <section
       ref={containerRef}
-      className="home inset-0 grid h-screen max-h-screen grid-cols-1 grid-rows-2 bg-primary md:grid-cols-[55%_1fr]"
+      className="home inset-0 grid h-[100svh] max-h-[100svh] grid-cols-1 grid-rows-2 overflow-hidden bg-primary md:grid-cols-[55%_1fr] md:grid-rows-1"
+      aria-label="Our services"
     >
-      <div className="scroll-reminder fixed bottom-8 right-8 z-[999999] grid aspect-square w-[5rem] animate-bounce place-content-center justify-items-center gap-y-0 rounded-full border-[1px] border-white/80 p-4 text-center text-[8px] font-bold text-white/80 sm:w-[6rem] sm:gap-y-2 sm:text-[10px] md:w-[7rem]">
-        <ArrowDown className="w-4 sm:w-auto" />
-        <span>
-          Scroll
-          <br />
-          Down
-        </span>
+      <h1 className="sr-only">
+        Loads of Traffic digital marketing and growth services
+      </h1>
+      <div className="fixed bottom-5 right-5 z-[900] flex items-center gap-2 md:bottom-8 md:right-8">
+        <button
+          type="button"
+          className="bg-primary/80 inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-white/20 px-3 text-white shadow-lg backdrop-blur-xl transition-colors hover:bg-primary"
+          onClick={() => setIsMotionPaused((current) => !current)}
+          aria-label={
+            isMotionPaused
+              ? "Play background videos"
+              : "Pause background videos"
+          }
+          aria-pressed={isMotionPaused}
+        >
+          {isMotionPaused ? (
+            <Play className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <Pause className="h-4 w-4" aria-hidden="true" />
+          )}
+          <span className="hidden text-xs font-semibold uppercase tracking-[0.12em] lg:inline">
+            {isMotionPaused ? "Play video" : "Pause video"}
+          </span>
+        </button>
+        <div className="scroll-reminder bg-primary/80 flex min-h-11 items-center gap-3 rounded-full border border-white/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-white shadow-lg backdrop-blur-xl">
+          <span>Scroll to explore</span>
+          <ArrowDown className="h-4 w-4" aria-hidden="true" />
+        </div>
       </div>
       {/*Left*/}
-      <div className="pointer-events-none relative h-screen">
+      <div className="pointer-events-none relative h-[50svh] overflow-hidden md:h-[100svh]">
         <div className="solid-mobile pointer-events-none absolute left-0 top-0 z-0 h-0 w-full bg-primary md:hidden"></div>
-        <div className="image-mask-0 absolute left-1/2 top-[75vh] z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden md:top-1/2">
+        <div className="image-mask-0 absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden">
           <div className="relative mx-auto aspect-[0.64] w-[36%] scale-100 overflow-hidden rounded-[clamp(8px,1.5rem,24px)]">
             <Image
               className="h-full w-full object-cover"
               src="/in-between-2.svg"
-              alt="Placeholder"
+              alt=""
               fill
-              sizes="100%"
+              sizes="(min-width: 768px) 20vw, 36vw"
             />
           </div>
         </div>
-        <div className="image-mask-1 absolute left-1/2 top-[75vh] z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden md:top-1/2">
+        <div className="image-mask-1 absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden">
           <div className="relative mx-auto aspect-[0.64] w-[36%] scale-100 overflow-hidden rounded-[clamp(8px,1.5rem,24px)]">
             <Image
               className="h-full w-full object-cover"
               src="/in-between-1.svg"
-              alt="Placeholder"
+              alt=""
               fill
-              sizes="100%"
+              sizes="(min-width: 768px) 20vw, 36vw"
             />
           </div>
-        </div>{" "}
-        <div className="image-mask-2 absolute left-1/2 top-[75vh] z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden md:top-1/2">
+        </div>
+        <div className="image-mask-2 absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden">
           <div className="relative mx-auto aspect-[0.64] w-[36%] scale-100 overflow-hidden rounded-[clamp(8px,1.5rem,24px)]">
             <Image
               className="h-full w-full object-cover"
               src="/in-between-3.svg"
-              alt="Placeholder"
+              alt=""
               fill
-              sizes="100%"
+              sizes="(min-width: 768px) 20vw, 36vw"
             />
           </div>
         </div>
-        <div className="image-mask-3 absolute left-1/2 top-[75vh] z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden md:top-1/2">
+        <div className="image-mask-3 absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 scale-0 overflow-hidden">
           <div className="relative mx-auto aspect-[0.64] w-[36%] scale-100 overflow-hidden rounded-[clamp(8px,1.5rem,24px)]">
             <Image
               className="h-full w-full object-cover"
               src="/in-between-0.svg"
-              alt="Placeholder"
+              alt=""
               fill
-              sizes="100%"
+              sizes="(min-width: 768px) 20vw, 36vw"
             />
           </div>
         </div>
         <div className="first-video-mask-hidden absolute inset-0 z-[-10] block h-[50vh] overflow-hidden md:hidden md:h-auto md:scale-100">
-          <HomeVideo videoSrc="/0" posterSrc="/lottie-thumbnail-1.png" />
+          <HomeVideo
+            videoSrc="/0"
+            posterSrc="/lottie-thumbnail-1.png"
+            isPaused={isMotionPaused}
+          />
         </div>
         <div className="first-video-mask absolute inset-0 h-[50vh] overflow-hidden md:h-auto md:scale-100">
-          <HomeVideo videoSrc="/0" posterSrc="/lottie-thumbnail-1.png" />
+          <HomeVideo
+            videoSrc="/0"
+            posterSrc="/lottie-thumbnail-1.png"
+            isPaused={isMotionPaused}
+          />
         </div>
         <div className="second-video-mask absolute inset-0 h-0 overflow-hidden md:h-auto md:scale-0">
-          <HomeVideo videoSrc="/1" posterSrc="/lottie-thumbnail-2.png" />
+          <HomeVideo
+            videoSrc="/1"
+            posterSrc="/lottie-thumbnail-2.png"
+            isPaused={isMotionPaused}
+          />
         </div>
         <div className="third-video-mask absolute inset-0 h-0 overflow-hidden md:h-auto md:scale-0">
-          <HomeVideo videoSrc="/2" posterSrc="/lottie-thumbnail-3.png" />
+          <HomeVideo
+            videoSrc="/2"
+            posterSrc="/lottie-thumbnail-3.png"
+            isPaused={isMotionPaused}
+          />
         </div>
         <div className="fourth-video-mask absolute inset-0 overflow-hidden md:h-auto md:scale-0">
-          <HomeVideo videoSrc="/3" posterSrc="/lottie-thumbnail-4.png" />
+          <HomeVideo
+            videoSrc="/3"
+            posterSrc="/lottie-thumbnail-4.png"
+            isPaused={isMotionPaused}
+          />
         </div>
       </div>
       {/*Right*/}
-      <div className="relative">
-        <div className="mt-[6vh] md:mt-[4.2rem]"></div>
+      <div className="relative min-h-[50svh] border-t border-white/10 bg-primary md:min-h-[100svh] md:border-l md:border-t-0">
         <div className="solid-accent pointer-events-none absolute inset-0 z-10 hidden h-screen scale-x-0 bg-accent md:block"></div>
-        <div className="absolute left-1/2 z-50 flex w-[80%] -translate-x-1/2 flex-col items-start pl-8 sm:w-auto md:pl-0">
+        <div className="absolute inset-x-5 top-6 z-50 flex flex-col items-start md:left-1/2 md:right-auto md:top-[clamp(2rem,6vh,4rem)] md:w-[80%] md:-translate-x-1/2">
           <Header />
-          {servicesSectionContent.map((section, i) => (
-            <div key={section.title} className="relative h-full w-full">
-              <div
+          <div className="relative mt-1 min-h-[18rem] w-full md:mt-12 xl:min-h-[22rem]">
+            {servicesSectionContent.map((section, i) => (
+              <article
+                key={section.title}
                 className={cn(
-                  `relative service-right-${i} absolute z-[1] mt-[4.6rem] flex flex-col items-start gap-2 md:gap-4`,
+                  `service-right-${i} absolute inset-0 z-[1] flex flex-col items-start`,
                   i !== 0 && "z-0",
                 )}
+                aria-hidden={activeSection !== i}
               >
-                <div className="overflow-hidden">
-                  <h2
-                    className={cn(
-                      `mb-0 text-[1.6rem] font-bold md:mb-[0.5rem] xl:mb-[1rem] xl:text-[2.5rem] service-title-${i} whitespace-nowrap`,
-                      i !== 0 && "translate-y-full opacity-0",
-                    )}
-                  >
-                    <span className="font-bold">
-                      {section.title.split(" ")[0]}{" "}
+                <div
+                  className={cn(
+                    `service-title-${i} w-full`,
+                    i !== 0 && "translate-y-full opacity-0",
+                  )}
+                >
+                  <div className="flex items-center justify-between border-b border-white/20 pb-3">
+                    <span className="page-kicker text-white/70">
+                      Our expertise
                     </span>
-                    <span className="font-light">
-                      {section.title.split(" ")[1]}
+                    <span className="text-xs font-semibold tabular-nums text-white/60">
+                      0{i + 1} / 04
                     </span>
-                  </h2>
-                </div>
-                <div className="w-full overflow-hidden">
-                  <div
-                    className={cn(
-                      `relative leading-[130%] service-description-${i} flex items-center gap-[6rem] text-[1rem] font-light xl:text-[1.6875rem]`,
-                      i !== 0 && "translate-y-full opacity-0",
-                    )}
-                  >
-                    {activeSection === i && (
-                      <EmblaCarousel
-                        options={{ loop: true }}
-                        label={`${section.title} details`}
-                        slides={section.description.map((line, i) => (
-                          <p
-                            key={line}
-                            className={cn(
-                              `service-description-line-${i} max-w-[85%]`,
-                            )}
-                          >
-                            {line}
-                          </p>
-                        ))}
-                      />
-                    )}
+                  </div>
+                  <div className="mt-5 overflow-hidden">
+                    <h2 className="text-[clamp(1.65rem,3.2vw,3rem)] font-semibold leading-[1.05] tracking-[-0.035em]">
+                      {section.title}
+                    </h2>
                   </div>
                 </div>
-                <div className="relative">
-                  <TransitionLink
-                    href={section.readMoreLink}
+                <div className="mt-4 w-full overflow-hidden">
+                  <ul
                     className={cn(
-                      `read-more-cta-${i} relative inline-block text-[1.6rem] text-black`,
-                      i !== 0 &&
-                      "-translate-y-full opacity-0 md:translate-y-full",
+                      `service-description-${i} space-y-2 text-sm leading-relaxed text-white/80 xl:text-base`,
+                      i !== 0 && "translate-y-full opacity-0",
                     )}
                   >
-                    <div className="flex items-center gap-2 text-accent md:items-end">
-                      <span className="inline-block">Read more</span>
-                      <ArrowRight className="h-auto w-6 animate-bounceX xl:w-8" />
-                    </div>
-                    <div className="hover-element hidden items-center gap-2 md:flex md:items-end">
-                      <span className="inline-block whitespace-nowrap">
-                        Read more
-                      </span>
-                      <ArrowRight className="h-auto w-6 animate-bounceX xl:w-8" />
-                    </div>
+                    {section.description.map((line) => (
+                      <li key={line} className="flex max-w-[34rem] gap-3">
+                        <span
+                          className="mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                          aria-hidden="true"
+                        />
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="relative mt-5">
+                  <TransitionLink
+                    href={section.readMoreLink}
+                    tabIndex={activeSection === i ? 0 : -1}
+                    className={cn(
+                      `read-more-cta-${i} inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-primary shadow-lg transition-transform hover:-translate-y-0.5`,
+                      i !== 0 &&
+                        "-translate-y-full opacity-0 md:translate-y-full",
+                    )}
+                  >
+                    <span>Explore service</span>
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </TransitionLink>
                 </div>
-              </div>
-            </div>
-          ))}
+              </article>
+            ))}
+          </div>
         </div>
       </div>
       <div className="pin-element fixed -top-full z-30 w-full scale-x-[500%] bg-accent"></div>
