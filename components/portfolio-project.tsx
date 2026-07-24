@@ -5,15 +5,15 @@ const ProjectPortfolio = ({ index }: { index: number }) => {
   return (
     <article className="group relative flex h-[18rem] flex-col justify-between overflow-hidden rounded-[1.5rem] border border-white/15 bg-primary p-6 text-white shadow-lg transition-transform duration-200 hover:-translate-y-1 xl:h-[24rem] xl:p-8">
       <div
-        className="border-accent/60 absolute -right-16 -top-16 h-48 w-48 rounded-full border-[2.5rem] transition-transform duration-500 group-hover:scale-110"
+        className="border-accent/60 absolute -right-20 -top-20 h-48 w-48 rounded-full border-[2.5rem] transition-transform duration-500 group-hover:scale-110"
         aria-hidden="true"
       />
       <div
-        className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full border-[3rem] border-white/10"
+        className="absolute -bottom-28 -left-24 h-56 w-56 rounded-full border-[3rem] border-white/[0.05]"
         aria-hidden="true"
       />
 
-      <div className="relative flex items-center justify-between">
+      <div className="relative z-10 flex items-center justify-between">
         <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/60">
           Engagement 0{index}
         </span>
@@ -22,7 +22,7 @@ const ProjectPortfolio = ({ index }: { index: number }) => {
         </span>
       </div>
 
-      <div className="relative">
+      <div className="relative z-10">
         <p className="text-2xl font-semibold leading-tight tracking-[-0.03em] xl:text-3xl">
           Confidential client work
         </p>

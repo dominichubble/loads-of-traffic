@@ -17,7 +17,7 @@ const HomeStatic = () => {
       aria-label="Our services"
     >
       <div className="content-container page-gutters page-shell">
-        <div className="mt-8 grid gap-6 border-b border-white/15 pb-10 md:mt-16 md:grid-cols-2 md:items-start md:gap-x-16 md:gap-y-8 md:pb-12 lg:gap-x-24">
+        <div className="page-split mt-8 border-b border-white/15 pb-10 md:mt-16 md:pb-12">
           <div>
             <span className="page-kicker text-white/65">Our expertise</span>
             <h1 className="display-heading mt-6 text-white">What we do</h1>

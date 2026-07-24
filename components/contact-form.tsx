@@ -47,7 +47,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="contact-form rounded-[2rem] border border-white/40 bg-white p-7 text-primary shadow-[0_24px_70px_rgba(83,0,32,0.18)] sm:p-10 lg:p-14"
+      className="contact-form relative flex h-full min-h-0 flex-col overflow-hidden rounded-[2rem] border border-white/50 bg-white p-7 text-primary shadow-[0_28px_80px_rgba(0,0,79,0.2)] sm:p-10 lg:p-14"
       aria-busy={status === "submitting"}
     >
       {/* Honeypot field: hidden from real visitors, bots tend to fill every field in */}
@@ -155,23 +155,24 @@ const ContactForm = () => {
         </p>
       </div>
 
-      <div className="mt-5 min-h-6" aria-live="polite">
-        {status === "success" && (
-          <p className="flex items-center gap-2 text-sm font-semibold text-primary">
-            <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
-            Thanks for reaching out! We&apos;ll be in touch shortly.
-          </p>
-        )}
-        {status === "error" && (
-          <p
-            className="flex items-center gap-2 text-sm font-semibold text-accent"
-            role="alert"
-          >
-            <AlertCircle className="h-5 w-5" aria-hidden="true" />
-            {errorMessage}
-          </p>
-        )}
-      </div>
+      {status === "success" && (
+        <p
+          className="mt-5 flex items-center gap-2 text-sm font-semibold text-primary"
+          aria-live="polite"
+        >
+          <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+          Thanks for reaching out! We&apos;ll be in touch shortly.
+        </p>
+      )}
+      {status === "error" && (
+        <p
+          className="mt-5 flex items-center gap-2 text-sm font-semibold text-accent"
+          role="alert"
+        >
+          <AlertCircle className="h-5 w-5" aria-hidden="true" />
+          {errorMessage}
+        </p>
+      )}
     </form>
   );
 };

@@ -16,10 +16,11 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <main className="about page-shell overflow-hidden bg-primary text-white">
+    <main className="about page-shell page-shell-flush page-atmosphere overflow-hidden bg-primary text-white">
       <div className="space-y-[var(--sections-gap)]">
         <AboutSection>
           <PageIntro
+            index="02"
             kicker="Who we are"
             title="About us"
             headline="A high-tech scale-up helping ambitious businesses understand their markets and grow with confidence."
@@ -46,7 +47,18 @@ const AboutPage = () => {
           <AboutMarquee />
           <AboutFeatures />
         </div>
-        <div className="bg-accent pb-[var(--sections-gap)] pt-10 md:pt-14">
+      </div>
+
+      <div className="relative mt-[var(--sections-gap)] overflow-hidden bg-accent pb-[var(--sections-gap)] pt-10 md:pt-14">
+        <div
+          className="pointer-events-none absolute -left-40 -top-16 h-72 w-72 rounded-full border-[2.75rem] border-white/[0.06]"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -bottom-40 -right-24 h-80 w-80 rounded-full border-[2.75rem] border-primary/20"
+          aria-hidden="true"
+        />
+        <div className="relative z-10">
           <AboutContact />
         </div>
       </div>

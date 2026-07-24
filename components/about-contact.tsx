@@ -5,7 +5,7 @@ import TransitionLink from "./transition-link";
 const AboutContact = () => {
   return (
     <section className="about-contact content-container page-gutters">
-      <div className="grid overflow-hidden rounded-[2rem] border border-white/40 bg-white text-primary shadow-[0_28px_80px_rgba(83,0,32,0.2)] md:grid-cols-2">
+      <div className="grid overflow-hidden rounded-[2rem] border border-white/50 bg-white text-primary shadow-[0_28px_80px_rgba(0,0,79,0.22)] md:grid-cols-1 lg:grid-cols-[1fr_55%]">
         <div className="p-7 sm:p-10 lg:p-14">
           <span className="page-kicker text-accent">Start a conversation</span>
           <h2 className="section-heading mt-6">Bring us your next challenge</h2>
@@ -25,14 +25,14 @@ const AboutContact = () => {
 
         <div className="relative grid min-h-[18rem] place-content-center overflow-hidden bg-primary p-8 text-white">
           <div
-            className="border-accent/70 absolute -right-16 -top-16 h-56 w-56 rounded-full border-[3rem]"
+            className="border-accent/70 absolute -right-20 -top-20 h-56 w-56 rounded-full border-[3rem]"
             aria-hidden="true"
           />
           <div
-            className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full border-[3rem] border-white/10"
+            className="absolute -bottom-28 -left-28 h-64 w-64 rounded-full border-[3rem] border-white/[0.05]"
             aria-hidden="true"
           />
-          <div className="relative grid h-32 w-32 place-content-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm">
+          <div className="relative z-10 grid h-32 w-32 place-content-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm">
             <MessageCircleMore className="h-12 w-12" aria-hidden="true" />
           </div>
         </div>

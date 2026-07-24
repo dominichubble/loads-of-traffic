@@ -283,7 +283,7 @@ const Home = () => {
       <h1 className="sr-only">
         Loads of Traffic digital marketing and growth services
       </h1>
-      <div className="fixed bottom-5 right-5 z-[900] flex items-center gap-3 md:bottom-8 md:right-8">
+      <div className="fixed bottom-[var(--container-padding-x)] right-[var(--container-padding-x)] z-[900] flex items-center gap-3 md:bottom-8">
         <button
           type="button"
           className="inline-flex min-h-12 min-w-12 items-center justify-center gap-2 rounded-full bg-primary px-5 text-white shadow-[0_10px_30px_rgba(0,0,79,0.45)] ring-2 ring-white/90 transition-transform hover:-translate-y-0.5"
@@ -349,7 +349,7 @@ const Home = () => {
           />
         ))}
 
-        <div className="pointer-events-none absolute inset-0 z-40 flex flex-col px-5 pb-10 pt-[calc(var(--pages-header-height)+1.25rem)] md:px-[10%] md:pb-14">
+        <div className="page-inline-start pointer-events-none absolute inset-0 z-40 flex flex-col pr-[var(--container-padding-x)] pb-10 pt-[calc(var(--pages-header-height)+1.25rem)] md:pb-14">
           <div className="relative min-h-0 w-full flex-1">
             {servicesSectionContent.map((section, i) => {
               const isPink = i % 2 === 1;
@@ -359,7 +359,7 @@ const Home = () => {
                   ref={(el) => {
                     textRefs.current[i] = el;
                   }}
-                  className="pointer-events-auto absolute inset-0 z-[1] flex flex-col"
+                  className="pointer-events-auto absolute inset-0 z-[1] flex flex-col items-center justify-center"
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
@@ -388,7 +388,7 @@ const Home = () => {
                     </ul>
                   </div>
 
-                  <div className="mt-auto flex justify-center pb-2 pt-10">
+                  <div className="mt-10 flex justify-center pb-2">
                     <TransitionLink
                       href={section.readMoreLink}
                       tabIndex={activeSection === i ? 0 : -1}

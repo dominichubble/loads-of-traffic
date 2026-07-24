@@ -7,24 +7,25 @@ import { servicesAccordionsContent } from "@/utils/constants";
 
 const ServicesContent = () => {
   return (
-    <main className="services page-shell min-h-screen bg-red text-white">
+    <main className="services page-shell page-atmosphere min-h-screen bg-red text-white">
       <div className="services-section content-container page-gutters relative z-0">
         <PageIntro
+          index="01"
           kicker="What we do"
           title="Services"
           headline="Propel your business with sharper insights, expert strategy, and high-level execution."
           description="We turn competitive intelligence into practical decisions that strengthen your position and create sustainable growth."
         />
 
-        <section id="services" className="py-[var(--sections-gap)]">
-          <div className="grid gap-6 md:grid-cols-2 md:gap-x-16 md:gap-y-8 lg:gap-x-24">
+        <section id="services" className="page-rise page-rise-delay-2 py-[var(--sections-gap)]">
+          <div className="page-split">
             <div className="min-w-0">
               <span className="page-kicker text-white/65">Capabilities</span>
               <h2 className="section-heading mt-5 max-w-none text-white">
                 Built around your next move
               </h2>
             </div>
-            <p className="body-copy max-w-none text-white md:pt-1">
+            <p className="body-copy max-w-none text-white/85 md:pt-1">
               Choose focused support for a specific challenge or combine our
               capabilities into a complete growth programme. Each engagement is
               shaped around your goals, market, and success measures.

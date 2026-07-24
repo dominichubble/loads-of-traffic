@@ -12,29 +12,32 @@ const BenefitCard = ({
   index: number;
 }) => {
   return (
-    <article className="group flex h-full w-full flex-col overflow-hidden rounded-[1.5rem] border border-white/40 bg-white p-5 text-primary shadow-[0_18px_50px_rgba(83,0,32,0.12)] transition-transform duration-200 hover:-translate-y-1 sm:p-6">
-      <div className="flex items-center justify-between">
-        <span className="text-primary/55 text-xs font-bold uppercase tracking-[0.14em]">
-          Step 0{index}
-        </span>
-        <span
-          className="h-2.5 w-2.5 rounded-full bg-accent"
-          aria-hidden="true"
-        />
-      </div>
-      <div className="grid flex-1 place-content-center" aria-hidden="true">
+    <article className="group flex w-full items-center gap-4 overflow-hidden rounded-2xl border border-white/50 bg-gradient-to-b from-white to-white/95 p-4 text-primary shadow-[0_12px_36px_rgba(0,0,79,0.14)] transition-transform duration-200 hover:-translate-y-0.5 sm:gap-5 sm:p-5">
+      <div
+        className="grid h-16 w-16 shrink-0 place-content-center sm:h-[4.5rem] sm:w-[4.5rem]"
+        aria-hidden="true"
+      >
         <Lottie
           loop
           animationData={lottieJson}
           play
-          style={{
-            width: "min(14rem, 70vw)",
-          }}
+          style={{ width: "100%", height: "100%" }}
         />
       </div>
-      <h3 className="border-primary/10 border-t pt-4 text-xl font-semibold tracking-[-0.02em]">
-        {title}
-      </h3>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <span className="text-primary/55 text-[0.7rem] font-bold uppercase tracking-[0.14em]">
+            Step 0{index}
+          </span>
+          <span
+            className="h-1.5 w-1.5 rounded-full bg-accent"
+            aria-hidden="true"
+          />
+        </div>
+        <h3 className="mt-1.5 text-lg font-semibold tracking-[-0.02em] sm:text-xl">
+          {title}
+        </h3>
+      </div>
     </article>
   );
 };

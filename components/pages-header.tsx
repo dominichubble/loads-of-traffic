@@ -27,18 +27,18 @@ const PagesHeader = () => {
         )}
       />
       <div className="relative grid h-full w-full grid-cols-[1fr_55%]">
-        <div className="flex items-center pl-[var(--container-padding-x)]">
+        <div className="page-inline-start flex items-center">
           <TransitionLink
             href="/"
             className="flex min-h-11 items-center"
             aria-label="Loads of Traffic home"
           >
-            <span className="relative block h-12 w-[12rem] xl:w-[14rem]">
+            <span className="relative block h-11 w-[11rem] xl:h-12 xl:w-[14rem]">
               <Image
                 src="/logo.png"
                 alt=""
                 fill
-                sizes="(min-width: 1280px) 224px, 192px"
+                sizes="(min-width: 1280px) 224px, 176px"
                 className="object-contain object-left"
                 priority
               />
@@ -47,7 +47,7 @@ const PagesHeader = () => {
         </div>
         <nav
           aria-label="Primary navigation"
-          className="flex h-full items-center px-[var(--container-padding-x)]"
+          className="page-inline-end flex h-full items-center pl-[var(--container-padding-x)]"
         >
           <ul className="flex w-full items-center justify-center gap-1 text-sm font-medium xl:gap-2 xl:text-base">
             {NAV_ITEMS.map((item) => {

@@ -30,10 +30,10 @@ const ServiceAccordion = ({
   return (
     <article
       className={cn(
-        "overflow-hidden rounded-[1.25rem] border transition-[background-color,border-color,color,box-shadow] duration-500 ease-in-out",
+        "overflow-hidden rounded-[1.25rem] border transition-[background-color,border-color,color,box-shadow,transform] duration-500 ease-in-out",
         isExpanded
-          ? "border-white bg-white text-primary shadow-[0_20px_55px_rgba(82,0,31,0.18)]"
-          : "border-primary bg-primary text-white shadow-[0_16px_45px_rgba(82,0,31,0.14)] hover:bg-[var(--color-primary-deep)]",
+          ? "border-white bg-white text-primary shadow-[0_28px_70px_rgba(0,0,79,0.28)]"
+          : "border-white/80 bg-white text-primary shadow-[0_18px_50px_rgba(0,0,79,0.22)] hover:-translate-y-0.5 hover:border-white hover:shadow-[0_24px_60px_rgba(0,0,79,0.28)]",
       )}
     >
       <h3>
@@ -45,23 +45,18 @@ const ServiceAccordion = ({
           aria-expanded={isExpanded}
           aria-controls={panelId}
         >
-          <span
-            className={cn(
-              "text-xs font-bold tabular-nums tracking-[0.14em] transition-colors duration-500 ease-in-out",
-              isExpanded ? "text-accent" : "text-white/65",
-            )}
-          >
+          <span className="text-xs font-bold tabular-nums tracking-[0.14em] text-accent">
             0{index}
           </span>
-          <span className="flex-1 text-lg font-semibold leading-tight tracking-[-0.02em] md:text-2xl">
+          <span className="flex-1 text-lg font-semibold leading-tight tracking-[-0.02em] text-primary md:text-2xl">
             {title}
           </span>
           <span
             className={cn(
               "grid h-11 w-11 shrink-0 place-content-center rounded-full border transition-[transform,background-color,border-color,color] duration-300 ease-in-out",
               isExpanded
-                ? "border-primary/20 rotate-45 bg-primary text-white"
-                : "border-white/30 bg-white/10",
+                ? "rotate-45 border-primary bg-primary text-white"
+                : "border-primary/20 bg-primary/5 text-primary",
             )}
             aria-hidden="true"
           >
