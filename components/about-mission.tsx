@@ -11,7 +11,7 @@ const AboutMission = () => {
           <AboutSectionTitle className="mb-0 mt-5">Mission</AboutSectionTitle>
         </div>
         <div>
-          <p className="body-copy text-white/80">
+          <p className="body-copy text-white">
             Loads of Traffic excels at innovation, strategy, and results-driven
             digital marketing. Since 2010, we&apos;ve helped businesses thrive
             by providing advanced competitive intelligence and focused digital

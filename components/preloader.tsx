@@ -62,6 +62,7 @@ const Preloader = () => {
   return (
     <div
       ref={containerRef}
+      id="site-preloader"
       className="fixed inset-0 z-[3000] grid place-content-center bg-accent px-6 text-white"
       role="status"
       aria-label="Loading website"

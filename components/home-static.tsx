@@ -25,7 +25,7 @@ const HomeStatic = () => {
             <span className="page-kicker text-white/65">Our expertise</span>
             <h1 className="display-heading mt-6 text-white">What we do</h1>
           </div>
-          <p className="body-copy text-white/75 md:pb-2">
+          <p className="body-copy text-white md:pb-2">
             Explore the same strategy, intelligence, and growth capabilities in
             a calm, motion-free format.
           </p>
@@ -58,7 +58,7 @@ const HomeStatic = () => {
                 <h2 className="mt-6 text-[clamp(1.8rem,4vw,3.25rem)] font-semibold leading-[1.05] tracking-[-0.04em]">
                   {service.title}
                 </h2>
-                <ul className="mt-5 space-y-3 text-sm leading-relaxed text-white/80 md:text-base">
+                <ul className="mt-5 space-y-3 text-sm leading-relaxed text-white md:text-base">
                   {service.description.map((line) => (
                     <li key={line} className="flex gap-3">
                       <span

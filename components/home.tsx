@@ -709,7 +709,7 @@ const Home = () => {
                 <div className="mt-4 w-full overflow-hidden">
                   <ul
                     className={cn(
-                      `service-description-${i} space-y-2 text-sm leading-relaxed text-white/80 xl:text-base`,
+                      `service-description-${i} space-y-2 text-sm leading-relaxed text-white xl:text-base`,
                       i !== 0 && "translate-y-full opacity-0",
                     )}
                   >

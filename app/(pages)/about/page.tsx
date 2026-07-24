@@ -34,7 +34,7 @@ const AboutPage = () => {
               </p>
             </div>
           </div>
-          <TextGradient className="mt-[var(--sections-gap)] text-center text-[clamp(2rem,7vw,6.5rem)] font-bold uppercase leading-[1.02] tracking-[-0.055em]">
+          <TextGradient className="mt-[var(--sections-gap)] text-center text-[clamp(1.75rem,5.5vw,4.5rem)] font-bold uppercase leading-[1.15] tracking-[-0.02em]">
             <div className="line flex items-center justify-center gap-2 whitespace-nowrap xl:gap-5">
               <p>Loads of Traffic</p>
             </div>

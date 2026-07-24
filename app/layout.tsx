@@ -51,6 +51,27 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className} ${poppins.variable} antialiased`}>
+        {/* Runs before hydration so repeat visitors (or reduced-motion users)
+            never see the preloader painted, even for a single frame. Mirrors
+            the skip logic in components/preloader.tsx. */}
+        <Script
+          id="preloader-skip-flag"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                try {
+                  var seen = window.localStorage.getItem("lot-preloader-seen") === "1";
+                  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                  if (seen || reduced) {
+                    document.documentElement.classList.add("preloader-skip");
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+
         <a className="skip-link" href="#main-content">
           Skip to main content
         </a>

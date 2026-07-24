@@ -18,7 +18,7 @@ const TextGradient = ({ children, className }: TextGradientProps) => {
   useGSAP(
     function() {
       const text = new SplitType(".line", {
-        types: "chars",
+        types: "words,chars",
         tagName: "span",
       });
 

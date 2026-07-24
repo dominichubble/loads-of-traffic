@@ -13,7 +13,7 @@ const AboutFeature = ({
   feature: { title, description, index },
 }: AboutFeatureProps) => {
   return (
-    <article className="group flex min-h-[20rem] w-full flex-col justify-between overflow-hidden rounded-[1.5rem] border border-white/15 bg-white/[0.06] p-6 transition-transform duration-200 hover:-translate-y-1 hover:bg-white/[0.09] lg:min-h-[24rem] lg:p-8">
+    <article className="group flex w-full flex-col gap-10 overflow-hidden rounded-[1.5rem] border border-white/15 bg-white/[0.06] p-6 transition-transform duration-200 hover:-translate-y-1 hover:bg-white/[0.09] lg:gap-14 lg:p-8">
       <div className="flex items-center justify-between">
         <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/55">
           0{index + 1}
@@ -32,7 +32,7 @@ const AboutFeature = ({
         <h3 className="text-2xl font-semibold tracking-[-0.03em] lg:text-3xl">
           {title}
         </h3>
-        <p className="mt-4 text-sm leading-relaxed text-white/70 lg:text-base">
+        <p className="mt-4 text-sm leading-relaxed text-white lg:text-base">
           {description}
         </p>
       </div>

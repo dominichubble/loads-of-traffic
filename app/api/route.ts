@@ -79,7 +79,7 @@ export async function POST(request: Request) {
     // can't use the visitor's own address as `from` — it goes in `replyTo` instead.
     const data = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || "Loads of Traffic <onboarding@resend.dev>",
-      to: "likelyhunaid@gmail.com",
+      to: "enquiries@loadsoftraffic.com",
       replyTo: email,
       subject: "New Contact Form Submission",
       text: emailContent,

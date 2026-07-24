@@ -23,6 +23,12 @@ input:-webkit-autofill:active {
   box-shadow: 0 0 0 5px var(--color-primary);
 }
 
+/* Set synchronously (before paint) by the inline script in the root layout,
+   so repeat visitors never see the preloader flash on screen even briefly. */
+html.preloader-skip #site-preloader {
+  display: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -9,7 +9,7 @@ import { cn } from "@/utils";
 const PagesHeader = () => {
   const pathname = usePathname();
   return (
-    <header className="bg-primary/95 fixed inset-x-0 top-0 z-[999] hidden h-[var(--pages-header-height)] border-b border-white/10 text-white shadow-[0_10px_35px_rgba(0,0,79,0.18)] backdrop-blur-xl md:block">
+    <header className="bg-primary fixed inset-x-0 top-0 z-[999] hidden h-[var(--pages-header-height)] border-b border-white/10 text-white shadow-[0_10px_35px_rgba(0,0,79,0.18)] backdrop-blur-xl md:block">
       <div className="content-container flex h-full items-center justify-between px-[var(--container-padding-x)]">
         <TransitionLink
           href="/"

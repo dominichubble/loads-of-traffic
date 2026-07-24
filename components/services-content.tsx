@@ -22,17 +22,17 @@ const ServicesContent = () => {
               Propel your business with sharper insights, expert strategy, and
               high-level execution.
             </h2>
-            <p className="mt-5 max-w-[58ch] text-sm leading-relaxed text-white/70 md:text-base">
+            <p className="mt-5 max-w-[58ch] text-sm leading-relaxed text-white md:text-base">
               We turn competitive intelligence into practical decisions that
               strengthen your position and create sustainable growth.
             </p>
           </div>
 
           <div
-            className="relative hidden min-h-[28rem] place-content-center overflow-hidden border-l border-white/10 bg-white/[0.06] md:grid"
+            className="relative hidden min-h-[28rem] place-content-center overflow-hidden border-l border-white/10 bg-white/[0.06] p-10 md:grid"
             aria-hidden="true"
           >
-            <div className="bg-accent/20 absolute inset-8 rounded-full blur-3xl" />
+            <div className="bg-accent/40 absolute inset-16 rounded-full blur-3xl" />
             <div className="relative">
               {isClient && (
                 <Lottie
@@ -40,8 +40,8 @@ const ServicesContent = () => {
                   animationData={lottieJson}
                   play
                   style={{
-                    width: "min(28rem, 38vw)",
-                    height: "min(28rem, 38vw)",
+                    width: "min(19rem, 26vw)",
+                    height: "min(19rem, 26vw)",
                   }}
                 />
               )}
@@ -52,12 +52,12 @@ const ServicesContent = () => {
         <section id="services" className="py-[var(--sections-gap)]">
           <div className="grid gap-8 md:grid-cols-[0.75fr_1.25fr] md:gap-12">
             <div>
-              <span className="page-kicker text-[#000036]">Capabilities</span>
-              <h2 className="section-heading mt-5 text-[#000036]">
+              <span className="page-kicker text-white/65">Capabilities</span>
+              <h2 className="section-heading mt-5 text-white">
                 Built around your next move
               </h2>
             </div>
-            <p className="body-copy text-[#000036] md:pt-8">
+            <p className="body-copy text-white md:pt-8">
               Choose focused support for a specific challenge or combine our
               capabilities into a complete growth programme. Each engagement is
               shaped around your goals, market, and success measures.

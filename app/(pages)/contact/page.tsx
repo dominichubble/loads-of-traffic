@@ -31,7 +31,7 @@ const ContactPage = () => {
             </div>
           </div>
 
-          <div className="mt-10 grid items-start gap-6 lg:mt-14 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="mt-10 grid items-start gap-8 lg:mt-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12">
             <aside className="overflow-hidden rounded-[2rem] border border-white/15 bg-primary p-7 shadow-[0_24px_70px_rgba(83,0,32,0.2)] sm:p-9">
               <span className="page-kicker text-white/60">What to include</span>
               <h2 className="mt-6 text-2xl font-semibold leading-tight tracking-[-0.03em] md:text-3xl">

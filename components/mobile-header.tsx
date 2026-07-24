@@ -82,7 +82,7 @@ const MobileHeader = () => {
       className="fixed inset-x-0 top-0 z-[1000] px-4 pt-3 md:hidden"
       aria-label="Mobile site header"
     >
-      <div className="bg-primary/95 relative z-20 flex min-h-14 items-center justify-between rounded-full border border-white/15 px-4 shadow-[0_12px_40px_rgba(0,0,79,0.25)] backdrop-blur-xl">
+      <div className="bg-primary relative z-20 flex min-h-14 items-center justify-between rounded-full border border-white/15 px-4 shadow-[0_12px_40px_rgba(0,0,79,0.25)] backdrop-blur-xl">
         <Link
           href="/"
           className="relative flex min-h-11 min-w-11 items-center"
