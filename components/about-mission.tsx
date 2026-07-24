@@ -7,11 +7,11 @@ const AboutMission = () => {
     <AboutSection>
       <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-gradient-to-br from-white/[0.1] via-white/[0.05] to-transparent p-7 shadow-[0_24px_70px_rgba(0,0,79,0.2)] sm:p-10 lg:p-14">
         <div
-          className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full border-[2.75rem] border-accent/20"
+          className="pointer-events-none absolute -right-48 -top-44 z-0 h-80 w-80 rounded-full border-[2.75rem] border-accent/25"
           aria-hidden="true"
         />
         <div
-          className="pointer-events-none absolute -bottom-40 -left-36 h-80 w-80 rounded-full border-[2.75rem] border-white/[0.04]"
+          className="pointer-events-none absolute -bottom-52 -left-48 z-0 h-96 w-96 rounded-full border-[2.75rem] border-accent/15"
           aria-hidden="true"
         />
 

@@ -25,11 +25,11 @@ const AboutContact = () => {
 
         <div className="relative grid min-h-[18rem] place-content-center overflow-hidden bg-primary p-8 text-white">
           <div
-            className="border-accent/70 absolute -right-20 -top-20 h-56 w-56 rounded-full border-[3rem]"
+            className="pointer-events-none absolute -right-28 -top-28 z-0 h-56 w-56 rounded-full border-[3rem] border-accent/70"
             aria-hidden="true"
           />
           <div
-            className="absolute -bottom-28 -left-28 h-64 w-64 rounded-full border-[3rem] border-white/[0.05]"
+            className="pointer-events-none absolute -bottom-36 -left-36 z-0 h-64 w-64 rounded-full border-[3rem] border-accent/25"
             aria-hidden="true"
           />
           <div className="relative z-10 grid h-32 w-32 place-content-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm">

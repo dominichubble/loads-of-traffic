@@ -51,11 +51,11 @@ const AboutPage = () => {
 
       <div className="relative mt-[var(--sections-gap)] overflow-hidden bg-accent pb-[var(--sections-gap)] pt-10 md:pt-14">
         <div
-          className="pointer-events-none absolute -left-40 -top-16 h-72 w-72 rounded-full border-[2.75rem] border-white/[0.06]"
+          className="pointer-events-none absolute -left-52 -top-28 z-0 h-80 w-80 rounded-full border-[2.75rem] border-primary/25"
           aria-hidden="true"
         />
         <div
-          className="pointer-events-none absolute -bottom-40 -right-24 h-80 w-80 rounded-full border-[2.75rem] border-primary/20"
+          className="pointer-events-none absolute -bottom-52 -right-40 z-0 h-96 w-96 rounded-full border-[2.75rem] border-primary/20"
           aria-hidden="true"
         />
         <div className="relative z-10">

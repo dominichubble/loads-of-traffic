@@ -2,13 +2,15 @@
 import BenefitsSection from "@/components/benefits-section";
 import ServiceAccordion from "@/components/service-accordion";
 import PageIntro from "@/components/page-intro";
+import ServicesRocket from "@/components/services-rocket";
 import React from "react";
 import { servicesAccordionsContent } from "@/utils/constants";
 
 const ServicesContent = () => {
   return (
-    <main className="services page-shell page-atmosphere min-h-screen bg-red text-white">
-      <div className="services-section content-container page-gutters relative z-0">
+    <main className="services page-shell page-atmosphere relative min-h-screen overflow-hidden bg-red text-white">
+      <ServicesRocket />
+      <div className="services-section content-container page-gutters relative !z-10">
         <PageIntro
           index="01"
           kicker="What we do"

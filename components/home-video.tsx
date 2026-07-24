@@ -28,7 +28,7 @@ const HomeVideo = ({
   }, [isPaused]);
 
   return (
-    <div className="relative h-[50vh] w-full md:h-screen">
+    <div className="relative h-full min-h-full w-full">
       <video
         ref={videoRef}
         poster={posterSrc}
@@ -40,7 +40,7 @@ const HomeVideo = ({
         disablePictureInPicture
         tabIndex={-1}
         aria-hidden="true"
-        className="h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover"
       >
         <source
           src={`${videoSrc}.mp4`}

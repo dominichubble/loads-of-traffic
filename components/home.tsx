@@ -126,8 +126,7 @@ const Home = () => {
 
     // Video and colour panels roll as a conveyor (opposite directions).
     // Copy stays put and crossfades.
-    const progress =
-      HERO_SLIDE_COUNT <= 1 ? 0 : to / (HERO_SLIDE_COUNT - 1);
+    const progress = HERO_SLIDE_COUNT <= 1 ? 0 : to / (HERO_SLIDE_COUNT - 1);
 
     const colorFrom = PANEL_BACKGROUNDS[from];
     const colorTo = PANEL_BACKGROUNDS[to];
@@ -139,8 +138,7 @@ const Home = () => {
 
       const panelRect = panel.getBoundingClientRect();
       const labelRect = label.getBoundingClientRect();
-      const labelY =
-        labelRect.top + labelRect.height / 2 - panelRect.top;
+      const labelY = labelRect.top + labelRect.height / 2 - panelRect.top;
       const yPercent = Number(gsap.getProperty(toPanel, "yPercent"));
 
       // Incoming panel edge that sweeps across the Home label.
@@ -276,17 +274,18 @@ const Home = () => {
   return (
     <section
       ref={containerRef}
-      className="home inset-0 grid h-[100svh] max-h-[100svh] grid-cols-1 grid-rows-2 overflow-hidden bg-primary md:grid-cols-[1fr_55%] md:grid-rows-1"
+      className="home relative h-[100svh] max-h-[100svh] overflow-hidden bg-primary md:grid md:grid-cols-[1fr_55%] md:grid-rows-1"
       aria-label="Our services"
     >
       <HomeProgressBar ref={progressBarRef} />
       <h1 className="sr-only">
         Loads of Traffic digital marketing and growth services
       </h1>
-      <div className="fixed bottom-[var(--container-padding-x)] right-[var(--container-padding-x)] z-[900] flex items-center gap-3 md:bottom-8">
+
+      <div className="fixed bottom-5 right-5 z-[900] flex items-center gap-3 md:bottom-8 md:right-8">
         <button
           type="button"
-          className="inline-flex min-h-12 min-w-12 items-center justify-center gap-2 rounded-full bg-primary px-5 text-white shadow-[0_10px_30px_rgba(0,0,79,0.45)] ring-2 ring-white/90 transition-transform hover:-translate-y-0.5"
+          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-[0_10px_30px_rgba(0,0,79,0.45)] ring-2 ring-white/90 transition-transform hover:-translate-y-0.5 md:h-12 md:min-h-12 md:w-auto md:min-w-12 md:gap-2 md:px-5"
           onClick={() => setIsMotionPaused((current) => !current)}
           aria-label={
             isMotionPaused
@@ -296,9 +295,9 @@ const Home = () => {
           aria-pressed={isMotionPaused}
         >
           {isMotionPaused ? (
-            <Play className="h-4 w-4" aria-hidden="true" />
+            <Play className="h-5 w-5 md:h-4 md:w-4" aria-hidden="true" />
           ) : (
-            <Pause className="h-4 w-4" aria-hidden="true" />
+            <Pause className="h-5 w-5 md:h-4 md:w-4" aria-hidden="true" />
           )}
           <span className="hidden text-sm font-semibold uppercase tracking-[0.1em] lg:inline">
             {isMotionPaused ? "Play video" : "Pause video"}
@@ -308,26 +307,30 @@ const Home = () => {
           type="button"
           onClick={() => stepToSlide(-1)}
           aria-label="Previous expertise"
-          className="inline-flex min-h-12 items-center gap-2.5 rounded-full bg-white px-5 text-sm font-semibold uppercase tracking-[0.1em] text-primary shadow-[0_10px_30px_rgba(0,0,79,0.35)] transition-transform hover:-translate-y-0.5"
+          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-primary shadow-[0_10px_30px_rgba(0,0,79,0.35)] transition-transform hover:-translate-y-0.5 md:h-12 md:min-h-12 md:w-auto md:gap-2.5 md:px-5"
         >
-          <ArrowUp className="h-5 w-5" aria-hidden="true" />
-          <span>Previous</span>
+          <ArrowUp className="h-6 w-6 md:h-5 md:w-5" aria-hidden="true" />
+          <span className="hidden text-sm font-semibold uppercase tracking-[0.1em] md:inline">
+            Previous
+          </span>
         </button>
         <button
           type="button"
           onClick={() => stepToSlide(1)}
           aria-label="Next expertise"
-          className="inline-flex min-h-12 items-center gap-2.5 rounded-full bg-accent px-6 text-sm font-semibold uppercase tracking-[0.1em] text-white shadow-[0_10px_30px_rgba(237,20,100,0.45)] transition-transform hover:-translate-y-0.5"
+          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_10px_30px_rgba(237,20,100,0.45)] transition-transform hover:-translate-y-0.5 md:h-12 md:min-h-12 md:w-auto md:gap-2.5 md:px-6"
         >
-          <span>Next</span>
-          <ArrowDown className="h-5 w-5" aria-hidden="true" />
+          <span className="hidden text-sm font-semibold uppercase tracking-[0.1em] md:inline">
+            Next
+          </span>
+          <ArrowDown className="h-6 w-6 md:h-5 md:w-5" aria-hidden="true" />
         </button>
       </div>
 
-      {/* Left — sliding colour panels + fading copy */}
+      {/* Copy — transparent overlay on mobile, solid left column on desktop */}
       <div
         ref={textPanelRef}
-        className="relative min-h-[50svh] overflow-hidden border-b border-white/10 md:min-h-[100svh] md:border-b-0 md:border-r"
+        className="absolute inset-0 z-20 flex min-h-0 flex-col overflow-hidden md:relative md:inset-auto md:z-auto md:h-[100svh] md:min-h-[100svh] md:border-r"
         style={
           {
             "--hero-nav-ink": PANEL_BACKGROUNDS[0],
@@ -340,7 +343,7 @@ const Home = () => {
             ref={(el) => {
               panelRefs.current[i] = el;
             }}
-            className="absolute inset-0 will-change-transform"
+            className="absolute inset-0 hidden will-change-transform md:block"
             style={{
               zIndex: i === 0 ? 2 : 0,
               backgroundColor: color,
@@ -349,8 +352,13 @@ const Home = () => {
           />
         ))}
 
-        <div className="page-inline-start pointer-events-none absolute inset-0 z-40 flex flex-col pr-[var(--container-padding-x)] pb-10 pt-[calc(var(--pages-header-height)+1.25rem)] md:pb-14">
-          <div className="relative min-h-0 w-full flex-1">
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/80 md:hidden"
+          aria-hidden="true"
+        />
+
+        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex h-full min-h-0 flex-col pr-[var(--container-padding-x)] pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pb-14 md:pt-[calc(var(--pages-header-height)+1.25rem)]">
+          <div className="relative mx-auto min-h-0 w-full max-w-[36rem] flex-1">
             {servicesSectionContent.map((section, i) => {
               const isPink = i % 2 === 1;
               return (
@@ -359,46 +367,71 @@ const Home = () => {
                   ref={(el) => {
                     textRefs.current[i] = el;
                   }}
-                  className="pointer-events-auto absolute inset-0 z-[1] flex flex-col items-center justify-center"
+                  className="pointer-events-auto absolute inset-0 z-[1] flex min-h-0 flex-col"
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
-                  <div className="w-full">
-                    <div className="flex items-center justify-between border-b border-white/20 pb-4">
-                      <span className="page-kicker text-white">
-                        Our expertise
-                      </span>
-                      <span className="text-sm font-semibold tabular-nums text-white">
-                        0{i + 1} / 04
-                      </span>
-                    </div>
-                    <h2 className="mt-6 text-[clamp(2.25rem,4.5vw,4.25rem)] font-semibold leading-[1.02] tracking-[-0.02em]">
-                      {section.title}
-                    </h2>
-                    <ul className="mt-5 w-full max-w-[36rem] space-y-3 text-base leading-relaxed text-white md:mt-6 md:text-lg">
-                      {section.description.map((line) => (
-                        <li key={line} className="flex gap-3.5">
-                          <span
-                            className={`mt-[0.7em] h-2 w-2 shrink-0 rounded-full ${isPink ? "bg-white" : "bg-accent"}`}
-                            aria-hidden="true"
-                          />
-                          <span>{line}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {/* Centers when space allows; scrolls instead of overlapping the header */}
+                  <div className="flex min-h-0 flex-1 flex-col justify-end md:justify-center">
+                    <div className="flex max-h-full min-h-0 flex-col overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                      <div className="w-full shrink-0">
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="page-kicker text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
+                            Our expertise
+                          </span>
+                          <span className="text-sm font-semibold tabular-nums text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
+                            0{i + 1} / 04
+                          </span>
+                        </div>
+                        <h2
+                          className="mt-[var(--home-stack-gap)] max-w-[14ch] font-semibold leading-[0.98] tracking-[-0.03em] text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:leading-[1.02] md:tracking-[-0.02em] md:[text-shadow:none]"
+                          style={{ fontSize: "var(--home-title-size)" }}
+                        >
+                          {section.title}
+                        </h2>
+                      </div>
 
-                  <div className="mt-10 flex justify-center pb-2">
-                    <TransitionLink
-                      href={section.readMoreLink}
-                      tabIndex={activeSection === i ? 0 : -1}
-                      className={`group inline-flex min-h-14 items-center gap-3 rounded-full bg-white px-8 text-base font-semibold shadow-lg md:min-h-16 md:px-10 md:text-lg ${isPink ? "text-accent" : "text-primary"}`}
-                    >
-                      <span className="inline-flex items-center gap-3 transition-transform duration-300 ease-out group-hover:-translate-y-0.5">
-                        <span>Explore service</span>
-                        <ArrowRight className="h-5 w-5" aria-hidden="true" />
-                      </span>
-                    </TransitionLink>
+                      <ul
+                        className="home-bullet-list mt-[var(--home-stack-gap)] flex w-full flex-col leading-relaxed text-white md:mt-6"
+                        style={{
+                          fontSize: "var(--home-copy-size)",
+                          gap: "var(--home-stack-gap)",
+                        }}
+                      >
+                        {section.description.map((line) => (
+                          <li key={line} className="flex gap-3.5">
+                            <span
+                              className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-white"
+                              aria-hidden="true"
+                            />
+                            <span className="font-medium [text-shadow:0_2px_18px_rgba(0,0,0,0.85)] md:font-normal md:[text-shadow:none]">
+                              {line}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div
+                        className="flex shrink-0 items-center gap-3 pt-[var(--home-stack-gap)] md:pt-10"
+                        style={{
+                          paddingBottom: "var(--home-bottom-clearance)",
+                        }}
+                      >
+                        <TransitionLink
+                          href={section.readMoreLink}
+                          tabIndex={activeSection === i ? 0 : -1}
+                          className={`group inline-flex min-h-12 items-center gap-2.5 rounded-full bg-white px-6 text-sm font-semibold shadow-lg md:min-h-16 md:gap-3 md:px-10 md:text-lg ${isPink ? "text-accent" : "text-primary"}`}
+                        >
+                          <span className="inline-flex items-center gap-2.5 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 md:gap-3">
+                            <span>Explore service</span>
+                            <ArrowRight
+                              className="h-4 w-4 md:h-5 md:w-5"
+                              aria-hidden="true"
+                            />
+                          </span>
+                        </TransitionLink>
+                      </div>
+                    </div>
                   </div>
                 </article>
               );
@@ -407,10 +440,10 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Right — videos */}
+      {/* Video — full-bleed on mobile, right column on desktop */}
       <div
         ref={videoPanelRef}
-        className="pointer-events-none relative h-[50svh] overflow-hidden md:h-[100svh]"
+        className="absolute inset-0 min-h-0 md:relative md:h-[100svh]"
       >
         {VIDEO_SOURCES.map((video, index) => (
           <div
@@ -418,7 +451,7 @@ const Home = () => {
             ref={(el) => {
               videoRefs.current[index] = el;
             }}
-            className="absolute inset-0 h-full w-full overflow-hidden"
+            className="pointer-events-none absolute inset-0 h-full w-full overflow-hidden"
             style={{ zIndex: index === 0 ? 2 : 0 }}
           >
             <HomeVideo

@@ -26,14 +26,18 @@ export const metadata: Metadata = {
   },
   description: siteDescription,
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   openGraph: {
     title: siteName,
     description: siteDescription,
     url: siteUrl,
     siteName,
-    images: [{ url: "/logo.png", width: 1841, height: 492, alt: siteName }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: siteName }],
     locale: "en_US",
     type: "website",
   },
@@ -41,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteName,
     description: siteDescription,
-    images: ["/logo.png"],
+    images: ["/og-image.png"],
   },
 };
 

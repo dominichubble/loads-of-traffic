@@ -7,12 +7,14 @@ import TransitionLink from "./transition-link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/utils";
+import { navBgForPath } from "@/utils/transition-state";
 
 const MobileHeader = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
+  const navBg = navBgForPath(pathname);
 
   useEffect(() => {
     setIsNavOpen(false);
@@ -82,7 +84,17 @@ const MobileHeader = () => {
       className="fixed inset-x-0 top-0 z-[1000] px-[var(--container-padding-x)] pt-3 md:hidden"
       aria-label="Mobile site header"
     >
-      <div className="bg-primary relative z-20 flex min-h-14 items-center justify-between rounded-full border border-white/15 px-4 shadow-[0_12px_40px_rgba(0,0,79,0.25)] backdrop-blur-xl">
+      <div
+        className={cn(
+          "relative z-20 flex min-h-14 items-center justify-between rounded-full border px-4 backdrop-blur-xl transition-colors duration-300",
+          navBg === "accent" &&
+            "border-white/15 bg-accent shadow-[0_12px_40px_rgba(83,0,32,0.28)]",
+          navBg === "primary" &&
+            "border-white/15 bg-primary shadow-[0_12px_40px_rgba(0,0,79,0.25)]",
+          !navBg &&
+            "border-white/20 bg-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.18)]",
+        )}
+      >
         <TransitionLink
           href="/"
           className="relative flex min-h-11 min-w-11 items-center"
@@ -120,7 +132,8 @@ const MobileHeader = () => {
         aria-label="Close navigation"
         onClick={() => setIsNavOpen(false)}
         className={cn(
-          "bg-primary/55 fixed inset-0 z-0 backdrop-blur-sm transition-opacity duration-200",
+          "fixed inset-0 z-0 backdrop-blur-sm transition-opacity duration-200",
+          navBg === "accent" ? "bg-accent/55" : "bg-primary/55",
           isNavOpen
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0",
@@ -133,7 +146,8 @@ const MobileHeader = () => {
         aria-label="Primary navigation"
         aria-hidden={!isNavOpen}
         className={cn(
-          "absolute left-4 right-4 top-[5.25rem] z-10 overflow-hidden rounded-3xl border border-white/15 bg-primary p-3 text-white shadow-[0_24px_70px_rgba(0,0,79,0.35)] transition-all duration-200",
+          "absolute left-4 right-4 top-[5.25rem] z-10 overflow-hidden rounded-3xl border border-white/15 p-3 text-white shadow-[0_24px_70px_rgba(0,0,79,0.35)] transition-all duration-200",
+          navBg === "accent" ? "bg-accent" : "bg-primary",
           isNavOpen
             ? "pointer-events-auto translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-2 opacity-0",

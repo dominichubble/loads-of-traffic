@@ -102,9 +102,48 @@ html {
 @media screen and (max-width: 768px) {
   :root {
     --pages-header-height: 76px;
+    --mobile-header-offset: 5.75rem;
     --container-padding-x: 10vw;
     --container-padding-y: clamp(1.75rem, 4vw, 2.25rem);
     --sections-gap: clamp(3rem, 8vw, 4.5rem);
+  }
+}
+
+/* Home hero: keep copy clear of the fixed header and floating controls. */
+.home-copy-frame {
+  --home-title-size: clamp(2.1rem, 8vw, 4.25rem);
+  --home-copy-size: clamp(1rem, 0.92rem + 0.4vw, 1.125rem);
+  --home-stack-gap: clamp(0.75rem, 1.5vh, 1.5rem);
+  --home-bottom-clearance: clamp(5.5rem, 12vh, 7.5rem);
+}
+
+@media screen and (min-width: 768px) {
+  .home-copy-frame {
+    --home-title-size: clamp(2.25rem, 4.5vw, 4.25rem);
+    --home-copy-size: 1.125rem;
+    --home-bottom-clearance: 6.5rem;
+  }
+}
+
+@media screen and (max-height: 760px) {
+  .home-copy-frame {
+    --home-title-size: clamp(1.75rem, 5.5vh, 2.75rem);
+    --home-copy-size: clamp(0.95rem, 2.2vh, 1.05rem);
+    --home-stack-gap: clamp(0.5rem, 1.2vh, 1rem);
+    --home-bottom-clearance: 5rem;
+  }
+}
+
+@media screen and (max-height: 620px) {
+  .home-copy-frame {
+    --home-title-size: clamp(1.5rem, 5vh, 2.1rem);
+    --home-copy-size: 0.92rem;
+    --home-stack-gap: 0.45rem;
+    --home-bottom-clearance: 4.5rem;
+  }
+
+  .home-copy-frame .home-bullet-list {
+    gap: 0.4rem;
   }
 }
 
@@ -204,6 +243,60 @@ html {
   --page-glow-a: rgba(0, 0, 122, 0.42);
   --page-glow-b: rgba(255, 255, 255, 0.12);
   --page-glow-c: rgba(0, 0, 79, 0.3);
+}
+
+/* Contact: compress intro so the form pair fits one viewport. */
+.contact-intro .display-heading {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  margin-top: 0.65rem;
+}
+
+.contact-intro .page-split > div:last-child {
+  gap: 0.65rem;
+}
+
+.contact-intro .page-split h2 {
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  line-height: 1.35;
+}
+
+.contact-intro .page-split p {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.contact-intro .page-intro-rule {
+  margin-top: 0.85rem;
+}
+
+.contact-intro [aria-hidden="true"] {
+  font-size: clamp(4rem, 10vw, 7rem);
+  top: -0.5rem;
+}
+
+@media (max-height: 800px) {
+  .contact-intro .display-heading {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+
+  .contact-intro .page-split h2 {
+    font-size: 1rem;
+  }
+
+  .contact-intro .page-split p {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-section > .page-split {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .contact-section > .page-split > * {
+    min-height: 0;
+    height: 100%;
+  }
 }
 
 .page-intro-rule {

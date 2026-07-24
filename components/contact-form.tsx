@@ -47,7 +47,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="contact-form relative flex h-full min-h-0 flex-col overflow-hidden rounded-[2rem] border border-white/50 bg-white p-7 text-primary shadow-[0_28px_80px_rgba(0,0,79,0.2)] sm:p-10 lg:p-14"
+      className="contact-form relative flex h-full min-h-0 flex-col overflow-hidden rounded-[1.5rem] border border-white/50 bg-white p-5 text-primary shadow-[0_28px_80px_rgba(0,0,79,0.2)] sm:p-6 lg:p-8"
       aria-busy={status === "submitting"}
     >
       {/* Honeypot field: hidden from real visitors, bots tend to fill every field in */}
@@ -62,18 +62,18 @@ const ContactForm = () => {
         />
       </div>
 
-      <div>
+      <div className="shrink-0">
         <span className="page-kicker text-accent">Your details</span>
-        <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em] md:text-3xl">
+        <h2 className="mt-2 text-xl font-semibold tracking-[-0.03em] md:mt-3 md:text-2xl">
           Tell us about your goals
         </h2>
-        <p className="text-primary/65 mt-3 text-sm leading-relaxed">
+        <p className="text-primary/65 mt-1.5 text-xs leading-relaxed md:text-sm">
           Required fields are marked with an asterisk.
         </p>
       </div>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2">
-        <div className="flex flex-col gap-2">
+      <div className="mt-4 grid min-h-0 flex-1 grid-cols-1 content-start gap-3 sm:grid-cols-2 sm:gap-3.5 md:mt-5">
+        <div className="flex flex-col gap-1.5">
           <Label htmlFor="fullName">
             Full name <span aria-hidden="true">*</span>
           </Label>
@@ -84,10 +84,11 @@ const ContactForm = () => {
             placeholder="Jane Smith"
             required
             maxLength={200}
+            className="min-h-10 py-2.5"
           />
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5">
           <Label htmlFor="email">
             Work email <span aria-hidden="true">*</span>
           </Label>
@@ -100,10 +101,11 @@ const ContactForm = () => {
             placeholder="jane@company.com"
             required
             maxLength={200}
+            className="min-h-10 py-2.5"
           />
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5">
           <Label htmlFor="companyName">Company name</Label>
           <Input
             id="companyName"
@@ -111,10 +113,11 @@ const ContactForm = () => {
             autoComplete="organization"
             placeholder="Company Ltd"
             maxLength={200}
+            className="min-h-10 py-2.5"
           />
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5">
           <Label htmlFor="companyRole">Your role</Label>
           <Input
             id="companyRole"
@@ -122,10 +125,11 @@ const ContactForm = () => {
             autoComplete="organization-title"
             placeholder="Marketing Director"
             maxLength={200}
+            className="min-h-10 py-2.5"
           />
         </div>
 
-        <div className="flex flex-col gap-2 sm:col-span-2">
+        <div className="flex min-h-0 flex-col gap-1.5 sm:col-span-2">
           <Label htmlFor="message">
             How can we help? <span aria-hidden="true">*</span>
           </Label>
@@ -134,17 +138,18 @@ const ContactForm = () => {
             name="message"
             placeholder="Tell us about your challenge, goals, and ideal next step."
             required
-            rows={6}
+            rows={3}
             maxLength={5000}
+            className="min-h-[4.5rem] flex-1 resize-none py-2.5"
           />
         </div>
       </div>
 
-      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-4 flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-white shadow-lg transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60"
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60"
         >
           {status === "submitting" ? "Sending…" : "Send message"}
           <Send className="h-4 w-4" aria-hidden="true" />
@@ -157,7 +162,7 @@ const ContactForm = () => {
 
       {status === "success" && (
         <p
-          className="mt-5 flex items-center gap-2 text-sm font-semibold text-primary"
+          className="mt-3 flex shrink-0 items-center gap-2 text-sm font-semibold text-primary"
           aria-live="polite"
         >
           <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
@@ -166,7 +171,7 @@ const ContactForm = () => {
       )}
       {status === "error" && (
         <p
-          className="mt-5 flex items-center gap-2 text-sm font-semibold text-accent"
+          className="mt-3 flex shrink-0 items-center gap-2 text-sm font-semibold text-accent"
           role="alert"
         >
           <AlertCircle className="h-5 w-5" aria-hidden="true" />
