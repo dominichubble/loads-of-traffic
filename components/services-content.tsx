@@ -15,23 +15,23 @@ const ServicesContent = () => {
     <main className="services bg-red px-6 pb-[--pages-header-height] pt-[calc(var(--pages-header-height)+3rem)] text-white sm:px-[var(--container-padding-x)] xl:pb-[6rem] xl:pt-[calc(var(--pages-header-height)+var(--container-padding-y))]">
       <section className="services-section content-container relative z-0">
         <div className="flex flex-col-reverse gap-[3rem] xl:gap-[6rem]">
-          <div className="flex items-center justify-between">
-            <div className="hidden md:block">
+          <div className="flex items-center gap-10 xl:gap-16">
+            <div className="hidden shrink-0 md:block">
               {isClient && (
                 <Lottie
                   loop
                   animationData={lottieJson}
                   play
                   style={{
-                    width: "50vh",
-                    height: "50vh",
-                    minWidth: "400px",
-                    minHeight: "400px",
+                    width: "40vh",
+                    height: "40vh",
+                    minWidth: "320px",
+                    minHeight: "320px",
                   }}
                 />
               )}
             </div>
-            <div className="md:max-w-[40%]">
+            <div className="md:flex-1">
               <h2 className="text-[1.6rem] font-bold md:mb-[1rem] xl:text-[2.4rem]">
                 Propel your business to new heights with groundbreaking
                 insights, expert strategies, and high-level execution.
