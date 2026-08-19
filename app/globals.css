@@ -120,6 +120,15 @@ html {
   --home-control-icon: clamp(1rem, 0.85rem + 0.45vw, 1.35rem);
 }
 
+/* Inactive slides sit in the same transparent overlay as slide 1.
+   Hide them in CSS so 2–4 never paint before GSAP runs. Inline
+   autoAlpha from GSAP still wins during transitions. */
+.home-copy-slide[aria-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .home-copy-frame {
   container-type: inline-size;
   container-name: home-copy;

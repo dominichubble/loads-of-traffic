@@ -402,7 +402,7 @@ const Home = () => {
                   ref={(el) => {
                     textRefs.current[i] = el;
                   }}
-                  className="pointer-events-auto absolute inset-0 z-[1] flex min-h-0 min-w-0 flex-col"
+                  className="home-copy-slide pointer-events-auto absolute inset-0 z-[1] flex min-h-0 min-w-0 flex-col"
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
