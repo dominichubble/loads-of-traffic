@@ -291,6 +291,8 @@ html {
 @media (min-width: 1024px) {
   .contact-section > .page-split {
     grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+    height: 100%;
   }
 
   .contact-section > .page-split > * {

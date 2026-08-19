@@ -129,7 +129,7 @@ const ContactForm = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-1.5 sm:col-span-2 lg:min-h-0">
+        <div className="flex min-h-0 flex-col gap-1.5 sm:col-span-2">
           <Label htmlFor="message">
             How can we help? <span aria-hidden="true">*</span>
           </Label>
@@ -140,7 +140,7 @@ const ContactForm = () => {
             required
             rows={3}
             maxLength={5000}
-            className="min-h-[4.5rem] resize-none py-2.5 lg:flex-1"
+            className="min-h-[4.5rem] flex-1 resize-none py-2.5"
           />
         </div>
       </div>

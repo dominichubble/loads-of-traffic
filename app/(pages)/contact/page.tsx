@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 
 const ContactPage = () => {
   return (
-    <main className="contact page-atmosphere flex h-[100svh] max-h-[100svh] flex-col overflow-y-auto bg-accent text-white lg:overflow-hidden">
-      <div className="content-container page-gutters flex min-h-0 flex-1 flex-col pb-4 pt-[calc(var(--pages-header-height)+0.85rem)] md:pb-5 md:pt-[calc(var(--pages-header-height)+1rem)]">
-        <section className="contact-section flex min-h-0 flex-1 flex-col">
+    <main className="contact page-atmosphere flex flex-col bg-accent text-white lg:h-[100svh] lg:max-h-[100svh] lg:overflow-hidden">
+      <div className="content-container page-gutters flex flex-col pb-4 pt-[calc(var(--pages-header-height)+0.85rem)] md:pb-5 md:pt-[calc(var(--pages-header-height)+1rem)] lg:min-h-0 lg:flex-1">
+        <section className="contact-section flex flex-col lg:min-h-0 lg:flex-1">
           <PageIntro
             index="03"
             kicker="Get in touch"
@@ -24,8 +24,8 @@ const ContactPage = () => {
             className="contact-intro shrink-0"
           />
 
-          <div className="page-split page-rise page-rise-delay-2 mt-4 min-h-0 flex-1 lg:mt-5 lg:[align-items:stretch]">
-            <aside className="relative flex flex-col rounded-[1.5rem] border border-white/15 bg-gradient-to-br from-primary via-primary to-[var(--color-primary-deep)] p-5 shadow-[0_28px_80px_rgba(0,0,79,0.35)] sm:p-6 lg:h-full lg:min-h-0 lg:overflow-hidden lg:p-8">
+          <div className="page-split page-rise page-rise-delay-2 mt-4 lg:mt-5 lg:min-h-0 lg:flex-1 lg:[align-items:stretch]">
+            <aside className="relative flex flex-col overflow-hidden rounded-[1.5rem] border border-white/15 bg-gradient-to-br from-primary via-primary to-[var(--color-primary-deep)] p-5 pb-14 shadow-[0_28px_80px_rgba(0,0,79,0.35)] sm:p-6 sm:pb-16 lg:h-full lg:min-h-0 lg:p-8 lg:pb-14">
               <div
                 className="pointer-events-none absolute -right-40 -top-40 z-0 h-64 w-64 rounded-full border-[2.5rem] border-accent/30"
                 aria-hidden="true"
@@ -55,7 +55,7 @@ const ContactPage = () => {
                   </li>
                 </ul>
 
-                <div className="mt-5 space-y-3 border-t border-white/15 pt-4 text-sm lg:pt-5">
+                <div className="mt-5 space-y-3 border-t border-white/15 pt-4 text-sm lg:mt-auto lg:pt-5">
                   <div className="flex items-start gap-3">
                     <Mail
                       className="mt-0.5 h-4 w-4 shrink-0 text-yellow"
