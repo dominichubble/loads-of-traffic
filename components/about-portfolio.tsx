@@ -86,7 +86,7 @@ const AboutPortfolio = () => {
             </div>
           </div>
 
-          <h3 className="mt-12 pb-1 text-[clamp(1.75rem,3.5vw,3.5rem)] font-bold uppercase leading-[1.05] tracking-[-0.05em] text-white md:mt-14">
+          <h3 className="mt-12 pb-1 text-[clamp(1.65rem,1.1rem+3.2vw,4.25rem)] font-bold uppercase leading-[1.1] tracking-[-0.05em] text-balance break-words text-white md:mt-14">
             Results speak.{" "}
             <span className="font-outline-2 font-outline-white">
               Client names don&apos;t.

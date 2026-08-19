@@ -241,6 +241,29 @@ const Home = () => {
     const THRESHOLD = 48;
 
     const onWheel = (event: WheelEvent) => {
+      const eventTarget = event.target;
+      const fromEl =
+        eventTarget instanceof Element
+          ? eventTarget
+          : eventTarget instanceof Node
+            ? eventTarget.parentElement
+            : null;
+      const scroller = fromEl?.closest(".home-copy-scroll");
+
+      if (scroller instanceof HTMLElement) {
+        const canScroll = scroller.scrollHeight > scroller.clientHeight + 1;
+        if (canScroll) {
+          const atTop = scroller.scrollTop <= 0;
+          const atBottom =
+            scroller.scrollTop + scroller.clientHeight >=
+            scroller.scrollHeight - 1;
+          const scrollingUp = event.deltaY < 0;
+          if ((scrollingUp && !atTop) || (!scrollingUp && !atBottom)) {
+            return;
+          }
+        }
+      }
+
       event.preventDefault();
       if (isAnimatingRef.current) {
         accumulated = 0;
@@ -285,7 +308,7 @@ const Home = () => {
       <div className="fixed bottom-5 right-5 z-[900] flex items-center gap-3 md:bottom-8 md:right-8">
         <button
           type="button"
-          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-[0_10px_30px_rgba(0,0,79,0.45)] ring-2 ring-white/90 transition-transform hover:-translate-y-0.5 md:h-12 md:min-h-12 md:w-auto md:min-w-12 md:gap-2 md:px-5"
+          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-[0_10px_30px_rgba(0,0,79,0.45)] ring-2 ring-white/90 transition-transform hover:-translate-y-0.5 md:h-[var(--home-control-h)] md:min-h-[var(--home-control-h)] md:w-auto md:min-w-[var(--home-control-h)] md:gap-2 md:px-[var(--home-control-px)] md:text-[length:var(--home-control-font)]"
           onClick={() => setIsMotionPaused((current) => !current)}
           aria-label={
             isMotionPaused
@@ -295,11 +318,17 @@ const Home = () => {
           aria-pressed={isMotionPaused}
         >
           {isMotionPaused ? (
-            <Play className="h-5 w-5 md:h-4 md:w-4" aria-hidden="true" />
+            <Play
+              className="h-5 w-5 md:h-[var(--home-control-icon)] md:w-[var(--home-control-icon)]"
+              aria-hidden="true"
+            />
           ) : (
-            <Pause className="h-5 w-5 md:h-4 md:w-4" aria-hidden="true" />
+            <Pause
+              className="h-5 w-5 md:h-[var(--home-control-icon)] md:w-[var(--home-control-icon)]"
+              aria-hidden="true"
+            />
           )}
-          <span className="hidden text-sm font-semibold uppercase tracking-[0.1em] lg:inline">
+          <span className="hidden font-semibold uppercase tracking-[0.1em] lg:inline">
             {isMotionPaused ? "Play video" : "Pause video"}
           </span>
         </button>
@@ -307,10 +336,13 @@ const Home = () => {
           type="button"
           onClick={() => stepToSlide(-1)}
           aria-label="Previous expertise"
-          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-primary shadow-[0_10px_30px_rgba(0,0,79,0.35)] transition-transform hover:-translate-y-0.5 md:h-12 md:min-h-12 md:w-auto md:gap-2.5 md:px-5"
+          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-primary shadow-[0_10px_30px_rgba(0,0,79,0.35)] transition-transform hover:-translate-y-0.5 md:h-[var(--home-control-h)] md:min-h-[var(--home-control-h)] md:w-auto md:gap-2.5 md:px-[var(--home-control-px)] md:text-[length:var(--home-control-font)]"
         >
-          <ArrowUp className="h-6 w-6 md:h-5 md:w-5" aria-hidden="true" />
-          <span className="hidden text-sm font-semibold uppercase tracking-[0.1em] md:inline">
+          <ArrowUp
+            className="h-6 w-6 md:h-[var(--home-control-icon)] md:w-[var(--home-control-icon)]"
+            aria-hidden="true"
+          />
+          <span className="hidden font-semibold uppercase tracking-[0.1em] md:inline">
             Previous
           </span>
         </button>
@@ -318,12 +350,15 @@ const Home = () => {
           type="button"
           onClick={() => stepToSlide(1)}
           aria-label="Next expertise"
-          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_10px_30px_rgba(237,20,100,0.45)] transition-transform hover:-translate-y-0.5 md:h-12 md:min-h-12 md:w-auto md:gap-2.5 md:px-6"
+          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_10px_30px_rgba(237,20,100,0.45)] transition-transform hover:-translate-y-0.5 md:h-[var(--home-control-h)] md:min-h-[var(--home-control-h)] md:w-auto md:gap-2.5 md:px-[var(--home-control-px)] md:text-[length:var(--home-control-font)]"
         >
-          <span className="hidden text-sm font-semibold uppercase tracking-[0.1em] md:inline">
+          <span className="hidden font-semibold uppercase tracking-[0.1em] md:inline">
             Next
           </span>
-          <ArrowDown className="h-6 w-6 md:h-5 md:w-5" aria-hidden="true" />
+          <ArrowDown
+            className="h-6 w-6 md:h-[var(--home-control-icon)] md:w-[var(--home-control-icon)]"
+            aria-hidden="true"
+          />
         </button>
       </div>
 
@@ -357,8 +392,8 @@ const Home = () => {
           aria-hidden="true"
         />
 
-        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex h-full min-h-0 flex-col pr-[var(--container-padding-x)] pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pb-14 md:pt-[calc(var(--pages-header-height)+1.25rem)]">
-          <div className="relative mx-auto min-h-0 w-full max-w-[36rem] flex-1">
+        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex h-full min-h-0 flex-col pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-5 md:pt-[calc(var(--pages-header-height)+1.25rem)]">
+          <div className="relative mx-auto min-h-0 w-full min-w-0 max-w-[min(52rem,100%)] flex-1">
             {servicesSectionContent.map((section, i) => {
               const isPink = i % 2 === 1;
               return (
@@ -367,24 +402,25 @@ const Home = () => {
                   ref={(el) => {
                     textRefs.current[i] = el;
                   }}
-                  className="pointer-events-auto absolute inset-0 z-[1] flex min-h-0 flex-col"
+                  className="pointer-events-auto absolute inset-0 z-[1] flex min-h-0 min-w-0 flex-col"
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
-                  {/* Centers when space allows; scrolls instead of overlapping the header */}
-                  <div className="flex min-h-0 flex-1 flex-col justify-end md:justify-center">
-                    <div className="flex max-h-full min-h-0 flex-col overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                      <div className="w-full shrink-0">
+                  {/* mt-auto / my-auto pin or center when there is room;
+                      the scroller is the parent so zoomed-in copy is not clipped. */}
+                  <div className="home-copy-scroll flex min-h-0 min-w-0 flex-1 flex-col justify-[safe_end] overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-[safe_center] [&::-webkit-scrollbar]:hidden">
+                    <div className="w-full min-w-0 shrink-0">
+                      <div className="w-full min-w-0">
                         <div className="flex items-center justify-between gap-3">
                           <span className="page-kicker text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
                             Our expertise
                           </span>
-                          <span className="text-sm font-semibold tabular-nums text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
+                          <span className="shrink-0 text-[length:var(--home-copy-size)] font-semibold tabular-nums text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
                             0{i + 1} / 04
                           </span>
                         </div>
                         <h2
-                          className="mt-[var(--home-stack-gap)] max-w-[14ch] font-semibold leading-[0.98] tracking-[-0.03em] text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:leading-[1.02] md:tracking-[-0.02em] md:[text-shadow:none]"
+                          className="mt-[var(--home-stack-gap)] max-w-[14ch] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:tracking-[-0.02em] md:[text-shadow:none]"
                           style={{ fontSize: "var(--home-title-size)" }}
                         >
                           {section.title}
@@ -392,19 +428,19 @@ const Home = () => {
                       </div>
 
                       <ul
-                        className="home-bullet-list mt-[var(--home-stack-gap)] flex w-full flex-col leading-relaxed text-white md:mt-6"
+                        className="home-bullet-list mt-[var(--home-stack-gap)] flex w-full min-w-0 flex-col leading-relaxed text-white"
                         style={{
                           fontSize: "var(--home-copy-size)",
                           gap: "var(--home-stack-gap)",
                         }}
                       >
                         {section.description.map((line) => (
-                          <li key={line} className="flex gap-3.5">
+                          <li key={line} className="flex min-w-0 gap-3.5">
                             <span
                               className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-white"
                               aria-hidden="true"
                             />
-                            <span className="font-medium [text-shadow:0_2px_18px_rgba(0,0,0,0.85)] md:font-normal md:[text-shadow:none]">
+                            <span className="min-w-0 break-words font-medium [text-shadow:0_2px_18px_rgba(0,0,0,0.85)] md:font-normal md:[text-shadow:none]">
                               {line}
                             </span>
                           </li>
@@ -412,7 +448,7 @@ const Home = () => {
                       </ul>
 
                       <div
-                        className="flex shrink-0 items-center gap-3 pt-[var(--home-stack-gap)] md:pt-10"
+                        className="flex shrink-0 items-center gap-3 pt-[var(--home-stack-gap)] md:pt-[calc(var(--home-stack-gap)*1.6)]"
                         style={{
                           paddingBottom: "var(--home-bottom-clearance)",
                         }}
@@ -420,12 +456,17 @@ const Home = () => {
                         <TransitionLink
                           href={section.readMoreLink}
                           tabIndex={activeSection === i ? 0 : -1}
-                          className={`group inline-flex min-h-12 items-center gap-2.5 rounded-full bg-white px-6 text-sm font-semibold shadow-lg md:min-h-16 md:gap-3 md:px-10 md:text-lg ${isPink ? "text-accent" : "text-primary"}`}
+                          className={`group inline-flex items-center rounded-full bg-white font-semibold shadow-lg ${isPink ? "text-accent" : "text-primary"}`}
+                          style={{
+                            minHeight: "var(--home-cta-height)",
+                            paddingInline: "var(--home-cta-pad-x)",
+                            fontSize: "var(--home-cta-font)",
+                          }}
                         >
                           <span className="inline-flex items-center gap-2.5 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 md:gap-3">
                             <span>Explore service</span>
                             <ArrowRight
-                              className="h-4 w-4 md:h-5 md:w-5"
+                              className="h-[1em] w-[1em]"
                               aria-hidden="true"
                             />
                           </span>
