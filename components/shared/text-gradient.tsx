@@ -3,10 +3,10 @@ import React, { useRef } from "react";
 import { cn } from "@/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import ScrollToPlugin from "gsap/all";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 
-gsap.registerPlugin(ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
 type TextGradientProps = {
   children: React.ReactNode;
@@ -16,11 +16,22 @@ type TextGradientProps = {
 const TextGradient = ({ children, className }: TextGradientProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   useGSAP(
-    function() {
-      const text = new SplitType(".line", {
+    function () {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
+
+      const container = containerRef.current;
+      if (!container) return;
+
+      const text = new SplitType(container.querySelectorAll(".line"), {
         types: "words,chars",
         tagName: "span",
       });
+
+      if (!text.chars?.length) {
+        return () => text.revert();
+      }
 
       gsap.fromTo(
         text.chars,
@@ -30,9 +41,9 @@ const TextGradient = ({ children, className }: TextGradientProps) => {
         },
         {
           scrollTrigger: {
-            trigger: text.chars && text.chars[0],
-            start: "top 40%",
-            toggleActions: "play none none reverse",
+            trigger: container,
+            start: "top 75%",
+            once: true,
           },
           ease: "power3.out",
           stagger: 0.01,
@@ -40,6 +51,8 @@ const TextGradient = ({ children, className }: TextGradientProps) => {
           duration: 0.3,
         },
       );
+
+      return () => text.revert();
     },
     {
       scope: containerRef,

@@ -95,9 +95,17 @@ html.page-transitioning #main-content {
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Native wheel/trackpad scrolling. Smooth is reserved for in-page
+     focus moves so CSS interpolation does not fight the scroller. */
+  scroll-behavior: auto;
   scroll-padding-top: calc(var(--pages-header-height) + 1rem);
   text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -245,9 +253,14 @@ html {
 .page-atmosphere::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  left: 0;
   z-index: 0;
+  height: 100vh;
+  height: 100svh;
   pointer-events: none;
+  contain: paint;
   background:
     radial-gradient(
       ellipse 72% 48% at 0% -8%,
@@ -369,7 +382,7 @@ html {
 }
 
 .page-rise {
-  animation: page-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: page-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .page-rise-delay-1 {
@@ -389,6 +402,25 @@ html {
   .page-rise-delay-1,
   .page-rise-delay-2,
   .page-rise-delay-3 {
+    animation: none;
+  }
+}
+
+@keyframes about-marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.about-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: about-marquee 42s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-marquee-track {
     animation: none;
   }
 }

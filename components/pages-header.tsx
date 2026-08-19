@@ -20,9 +20,9 @@ const PagesHeader = () => {
         className={cn(
           "pointer-events-none absolute inset-0 -z-10",
           navBg === "accent" &&
-            "border-b border-white/10 bg-accent shadow-[0_10px_35px_rgba(83,0,32,0.22)] backdrop-blur-xl",
+            "border-b border-white/10 bg-accent shadow-[0_10px_35px_rgba(83,0,32,0.22)]",
           navBg === "primary" &&
-            "border-b border-white/10 bg-primary shadow-[0_10px_35px_rgba(0,0,79,0.18)] backdrop-blur-xl",
+            "border-b border-white/10 bg-primary shadow-[0_10px_35px_rgba(0,0,79,0.18)]",
           !navBg && "border-b border-transparent bg-transparent",
         )}
       />

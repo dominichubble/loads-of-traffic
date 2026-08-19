@@ -86,13 +86,13 @@ const MobileHeader = () => {
     >
       <div
         className={cn(
-          "relative z-20 flex min-h-14 items-center justify-between rounded-full border px-4 backdrop-blur-xl transition-colors duration-300",
+          "relative z-20 flex min-h-14 items-center justify-between rounded-full border px-4 transition-colors duration-300",
           navBg === "accent" &&
             "border-white/15 bg-accent shadow-[0_12px_40px_rgba(83,0,32,0.28)]",
           navBg === "primary" &&
             "border-white/15 bg-primary shadow-[0_12px_40px_rgba(0,0,79,0.25)]",
           !navBg &&
-            "border-white/20 bg-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.18)]",
+            "border-white/20 bg-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl",
         )}
       >
         <TransitionLink
