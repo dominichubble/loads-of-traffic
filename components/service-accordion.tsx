@@ -30,10 +30,10 @@ const ServiceAccordion = ({
   return (
     <article
       className={cn(
-        "overflow-hidden rounded-[1.25rem] border transition-[background-color,border-color,color,box-shadow,transform] duration-500 ease-in-out",
+        "rounded-[1.25rem] border transition-[background-color,border-color,color,box-shadow] duration-500 ease-in-out",
         isExpanded
           ? "border-white bg-white text-primary shadow-[0_28px_70px_rgba(0,0,79,0.28)]"
-          : "border-white/80 bg-white text-primary shadow-[0_18px_50px_rgba(0,0,79,0.22)] hover:-translate-y-0.5 hover:border-white hover:shadow-[0_24px_60px_rgba(0,0,79,0.28)]",
+          : "border-white/80 bg-white text-primary shadow-[0_18px_50px_rgba(0,0,79,0.22)] hover:border-white hover:shadow-[0_24px_60px_rgba(0,0,79,0.28)]",
       )}
     >
       <h3>

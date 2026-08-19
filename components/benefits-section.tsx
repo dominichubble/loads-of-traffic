@@ -4,7 +4,7 @@ import { benefitsSectionContent } from "@/utils/constants";
 
 const BenefitsSection = () => {
   return (
-    <section className="pb-[var(--sections-gap)]">
+    <section className="relative z-0 pb-[var(--sections-gap)] pt-4 md:pt-6">
       <div className="page-split border-t border-white/20 pt-10 md:pt-14">
         <div className="min-w-0">
           <span className="page-kicker text-white/65">How we work</span>

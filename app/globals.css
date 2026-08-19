@@ -302,7 +302,7 @@ html {
   --page-glow-c: rgba(0, 0, 79, 0.3);
 }
 
-/* Contact: compress intro so the form pair fits one viewport. */
+/* Contact intro: keep the same copy as other viewports; only tighten type. */
 .contact-intro .display-heading {
   font-size: clamp(2rem, 4vw, 3.25rem);
   margin-top: 0.65rem;
@@ -329,33 +329,6 @@ html {
 .contact-intro [aria-hidden="true"] {
   font-size: clamp(4rem, 10vw, 7rem);
   top: -0.5rem;
-}
-
-@media (max-height: 800px) {
-  .contact-intro .display-heading {
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-  }
-
-  .contact-intro .page-split h2 {
-    font-size: 1rem;
-  }
-
-  .contact-intro .page-split p {
-    display: none;
-  }
-}
-
-@media (min-width: 1024px) {
-  .contact-section > .page-split {
-    grid-template-rows: minmax(0, 1fr);
-    align-items: stretch;
-    height: 100%;
-  }
-
-  .contact-section > .page-split > * {
-    min-height: 0;
-    height: 100%;
-  }
 }
 
 .page-intro-rule {

@@ -12,20 +12,20 @@ export const metadata: Metadata = {
 
 const ContactPage = () => {
   return (
-    <main className="contact page-atmosphere flex flex-col bg-accent text-white lg:h-[100svh] lg:max-h-[100svh] lg:overflow-hidden">
-      <div className="content-container page-gutters flex flex-col pb-4 pt-[calc(var(--pages-header-height)+0.85rem)] md:pb-5 md:pt-[calc(var(--pages-header-height)+1rem)] lg:min-h-0 lg:flex-1">
-        <section className="contact-section flex flex-col lg:min-h-0 lg:flex-1">
+    <main className="contact page-atmosphere bg-accent text-white">
+      <div className="content-container page-gutters pb-10 pt-[calc(var(--pages-header-height)+0.85rem)] md:pb-14 md:pt-[calc(var(--pages-header-height)+1rem)]">
+        <section className="contact-section flex flex-col">
           <PageIntro
             index="03"
             kicker="Get in touch"
             title="Contact"
             headline="Ready to understand your market, your competitors, and your next growth opportunity?"
             description="Share a little about your business and what you want to achieve. We'll respond with a clear next step."
-            className="contact-intro shrink-0"
+            className="contact-intro"
           />
 
-          <div className="page-split page-rise page-rise-delay-2 mt-4 lg:mt-5 lg:min-h-0 lg:flex-1 lg:[align-items:stretch]">
-            <aside className="relative flex flex-col overflow-hidden rounded-[1.5rem] border border-white/15 bg-gradient-to-br from-primary via-primary to-[var(--color-primary-deep)] p-5 pb-14 shadow-[0_28px_80px_rgba(0,0,79,0.35)] sm:p-6 sm:pb-16 lg:h-full lg:min-h-0 lg:p-8 lg:pb-14">
+          <div className="page-split page-rise page-rise-delay-2 mt-8 md:mt-10">
+            <aside className="relative flex flex-col overflow-hidden rounded-[1.5rem] border border-white/15 bg-gradient-to-br from-primary via-primary to-[var(--color-primary-deep)] p-5 pb-8 shadow-[0_28px_80px_rgba(0,0,79,0.35)] sm:p-6 sm:pb-10 lg:p-8">
               <div
                 className="pointer-events-none absolute -right-40 -top-40 z-0 h-64 w-64 rounded-full border-[2.5rem] border-accent/30"
                 aria-hidden="true"
@@ -35,7 +35,7 @@ const ContactPage = () => {
                 aria-hidden="true"
               />
 
-              <div className="relative z-10 flex flex-col lg:min-h-0 lg:flex-1">
+              <div className="relative z-10 flex flex-col">
                 <span className="page-kicker text-white/60">What to include</span>
                 <h2 className="mt-3 text-xl font-semibold leading-tight tracking-[-0.03em] md:mt-4 md:text-2xl">
                   Let&apos;s explore how we can help your business grow.
@@ -55,7 +55,7 @@ const ContactPage = () => {
                   </li>
                 </ul>
 
-                <div className="mt-5 space-y-3 border-t border-white/15 pt-4 text-sm lg:mt-auto lg:pt-5">
+                <div className="mt-5 space-y-3 border-t border-white/15 pt-4 text-sm md:mt-8">
                   <div className="flex items-start gap-3">
                     <Mail
                       className="mt-0.5 h-4 w-4 shrink-0 text-yellow"

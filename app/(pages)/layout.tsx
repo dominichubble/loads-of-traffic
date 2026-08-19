@@ -1,17 +1,11 @@
-"use client";
-
+import type { ReactNode } from "react";
 import Footer from "@/components/footer";
-import { usePathname } from "next/navigation";
-import React from "react";
 
-const PagesLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-  const pathname = usePathname();
-  const hideFooter = pathname === "/contact";
-
+const PagesLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="relative z-0">
       {children}
-      {!hideFooter ? <Footer /> : null}
+      <Footer />
     </div>
   );
 };

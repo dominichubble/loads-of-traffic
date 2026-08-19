@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <main className="about page-shell page-shell-flush page-atmosphere overflow-hidden bg-primary text-white">
+    <main className="about page-shell page-shell-flush page-atmosphere bg-primary text-white">
       <div className="space-y-[var(--sections-gap)]">
         <AboutSection>
           <PageIntro
@@ -26,17 +26,13 @@ const AboutPage = () => {
             headline="A high-tech scale-up helping ambitious businesses understand their markets and grow with confidence."
             description="Based in the Isle of Man and working across competitive global sectors since 2010."
           />
-          <TextGradient className="mt-[var(--sections-gap)] text-center text-[clamp(1.75rem,5.5vw,4.5rem)] font-bold uppercase leading-[1.15] tracking-[-0.02em]">
-            <div className="line flex items-center justify-center gap-2 whitespace-nowrap xl:gap-5">
-              <p>Loads of Traffic</p>
-            </div>
-            <div className="line mt-2 flex items-center justify-center gap-2 whitespace-nowrap xl:gap-5">
-              <span>
-                brings <span className="text-accent">80+ years</span>
-              </span>
-            </div>
-            <p className="line mt-2">of combined expertise</p>
-            <p className="line mt-2 text-white">to digital growth</p>
+          <TextGradient className="mt-[var(--sections-gap)] text-center text-[clamp(1.75rem,5.5vw,4.5rem)] font-bold uppercase leading-[1.2] tracking-[-0.02em]">
+            <p className="line text-balance">Loads of Traffic</p>
+            <p className="line mt-2 text-balance">
+              brings <span className="text-accent">80+ years</span>
+            </p>
+            <p className="line mt-2 text-balance">of combined expertise</p>
+            <p className="line mt-2 text-balance text-white">to digital growth</p>
           </TextGradient>
         </AboutSection>
         <AboutMission />

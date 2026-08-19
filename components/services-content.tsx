@@ -7,8 +7,8 @@ import { servicesAccordionsContent } from "@/utils/constants";
 
 const ServicesContent = () => {
   return (
-    <main className="services page-shell page-atmosphere relative min-h-screen overflow-hidden bg-red text-white">
-      <div className="services-section content-container page-gutters relative !z-10">
+    <main className="services page-shell page-atmosphere relative min-h-screen bg-red text-white">
+      <div className="services-section content-container page-gutters relative">
         <PageIntro
           index="01"
           kicker="What we do"
@@ -17,8 +17,8 @@ const ServicesContent = () => {
           description="We turn competitive intelligence into practical decisions that strengthen your position and create sustainable growth."
         />
 
-        <section id="services" className="page-rise page-rise-delay-2 py-[var(--sections-gap)]">
-          <div className="page-split">
+        <section id="services" className="py-[var(--sections-gap)]">
+          <div className="page-split page-rise page-rise-delay-2">
             <div className="min-w-0">
               <span className="page-kicker text-white/65">Capabilities</span>
               <h2 className="section-heading mt-5 max-w-none text-white">
@@ -32,7 +32,7 @@ const ServicesContent = () => {
             </p>
           </div>
 
-          <div className="mt-10 flex flex-col gap-3 md:mt-14">
+          <div className="relative z-0 mt-10 flex flex-col gap-4 md:mt-14 md:gap-5">
             {servicesAccordionsContent.map((accordion, i) => (
               <div key={accordion.title} id={`${i + 1}`}>
                 <ServiceAccordion
