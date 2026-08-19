@@ -619,6 +619,11 @@ a:hover .hover-element {
   color: transparent;
 }
 
+.home-title-outline {
+  color: transparent;
+  -webkit-text-stroke: clamp(1.5px, 0.045em, 3px) #fff;
+}
+
 .font-outline-2.font-outline-black {
   -webkit-text-stroke: 2px black;
   text-stroke: 2px black;
