@@ -47,7 +47,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="contact-form relative flex h-full min-h-0 flex-col overflow-hidden rounded-[1.5rem] border border-white/50 bg-white p-5 text-primary shadow-[0_28px_80px_rgba(0,0,79,0.2)] sm:p-6 lg:p-8"
+      className="contact-form relative flex min-h-0 flex-col rounded-[1.5rem] border border-white/50 bg-white p-5 text-primary shadow-[0_28px_80px_rgba(0,0,79,0.2)] sm:p-6 lg:h-full lg:overflow-hidden lg:p-8"
       aria-busy={status === "submitting"}
     >
       {/* Honeypot field: hidden from real visitors, bots tend to fill every field in */}
@@ -72,7 +72,7 @@ const ContactForm = () => {
         </p>
       </div>
 
-      <div className="mt-4 grid min-h-0 flex-1 grid-cols-1 content-start gap-3 sm:grid-cols-2 sm:gap-3.5 md:mt-5">
+      <div className="mt-4 grid grid-cols-1 content-start gap-3 sm:grid-cols-2 sm:gap-3.5 md:mt-5 lg:min-h-0 lg:flex-1">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="fullName">
             Full name <span aria-hidden="true">*</span>
@@ -129,7 +129,7 @@ const ContactForm = () => {
           />
         </div>
 
-        <div className="flex min-h-0 flex-col gap-1.5 sm:col-span-2">
+        <div className="flex flex-col gap-1.5 sm:col-span-2 lg:min-h-0">
           <Label htmlFor="message">
             How can we help? <span aria-hidden="true">*</span>
           </Label>
@@ -140,7 +140,7 @@ const ContactForm = () => {
             required
             rows={3}
             maxLength={5000}
-            className="min-h-[4.5rem] flex-1 resize-none py-2.5"
+            className="min-h-[4.5rem] resize-none py-2.5 lg:flex-1"
           />
         </div>
       </div>
