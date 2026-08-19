@@ -3,9 +3,41 @@ import React, { useState } from "react";
 import Input from "./shared/input";
 import Label from "./shared/label";
 import Textarea from "./shared/textarea";
+import { cn } from "@/utils";
 import { AlertCircle, CheckCircle2, Send } from "lucide-react";
 
 type Status = "idle" | "submitting" | "success" | "error";
+
+const fieldLabelClass =
+  "text-[0.7rem] font-bold uppercase tracking-[0.14em] text-primary/55";
+
+const Field = ({
+  id,
+  label,
+  required,
+  className,
+  children,
+}: {
+  id: string;
+  label: string;
+  required?: boolean;
+  className?: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <div className={cn("flex min-w-0 flex-col gap-2", className)}>
+      <Label htmlFor={id} className={fieldLabelClass}>
+        {label}
+        {required ? (
+          <span className="ml-1 text-accent" aria-hidden="true">
+            *
+          </span>
+        ) : null}
+      </Label>
+      {children}
+    </div>
+  );
+};
 
 const ContactForm = () => {
   const [status, setStatus] = useState<Status>("idle");
@@ -47,10 +79,9 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="contact-form relative flex flex-col rounded-[1.5rem] border border-white/50 bg-white p-5 text-primary shadow-[0_28px_80px_rgba(0,0,79,0.2)] sm:p-6 lg:p-8"
+      className="contact-form @container flex h-full min-h-0 flex-col px-[var(--container-padding-x)] py-10 text-primary sm:py-12 lg:px-10 lg:py-0 lg:pb-12 lg:pr-[var(--container-padding-x)] lg:pt-[calc(var(--pages-header-height)+1.5rem)] xl:pl-14"
       aria-busy={status === "submitting"}
     >
-      {/* Honeypot field: hidden from real visitors, bots tend to fill every field in */}
       <div className="hidden" aria-hidden="true">
         <label htmlFor="website">Website</label>
         <input
@@ -63,106 +94,91 @@ const ContactForm = () => {
       </div>
 
       <div className="shrink-0">
-        <span className="page-kicker text-accent">Your details</span>
-        <h2 className="mt-2 text-xl font-semibold tracking-[-0.03em] md:mt-3 md:text-2xl">
-          Tell us about your goals
-        </h2>
-        <p className="text-primary/65 mt-1.5 text-xs leading-relaxed md:text-sm">
-          Required fields are marked with an asterisk.
+        <h2 className="page-kicker text-accent">The brief</h2>
+        <p className="text-primary/55 mt-4 max-w-[36ch] text-sm leading-relaxed">
+          A few lines is enough. Required fields are marked with an asterisk.
         </p>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 content-start gap-3 sm:grid-cols-2 sm:gap-3.5 md:mt-5">
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="fullName">
-            Full name <span aria-hidden="true">*</span>
-          </Label>
-          <Input
-            id="fullName"
-            name="fullName"
-            autoComplete="name"
-            placeholder="Jane Smith"
-            required
-            maxLength={200}
-            className="min-h-10 py-2.5"
-          />
+      <div className="mt-6 flex min-h-0 flex-1 flex-col gap-6 md:mt-8 md:gap-7">
+        <div className="grid gap-6 @[34rem]:grid-cols-2 @[34rem]:gap-x-10 @[34rem]:gap-y-7">
+          <Field id="fullName" label="Full name" required>
+            <Input
+              id="fullName"
+              name="fullName"
+              autoComplete="name"
+              placeholder="Jane Smith"
+              required
+              maxLength={200}
+            />
+          </Field>
+          <Field id="email" label="Work email" required>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              placeholder="jane@company.com"
+              required
+              maxLength={200}
+            />
+          </Field>
+          <Field id="companyName" label="Company">
+            <Input
+              id="companyName"
+              name="companyName"
+              autoComplete="organization"
+              placeholder="Company Ltd"
+              maxLength={200}
+            />
+          </Field>
+          <Field id="companyRole" label="Role">
+            <Input
+              id="companyRole"
+              name="companyRole"
+              autoComplete="organization-title"
+              placeholder="Marketing Director"
+              maxLength={200}
+            />
+          </Field>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="email">
-            Work email <span aria-hidden="true">*</span>
-          </Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            inputMode="email"
-            autoComplete="email"
-            placeholder="jane@company.com"
-            required
-            maxLength={200}
-            className="min-h-10 py-2.5"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="companyName">Company name</Label>
-          <Input
-            id="companyName"
-            name="companyName"
-            autoComplete="organization"
-            placeholder="Company Ltd"
-            maxLength={200}
-            className="min-h-10 py-2.5"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="companyRole">Your role</Label>
-          <Input
-            id="companyRole"
-            name="companyRole"
-            autoComplete="organization-title"
-            placeholder="Marketing Director"
-            maxLength={200}
-            className="min-h-10 py-2.5"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <Label htmlFor="message">
-            How can we help? <span aria-hidden="true">*</span>
-          </Label>
+        <Field
+          id="message"
+          label="How can we help?"
+          required
+          className="min-h-0 flex-1"
+        >
           <Textarea
             id="message"
             name="message"
-            placeholder="Tell us about your challenge, goals, and ideal next step."
+            placeholder="The challenge, the support you need, and what a good next step looks like."
             required
-            rows={5}
+            rows={6}
             maxLength={5000}
-            className="min-h-[7rem] py-2.5"
+            className="flex-1"
           />
-        </div>
+        </Field>
       </div>
 
-      <div className="mt-4 flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-6 flex shrink-0 flex-col gap-4 sm:mt-8 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60"
+          className="inline-flex min-h-12 w-fit items-center justify-center gap-2 rounded-full bg-yellow px-7 py-3 text-sm font-semibold text-primary shadow-[0_12px_30px_rgba(255,166,0,0.35)] transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60"
         >
           {status === "submitting" ? "Sending…" : "Send message"}
           <Send className="h-4 w-4" aria-hidden="true" />
         </button>
-
-        <p className="text-primary/55 text-xs leading-relaxed sm:max-w-[25ch] sm:text-right">
+        <p className="text-primary/50 text-xs leading-relaxed sm:max-w-[24ch] sm:text-right">
           We only use your details to respond to this enquiry.
         </p>
       </div>
 
       {status === "success" && (
         <p
-          className="mt-3 flex shrink-0 items-center gap-2 text-sm font-semibold text-primary"
+          className="mt-4 flex shrink-0 items-center gap-2 text-sm font-semibold text-primary"
           aria-live="polite"
         >
           <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
@@ -171,7 +187,7 @@ const ContactForm = () => {
       )}
       {status === "error" && (
         <p
-          className="mt-3 flex shrink-0 items-center gap-2 text-sm font-semibold text-accent"
+          className="mt-4 flex shrink-0 items-center gap-2 text-sm font-semibold text-accent"
           role="alert"
         >
           <AlertCircle className="h-5 w-5" aria-hidden="true" />

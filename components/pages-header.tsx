@@ -47,9 +47,9 @@ const PagesHeader = () => {
         </div>
         <nav
           aria-label="Primary navigation"
-          className="page-inline-end flex h-full items-center pl-[var(--container-padding-x)]"
+          className="page-inline-end flex h-full min-w-0 items-center pl-3 lg:pl-[var(--container-padding-x)]"
         >
-          <ul className="flex w-full items-center justify-center gap-1 text-sm font-medium xl:gap-2 xl:text-base">
+          <ul className="flex w-full items-center justify-center gap-0 text-sm font-medium lg:gap-1 xl:gap-2 xl:text-base">
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.link;
               return (
@@ -58,7 +58,7 @@ const PagesHeader = () => {
                     href={item.link}
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
-                      "inline-flex min-h-11 items-center rounded-full px-4 transition-colors xl:px-5",
+                      "inline-flex min-h-11 items-center whitespace-nowrap rounded-full px-2.5 transition-colors lg:px-4 xl:px-5",
                       isActive
                         ? "bg-white text-primary"
                         : "text-white hover:bg-white/10",

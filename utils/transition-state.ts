@@ -35,7 +35,7 @@ const PATH_ORDER = NAV_ITEMS.map((item) => item.link.split("#")[0]);
 const NAV_BG_BY_PATH: Record<string, Exclude<NavBgTone, null>> = {
   "/services": "accent",
   "/about": "primary",
-  "/contact": "accent",
+  "/contact": "primary",
 };
 
 export function normalizePath(path: string) {

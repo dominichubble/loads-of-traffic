@@ -46,18 +46,22 @@ export const servicesSectionContent: servicesSectionContentType[] = [
 export const servicesAccordionsContent = [
   {
     title: "Competitor Intelligence",
+    lede: "See how rivals win traffic — and where they are exposed.",
     description: `Stay ahead with deep insights into competitor strategies, strengths, and weaknesses. Our tailored analysis equips you to make informed decisions, seize opportunities, and dominate your market with confidence.`,
   },
   {
     title: "Market Penetration Services",
+    lede: "Enter a new market, or deepen the one you already have.",
     description: `Break into new markets or strengthen your presence with expert guidance. We analyse trends, assess competition, and create targeted strategies to help you navigate challenges and unlock untapped growth potential.`,
   },
   {
     title: "Consultancy Services",
+    lede: "A marketing plan built around your KPIs, not a generic playbook.",
     description: `Achieve your business goals with tailored marketing plans crafted around your KPIs. Our strategies focus on sustainable growth, building genuine audience connections, and fostering long-term brand loyalty in competitive landscapes.`,
   },
   {
     title: "Digital Marketing Agency Services",
+    lede: "Affiliate, display, SEO, PPC — campaigns measured on ROI.",
     description: `Maximise results with expert affiliate and display management, SEO, PPC, and more. Our tailored campaigns drive quality traffic, boost engagement, and deliver measurable ROI to elevate your digital presence.`,
   },
 ];
@@ -107,12 +111,12 @@ export const NAV_ITEMS = [
     link: "/",
   },
   {
-    label: "Services",
-    link: "/services",
-  },
-  {
     label: "About Us",
     link: "/about",
+  },
+  {
+    label: "Services",
+    link: "/services",
   },
   {
     label: "Contact",
