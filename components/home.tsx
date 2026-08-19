@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { servicesSectionContent } from "@/utils/constants";
+import type { HomeSlideBullet, HomeSlideCta } from "@/types";
 import { ArrowDown, ArrowRight, ArrowUp, Pause, Play } from "lucide-react";
 import HomeVideo from "./home-video";
 import HomeProgressBar from "./home-progress-bar";
@@ -19,8 +20,48 @@ const VIDEO_SOURCES = [
   { src: "/3", poster: "/lottie-thumbnail-4.png" },
 ] as const;
 
-// Alternating text-panel backgrounds (blue / pink).
 const PANEL_BACKGROUNDS = ["#00007A", "#ED1464", "#00007A", "#ED1464"] as const;
+
+const slideCtaClass = (cta: HomeSlideCta, isPink: boolean) => {
+  if (cta === "yellow") return "bg-yellow text-primary";
+  if (cta === "navy") return "bg-primary text-white";
+  return isPink ? "bg-white text-accent" : "bg-white text-primary";
+};
+
+const SlideBullet = ({
+  style,
+  index,
+}: {
+  style: HomeSlideBullet;
+  index: number;
+}) => {
+  if (style === "index") {
+    return (
+      <span
+        className="w-8 shrink-0 text-[0.72em] font-bold tabular-nums tracking-[0.14em] text-yellow"
+        aria-hidden="true"
+      >
+        0{index + 1}
+      </span>
+    );
+  }
+
+  if (style === "rule") {
+    return (
+      <span
+        className="mt-[0.85em] h-[2px] w-5 shrink-0 bg-yellow"
+        aria-hidden="true"
+      />
+    );
+  }
+
+  return (
+    <span
+      className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-white"
+      aria-hidden="true"
+    />
+  );
+};
 
 const Home = () => {
   const containerRef = useRef<HTMLElement>(null);
@@ -406,21 +447,23 @@ const Home = () => {
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
-                  {/* mt-auto / my-auto pin or center when there is room;
-                      the scroller is the parent so zoomed-in copy is not clipped. */}
                   <div className="home-copy-scroll flex min-h-0 min-w-0 flex-1 flex-col justify-[safe_end] overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-[safe_center] [&::-webkit-scrollbar]:hidden">
                     <div className="w-full min-w-0 shrink-0">
                       <div className="w-full min-w-0">
                         <div className="flex items-center justify-between gap-3">
                           <span className="page-kicker text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
-                            Our expertise
+                            {section.kicker}
                           </span>
                           <span className="shrink-0 text-[length:var(--home-copy-size)] font-semibold tabular-nums text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
                             0{i + 1} / 04
                           </span>
                         </div>
                         <h2
-                          className="mt-[var(--home-stack-gap)] max-w-[14ch] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:tracking-[-0.02em] md:[text-shadow:none]"
+                          className={`mt-[var(--home-stack-gap)] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:tracking-[-0.02em] md:[text-shadow:none] ${
+                            section.titleStyle === "outline"
+                              ? "home-title-outline max-w-[8ch] [text-shadow:none] md:[text-shadow:none]"
+                              : "max-w-[14ch] md:max-w-none"
+                          }`}
                           style={{ fontSize: "var(--home-title-size)" }}
                         >
                           {section.title}
@@ -434,11 +477,11 @@ const Home = () => {
                           gap: "var(--home-stack-gap)",
                         }}
                       >
-                        {section.description.map((line) => (
+                        {section.description.map((line, lineIndex) => (
                           <li key={line} className="flex min-w-0 gap-3.5">
-                            <span
-                              className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-white"
-                              aria-hidden="true"
+                            <SlideBullet
+                              style={section.bullets}
+                              index={lineIndex}
                             />
                             <span className="min-w-0 break-words font-medium [text-shadow:0_2px_18px_rgba(0,0,0,0.85)] md:font-normal md:[text-shadow:none]">
                               {line}
@@ -456,7 +499,7 @@ const Home = () => {
                         <TransitionLink
                           href={section.readMoreLink}
                           tabIndex={activeSection === i ? 0 : -1}
-                          className={`group inline-flex items-center rounded-full bg-white font-semibold shadow-lg ${isPink ? "text-accent" : "text-primary"}`}
+                          className={`group inline-flex items-center rounded-full font-semibold shadow-lg ${slideCtaClass(section.cta, isPink)}`}
                           style={{
                             minHeight: "var(--home-cta-height)",
                             paddingInline: "var(--home-cta-pad-x)",
@@ -464,7 +507,7 @@ const Home = () => {
                           }}
                         >
                           <span className="inline-flex items-center gap-2.5 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 md:gap-3">
-                            <span>Explore service</span>
+                            <span>{section.ctaLabel}</span>
                             <ArrowRight
                               className="h-[1em] w-[1em]"
                               aria-hidden="true"
