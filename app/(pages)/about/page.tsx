@@ -5,7 +5,6 @@ import AboutMarquee from "@/components/about-marquee";
 import AboutMission from "@/components/about-mission";
 import AboutPortfolio from "@/components/about-portfolio";
 import AboutSection from "@/components/about-section";
-import PageIntro from "@/components/page-intro";
 import TextGradient from "@/components/shared/text-gradient";
 
 export const metadata: Metadata = {
@@ -18,22 +17,21 @@ const AboutPage = () => {
   return (
     <main className="about page-shell page-shell-flush page-atmosphere bg-primary text-white">
       <div className="space-y-[var(--sections-gap)]">
-        <AboutSection>
-          <PageIntro
-            index="02"
-            kicker="Who we are"
-            title="About us"
-            headline="A high-tech scale-up helping ambitious businesses understand their markets and grow with confidence."
-            description="Based in the Isle of Man and working across competitive global sectors since 2010."
-          />
-          <TextGradient className="mt-[var(--sections-gap)] text-center text-[clamp(1.75rem,5.5vw,4.5rem)] font-bold uppercase leading-[1.2] tracking-[-0.02em]">
+        <AboutSection className="flex min-h-[75svh] flex-col justify-center">
+          <h1 className="sr-only">About us</h1>
+          <TextGradient className="text-center text-[clamp(1.85rem,5.8vw,5.5rem)] font-bold uppercase leading-[1.12] tracking-[-0.03em]">
             <p className="line text-balance">Loads of Traffic</p>
             <p className="line mt-2 text-balance">
               brings <span className="text-accent">80+ years</span>
             </p>
             <p className="line mt-2 text-balance">of combined expertise</p>
-            <p className="line mt-2 text-balance text-white">to digital growth</p>
+            <p className="line mt-2 text-balance text-white">
+              to digital growth
+            </p>
           </TextGradient>
+          <p className="mt-10 text-center text-xs font-bold uppercase tracking-[0.18em] text-white/50 md:text-sm">
+            Isle of Man · since 2010
+          </p>
         </AboutSection>
         <AboutMission />
         <div>
