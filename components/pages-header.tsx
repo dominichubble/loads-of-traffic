@@ -47,9 +47,9 @@ const PagesHeader = () => {
         </div>
         <nav
           aria-label="Primary navigation"
-          className="page-inline-end flex h-full min-w-0 items-center pl-3 lg:pl-[var(--container-padding-x)]"
+          className="page-inline-end flex h-full min-w-0 items-center"
         >
-          <ul className="flex w-full items-center justify-center gap-0 text-sm font-medium lg:gap-1 xl:gap-2 xl:text-base">
+          <ul className="flex w-full items-center justify-end gap-0 text-sm font-medium lg:gap-1 xl:gap-2 xl:text-base">
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.link;
               return (
