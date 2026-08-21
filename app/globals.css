@@ -80,7 +80,9 @@ html.page-transitioning #main-content {
   --sections-gap: clamp(3.75rem, 2.5rem + 5vw, 10rem);
   --container-padding-x: clamp(1.25rem, 10vw, 7.5rem);
   --container-padding-y: clamp(2rem, 1.25rem + 3vw, 7rem);
-  --content-max-width: none;
+  --site-max-width: 90rem;
+  --content-max-width: var(--site-max-width);
+  --site-frame-inset: max(0px, calc((100vw - var(--site-max-width)) / 2));
   --page-split-gap: clamp(1.5rem, 0.75rem + 2.5vw, 6rem);
   --radius-card: 1.5rem;
   --shadow-card: 0 24px 70px rgba(0, 0, 79, 0.14);
@@ -202,7 +204,8 @@ html {
 .content-container {
   width: 100%;
   max-width: var(--content-max-width);
-  margin-inline: auto;
+  margin-left: var(--site-frame-inset);
+  margin-right: auto;
 }
 
 /* Shared page frame: header offset + bottom breathing room. */
@@ -220,13 +223,18 @@ html {
   padding-inline: var(--container-padding-x);
 }
 
-/* Align full-bleed chrome with the same percentage gutters. */
+/* Full-bleed chrome: same left/right edge as centered .content-container. */
 .page-inline-start {
-  padding-left: var(--container-padding-x);
+  padding-left: calc(var(--site-frame-inset) + var(--container-padding-x));
 }
 
 .page-inline-end {
-  padding-right: var(--container-padding-x);
+  padding-right: calc(var(--site-frame-inset) + var(--container-padding-x));
+}
+
+/* Home slide controls: same right edge as the navbar. */
+.page-fixed-end {
+  right: calc(var(--site-frame-inset) + var(--container-padding-x));
 }
 
 /* Match home hero split: narrower left, 55% right. */
@@ -302,13 +310,31 @@ html {
   --page-glow-c: rgba(255, 166, 0, 0.12);
 }
 
+.contact-copy {
+  container-type: inline-size;
+  container-name: contact-copy;
+}
+
 .contact-desk-title {
-  font-size: clamp(2.15rem, 4.6vw, 4.75rem);
+  font-size: clamp(2.35rem, 1.2rem + 12cqi, 5.75rem);
 }
 
 @media (min-width: 1024px) and (max-height: 760px) {
+  .contact-copy {
+    gap: 1.5rem;
+    justify-content: flex-start;
+    padding-top: calc(var(--pages-header-height) + 1.25rem);
+    padding-bottom: 1.5rem;
+  }
+
   .contact-desk-title {
-    font-size: clamp(1.85rem, 3.4vw, 3rem);
+    font-size: clamp(1.85rem, 1rem + 7cqi, 3.25rem);
+  }
+}
+
+@supports not (width: 1cqi) {
+  .contact-desk-title {
+    font-size: clamp(2.35rem, 5.4vw, 5.75rem);
   }
 }
 
@@ -424,25 +450,6 @@ html {
   .page-rise-delay-1,
   .page-rise-delay-2,
   .page-rise-delay-3 {
-    animation: none;
-  }
-}
-
-@keyframes about-marquee {
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-.about-marquee-track {
-  display: flex;
-  width: max-content;
-  animation: about-marquee 42s linear infinite;
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .about-marquee-track {
     animation: none;
   }
 }

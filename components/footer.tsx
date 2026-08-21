@@ -9,8 +9,8 @@ import { NAV_ITEMS } from "@/utils/constants";
 
 const Footer = () => {
   return (
-    <footer className="footer relative w-full border-t border-white/10 bg-primary text-white">
-      <div className="content-container page-gutters py-12 md:py-16">
+    <footer className="footer relative w-full bg-primary text-white">
+      <div className="content-container border-t border-white/10 page-gutters py-12 md:py-16">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
           <TransitionLink
             href="/"

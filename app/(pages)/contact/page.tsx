@@ -13,9 +13,9 @@ const ContactPage = () => {
   return (
     <main className="contact page-atmosphere bg-primary text-white">
       <h1 className="sr-only">Contact</h1>
-      <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
-        <section className="flex min-w-0 flex-col gap-8 px-[var(--container-padding-x)] pb-12 pt-[calc(var(--pages-header-height)+1.5rem)] lg:gap-10 lg:pr-10 lg:pb-12 xl:pr-14">
-          <p className="contact-desk-title max-w-[12ch] font-semibold leading-[1.05] tracking-[-0.045em] text-balance">
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_55%]">
+        <section className="contact-copy page-inline-start flex min-w-0 flex-col gap-8 pr-[var(--container-padding-x)] pb-12 pt-[calc(var(--pages-header-height)+1.5rem)] lg:min-h-svh lg:justify-center lg:gap-10 lg:pb-12 lg:pr-10 lg:pt-[var(--pages-header-height)] xl:pr-14">
+          <p className="contact-desk-title min-w-0 max-w-[min(12ch,100%)] font-semibold leading-[1.05] tracking-[-0.045em] text-pretty">
             Tell us the challenge. We&apos;ll send a next step.
           </p>
 
@@ -30,7 +30,7 @@ const ContactPage = () => {
                   Email
                 </p>
                 <Link
-                  className="mt-0.5 inline-block break-words font-medium underline decoration-white/30 underline-offset-4 hover:decoration-white"
+                  className="mt-0.5 inline-block max-w-full break-words font-medium underline decoration-white/30 underline-offset-4 hover:decoration-white [overflow-wrap:anywhere]"
                   href="mailto:enquiries@loadsoftraffic.com"
                 >
                   enquiries@loadsoftraffic.com

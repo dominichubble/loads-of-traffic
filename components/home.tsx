@@ -346,7 +346,7 @@ const Home = () => {
         Loads of Traffic digital marketing and growth services
       </h1>
 
-      <div className="fixed bottom-5 right-5 z-[900] flex items-center gap-3 md:bottom-8 md:right-8">
+      <div className="page-fixed-end fixed bottom-5 z-[900] flex items-center gap-3 md:bottom-8">
         <button
           type="button"
           className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-[0_10px_30px_rgba(0,0,79,0.45)] ring-2 ring-white/90 transition-transform hover:-translate-y-0.5 md:h-[var(--home-control-h)] md:min-h-[var(--home-control-h)] md:w-auto md:min-w-[var(--home-control-h)] md:gap-2 md:px-[var(--home-control-px)] md:text-[length:var(--home-control-font)]"
@@ -434,7 +434,7 @@ const Home = () => {
         />
 
         <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex h-full min-h-0 flex-col pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-5 md:pt-[calc(var(--pages-header-height)+1.25rem)]">
-          <div className="relative mx-auto min-h-0 w-full min-w-0 max-w-[min(52rem,100%)] flex-1">
+          <div className="relative min-h-0 w-full min-w-0 max-w-[min(52rem,100%)] flex-1">
             {servicesSectionContent.map((section, i) => {
               const isPink = i % 2 === 1;
               return (
@@ -447,7 +447,7 @@ const Home = () => {
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
-                  <div className="home-copy-scroll flex min-h-0 min-w-0 flex-1 flex-col justify-[safe_end] overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-[safe_center] [&::-webkit-scrollbar]:hidden">
+                  <div className="home-copy-scroll flex min-h-0 min-w-0 flex-1 flex-col justify-end overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-center [&::-webkit-scrollbar]:hidden">
                     <div className="w-full min-w-0 shrink-0">
                       <div className="w-full min-w-0">
                         <div className="flex items-center justify-between gap-3">

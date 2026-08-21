@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import AboutContact from "@/components/about-contact";
 import AboutFeatures from "@/components/about-features";
-import AboutMarquee from "@/components/about-marquee";
 import AboutMission from "@/components/about-mission";
 import AboutPortfolio from "@/components/about-portfolio";
 import AboutSection from "@/components/about-section";
@@ -38,7 +37,6 @@ const AboutPage = () => {
           <div className="mb-4 md:mb-12">
             <AboutPortfolio />
           </div>
-          <AboutMarquee />
           <AboutFeatures />
         </div>
       </div>
