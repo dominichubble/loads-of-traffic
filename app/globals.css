@@ -174,40 +174,12 @@ html {
   }
 }
 
-/* Laptop-height desktops (~721-900px of viewport). Without this the copy
-   jumped straight from full display size to the short-viewport tier at
-   720px, so every maximised window in this band rendered the hero at full
-   size with almost no slack — the CTA ended up crammed against the bottom
-   edge. Ease the type and rhythm first. */
-@media screen and (min-width: 768px) and (max-height: 900px) {
-  .home-copy-frame {
-    --home-title-size: clamp(2rem, 1.1rem + 7.25cqi, 4.5rem);
-    --home-copy-size: clamp(1rem, 0.9rem + 1.45cqi, 1.3rem);
-    --home-stack-gap: clamp(0.6rem, 0.4rem + 1.5cqi, 1.15rem);
-    --home-cta-height: clamp(2.9rem, 2.4rem + 2.4cqi, 3.6rem);
-  }
-}
-
 @media screen and (min-width: 768px) and (max-height: 720px) {
   .home-copy-frame {
     --home-title-size: clamp(1.85rem, 1rem + 6.5cqi, 3.25rem);
     --home-copy-size: clamp(0.95rem, 0.88rem + 1.2cqi, 1.15rem);
     --home-stack-gap: 0.5rem;
     --home-cta-height: 2.85rem;
-  }
-}
-
-/* Very short desktop windows / landscape tablets. The 720px tier still
-   overflowed here (the "Data Driven" slide wraps to the most lines), and
-   the copy scroller hides its scrollbar, so the overflow read as the CTA
-   being chopped off rather than as something scrollable. */
-@media screen and (min-width: 768px) and (max-height: 620px) {
-  .home-copy-frame {
-    --home-title-size: clamp(1.5rem, 0.9rem + 5cqi, 2.5rem);
-    --home-copy-size: clamp(0.85rem, 0.82rem + 0.95cqi, 1rem);
-    --home-stack-gap: 0.35rem;
-    --home-cta-height: 2.6rem;
-    --home-bottom-clearance: 0.75rem;
   }
 }
 

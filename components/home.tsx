@@ -289,6 +289,13 @@ const Home = () => {
           : eventTarget instanceof Node
             ? eventTarget.parentElement
             : null;
+      // Once the hero has grown past the viewport the page has real scrolling
+      // to do, so hand the wheel back to the browser. Previous / Next still
+      // step the deck.
+      if (document.documentElement.scrollHeight > window.innerHeight + 1) {
+        return;
+      }
+
       const scroller = fromEl?.closest(".home-copy-scroll");
 
       if (scroller instanceof HTMLElement) {
@@ -338,7 +345,7 @@ const Home = () => {
   return (
     <section
       ref={containerRef}
-      className="home relative h-[100svh] max-h-[100svh] overflow-hidden bg-primary md:grid md:grid-cols-[var(--site-split-lead)_1fr] md:grid-rows-1"
+      className="home relative min-h-[100svh] overflow-hidden bg-primary md:grid md:grid-cols-[var(--site-split-lead)_1fr] md:grid-rows-1"
       aria-label="Our services"
     >
       <HomeProgressBar ref={progressBarRef} />
@@ -406,7 +413,7 @@ const Home = () => {
       {/* Copy — transparent overlay on mobile, solid left column on desktop */}
       <div
         ref={textPanelRef}
-        className="absolute inset-0 z-20 flex min-h-0 flex-col overflow-hidden md:relative md:inset-auto md:z-auto md:h-[100svh] md:min-h-[100svh] md:border-r"
+        className="relative z-20 flex min-h-[100svh] flex-col overflow-hidden md:z-auto md:border-r"
         style={
           {
             "--hero-nav-ink": PANEL_BACKGROUNDS[0],
@@ -433,8 +440,8 @@ const Home = () => {
           aria-hidden="true"
         />
 
-        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex h-full min-h-0 flex-col pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-5 md:pt-[calc(var(--pages-header-height)+1.25rem)]">
-          <div className="relative min-h-0 w-full min-w-0 max-w-[min(52rem,100%)] flex-1">
+        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex flex-1 flex-col pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-16 md:pt-[calc(var(--pages-header-height)+1.25rem)]">
+          <div className="grid w-full min-w-0 max-w-[min(52rem,100%)] flex-1">
             {servicesSectionContent.map((section, i) => {
               const isPink = i % 2 === 1;
               return (
@@ -443,11 +450,11 @@ const Home = () => {
                   ref={(el) => {
                     textRefs.current[i] = el;
                   }}
-                  className="home-copy-slide pointer-events-auto absolute inset-0 z-[1] flex min-h-0 min-w-0 flex-col"
+                  className="home-copy-slide pointer-events-auto z-[1] flex min-w-0 flex-col [grid-area:1/1]"
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
-                  <div className="home-copy-scroll flex min-h-0 min-w-0 flex-1 flex-col justify-end overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-center [&::-webkit-scrollbar]:hidden">
+                  <div className="home-copy-scroll flex min-w-0 flex-1 flex-col justify-end overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-center [&::-webkit-scrollbar]:hidden">
                     <div className="w-full min-w-0 shrink-0">
                       <div className="w-full min-w-0">
                         <div className="flex items-center justify-between gap-3">
@@ -527,7 +534,7 @@ const Home = () => {
       {/* Video — full-bleed on mobile, right column on desktop */}
       <div
         ref={videoPanelRef}
-        className="absolute inset-0 min-h-0 md:relative md:h-[100svh]"
+        className="absolute inset-0 min-h-0 md:relative"
       >
         {VIDEO_SOURCES.map((video, index) => (
           <div
