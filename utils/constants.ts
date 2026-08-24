@@ -10,9 +10,6 @@ export const servicesSectionContent: servicesSectionContentType[] = [
     kicker: "The scan",
     ctaLabel: "Request a scan",
     readMoreLink: "/services#1",
-    titleStyle: "solid",
-    bullets: "dot",
-    cta: "white",
     description: [
       "Uncover insights with in-depth competitor research.",
       "Decode industry trends to sharpen your strategy.",
@@ -24,9 +21,6 @@ export const servicesSectionContent: servicesSectionContentType[] = [
     kicker: "The numbers",
     ctaLabel: "See the numbers",
     readMoreLink: "/services#3",
-    titleStyle: "outline",
-    bullets: "rule",
-    cta: "white",
     description: [
       "Harness analytics to fuel smarter decisions.",
       "Optimise campaigns with precise performance data.",
@@ -38,9 +32,6 @@ export const servicesSectionContent: servicesSectionContentType[] = [
     kicker: "The method",
     ctaLabel: "See the method",
     readMoreLink: "/services#4",
-    titleStyle: "solid",
-    bullets: "index",
-    cta: "yellow",
     description: [
       "Build strategic partnerships that drive revenue.",
       "Manage and grow affiliate programs seamlessly.",
@@ -52,9 +43,6 @@ export const servicesSectionContent: servicesSectionContentType[] = [
     kicker: "The next market",
     ctaLabel: "Plan the next market",
     readMoreLink: "/services#2",
-    titleStyle: "solid",
-    bullets: "dot",
-    cta: "navy",
     description: [
       "Unlock new markets and untapped opportunities.",
       "Elevate your brand with tailored strategies.",

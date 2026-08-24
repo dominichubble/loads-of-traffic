@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { servicesSectionContent } from "@/utils/constants";
-import type { HomeSlideBullet, HomeSlideCta } from "@/types";
 import { ArrowDown, ArrowRight, ArrowUp, Pause, Play } from "lucide-react";
 import HomeVideo from "./home-video";
 import HomeProgressBar from "./home-progress-bar";
@@ -21,47 +20,6 @@ const VIDEO_SOURCES = [
 ] as const;
 
 const PANEL_BACKGROUNDS = ["#00007A", "#ED1464", "#00007A", "#ED1464"] as const;
-
-const slideCtaClass = (cta: HomeSlideCta, isPink: boolean) => {
-  if (cta === "yellow") return "bg-yellow text-primary";
-  if (cta === "navy") return "bg-primary text-white";
-  return isPink ? "bg-white text-accent" : "bg-white text-primary";
-};
-
-const SlideBullet = ({
-  style,
-  index,
-}: {
-  style: HomeSlideBullet;
-  index: number;
-}) => {
-  if (style === "index") {
-    return (
-      <span
-        className="w-8 shrink-0 text-[0.72em] font-bold tabular-nums tracking-[0.14em] text-yellow"
-        aria-hidden="true"
-      >
-        0{index + 1}
-      </span>
-    );
-  }
-
-  if (style === "rule") {
-    return (
-      <span
-        className="mt-[0.85em] h-[2px] w-5 shrink-0 bg-yellow"
-        aria-hidden="true"
-      />
-    );
-  }
-
-  return (
-    <span
-      className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-white"
-      aria-hidden="true"
-    />
-  );
-};
 
 const Home = () => {
   const containerRef = useRef<HTMLElement>(null);
@@ -466,11 +424,7 @@ const Home = () => {
                           </span>
                         </div>
                         <h2
-                          className={`mt-[var(--home-stack-gap)] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:tracking-[-0.02em] md:[text-shadow:none] ${
-                            section.titleStyle === "outline"
-                              ? "home-title-outline max-w-[8ch] [text-shadow:none] md:[text-shadow:none]"
-                              : "max-w-[14ch] md:max-w-none"
-                          }`}
+                          className="mt-[var(--home-stack-gap)] max-w-[14ch] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:tracking-[-0.02em] md:[text-shadow:none]"
                           style={{ fontSize: "var(--home-title-size)" }}
                         >
                           {section.title}
@@ -484,11 +438,11 @@ const Home = () => {
                           gap: "var(--home-stack-gap)",
                         }}
                       >
-                        {section.description.map((line, lineIndex) => (
+                        {section.description.map((line) => (
                           <li key={line} className="flex min-w-0 gap-3.5">
-                            <SlideBullet
-                              style={section.bullets}
-                              index={lineIndex}
+                            <span
+                              className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-white"
+                              aria-hidden="true"
                             />
                             <span className="min-w-0 break-words font-medium [text-shadow:0_2px_18px_rgba(0,0,0,0.85)] md:font-normal md:[text-shadow:none]">
                               {line}
@@ -506,7 +460,7 @@ const Home = () => {
                         <TransitionLink
                           href={section.readMoreLink}
                           tabIndex={activeSection === i ? 0 : -1}
-                          className={`group inline-flex items-center rounded-full font-semibold shadow-lg ${slideCtaClass(section.cta, isPink)}`}
+                          className={`group inline-flex items-center rounded-full bg-white font-semibold shadow-lg ${isPink ? "text-accent" : "text-primary"}`}
                           style={{
                             minHeight: "var(--home-cta-height)",
                             paddingInline: "var(--home-cta-pad-x)",
