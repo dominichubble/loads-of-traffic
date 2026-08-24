@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { servicesSectionContent } from "@/utils/constants";
-import type { HomeSlideCta } from "@/types";
 import TransitionLink from "./transition-link";
 import { cn } from "@/utils";
 
@@ -12,11 +11,6 @@ const servicePosters = [
   "/lottie-thumbnail-4.png",
 ];
 
-const slideCtaClass = (cta: HomeSlideCta, isPink: boolean) => {
-  if (cta === "yellow") return "bg-yellow text-primary";
-  if (cta === "navy") return "bg-primary text-white";
-  return isPink ? "bg-white text-accent" : "bg-white text-primary";
-};
 
 const HomeStatic = () => {
   return (
@@ -65,34 +59,17 @@ const HomeStatic = () => {
                   </div>
 
                   <h2
-                    className={cn(
-                      "mt-6 text-[clamp(1.8rem,4vw,3.25rem)] font-semibold leading-[1.05] tracking-[-0.04em]",
-                      service.titleStyle === "outline" && "home-title-outline",
-                    )}
+                    className="mt-6 text-[clamp(1.8rem,4vw,3.25rem)] font-semibold leading-[1.05] tracking-[-0.04em]"
                   >
                     {service.title}
                   </h2>
                   <ul className="mt-5 space-y-3 text-sm leading-relaxed text-white md:text-base">
-                    {service.description.map((line, lineIndex) => (
+                    {service.description.map((line) => (
                       <li key={line} className="flex gap-3">
-                        {service.bullets === "index" ? (
-                          <span
-                            className="w-7 shrink-0 text-xs font-bold tabular-nums tracking-[0.12em] text-yellow"
-                            aria-hidden="true"
-                          >
-                            0{lineIndex + 1}
-                          </span>
-                        ) : service.bullets === "rule" ? (
-                          <span
-                            className="mt-[0.7em] h-[2px] w-4 shrink-0 bg-yellow"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <span
-                            className="mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
-                            aria-hidden="true"
-                          />
-                        )}
+                        <span
+                          className="mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                          aria-hidden="true"
+                        />
                         <span>{line}</span>
                       </li>
                     ))}
@@ -101,8 +78,8 @@ const HomeStatic = () => {
                   <TransitionLink
                     href={service.readMoreLink}
                     className={cn(
-                      "mt-7 inline-flex min-h-12 w-fit items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold shadow-lg",
-                      slideCtaClass(service.cta, isPink),
+                      "mt-7 inline-flex min-h-12 w-fit items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold shadow-lg",
+                      isPink ? "text-accent" : "text-primary",
                     )}
                   >
                     {service.ctaLabel}

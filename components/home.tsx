@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { servicesSectionContent } from "@/utils/constants";
-import type { HomeSlideBullet, HomeSlideCta } from "@/types";
 import { ArrowDown, ArrowRight, ArrowUp, Pause, Play } from "lucide-react";
 import HomeVideo from "./home-video";
 import HomeProgressBar from "./home-progress-bar";
@@ -21,47 +20,6 @@ const VIDEO_SOURCES = [
 ] as const;
 
 const PANEL_BACKGROUNDS = ["#00007A", "#ED1464", "#00007A", "#ED1464"] as const;
-
-const slideCtaClass = (cta: HomeSlideCta, isPink: boolean) => {
-  if (cta === "yellow") return "bg-yellow text-primary";
-  if (cta === "navy") return "bg-primary text-white";
-  return isPink ? "bg-white text-accent" : "bg-white text-primary";
-};
-
-const SlideBullet = ({
-  style,
-  index,
-}: {
-  style: HomeSlideBullet;
-  index: number;
-}) => {
-  if (style === "index") {
-    return (
-      <span
-        className="w-8 shrink-0 text-[0.72em] font-bold tabular-nums tracking-[0.14em] text-yellow"
-        aria-hidden="true"
-      >
-        0{index + 1}
-      </span>
-    );
-  }
-
-  if (style === "rule") {
-    return (
-      <span
-        className="mt-[0.85em] h-[2px] w-5 shrink-0 bg-yellow"
-        aria-hidden="true"
-      />
-    );
-  }
-
-  return (
-    <span
-      className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-white"
-      aria-hidden="true"
-    />
-  );
-};
 
 const Home = () => {
   const containerRef = useRef<HTMLElement>(null);
@@ -289,6 +247,13 @@ const Home = () => {
           : eventTarget instanceof Node
             ? eventTarget.parentElement
             : null;
+      // Once the hero has grown past the viewport the page has real scrolling
+      // to do, so hand the wheel back to the browser. Previous / Next still
+      // step the deck.
+      if (document.documentElement.scrollHeight > window.innerHeight + 1) {
+        return;
+      }
+
       const scroller = fromEl?.closest(".home-copy-scroll");
 
       if (scroller instanceof HTMLElement) {
@@ -338,7 +303,7 @@ const Home = () => {
   return (
     <section
       ref={containerRef}
-      className="home relative h-[100svh] max-h-[100svh] overflow-hidden bg-primary md:grid md:grid-cols-[1fr_55%] md:grid-rows-1"
+      className="home relative min-h-[100svh] overflow-hidden bg-primary md:grid md:grid-cols-[var(--site-split-lead)_1fr] md:grid-rows-1"
       aria-label="Our services"
     >
       <HomeProgressBar ref={progressBarRef} />
@@ -406,7 +371,7 @@ const Home = () => {
       {/* Copy — transparent overlay on mobile, solid left column on desktop */}
       <div
         ref={textPanelRef}
-        className="absolute inset-0 z-20 flex min-h-0 flex-col overflow-hidden md:relative md:inset-auto md:z-auto md:h-[100svh] md:min-h-[100svh] md:border-r"
+        className="relative z-20 flex min-h-[100svh] flex-col overflow-hidden md:z-auto md:border-r"
         style={
           {
             "--hero-nav-ink": PANEL_BACKGROUNDS[0],
@@ -433,8 +398,8 @@ const Home = () => {
           aria-hidden="true"
         />
 
-        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex h-full min-h-0 flex-col pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-5 md:pt-[calc(var(--pages-header-height)+1.25rem)]">
-          <div className="relative min-h-0 w-full min-w-0 max-w-[min(52rem,100%)] flex-1">
+        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex flex-1 flex-col pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-16 md:pt-[calc(var(--pages-header-height)+1.25rem)]">
+          <div className="grid w-full min-w-0 max-w-[min(52rem,100%)] flex-1">
             {servicesSectionContent.map((section, i) => {
               const isPink = i % 2 === 1;
               return (
@@ -443,11 +408,11 @@ const Home = () => {
                   ref={(el) => {
                     textRefs.current[i] = el;
                   }}
-                  className="home-copy-slide pointer-events-auto absolute inset-0 z-[1] flex min-h-0 min-w-0 flex-col"
+                  className="home-copy-slide pointer-events-auto z-[1] flex min-w-0 flex-col [grid-area:1/1]"
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
-                  <div className="home-copy-scroll flex min-h-0 min-w-0 flex-1 flex-col justify-end overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-center [&::-webkit-scrollbar]:hidden">
+                  <div className="home-copy-scroll flex min-w-0 flex-1 flex-col justify-end overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-center [&::-webkit-scrollbar]:hidden">
                     <div className="w-full min-w-0 shrink-0">
                       <div className="w-full min-w-0">
                         <div className="flex items-center justify-between gap-3">
@@ -459,11 +424,7 @@ const Home = () => {
                           </span>
                         </div>
                         <h2
-                          className={`mt-[var(--home-stack-gap)] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:tracking-[-0.02em] md:[text-shadow:none] ${
-                            section.titleStyle === "outline"
-                              ? "home-title-outline max-w-[8ch] [text-shadow:none] md:[text-shadow:none]"
-                              : "max-w-[14ch] md:max-w-none"
-                          }`}
+                          className="mt-[var(--home-stack-gap)] max-w-[14ch] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:tracking-[-0.02em] md:[text-shadow:none]"
                           style={{ fontSize: "var(--home-title-size)" }}
                         >
                           {section.title}
@@ -477,11 +438,11 @@ const Home = () => {
                           gap: "var(--home-stack-gap)",
                         }}
                       >
-                        {section.description.map((line, lineIndex) => (
+                        {section.description.map((line) => (
                           <li key={line} className="flex min-w-0 gap-3.5">
-                            <SlideBullet
-                              style={section.bullets}
-                              index={lineIndex}
+                            <span
+                              className="mt-[0.7em] h-2 w-2 shrink-0 rounded-full bg-white"
+                              aria-hidden="true"
                             />
                             <span className="min-w-0 break-words font-medium [text-shadow:0_2px_18px_rgba(0,0,0,0.85)] md:font-normal md:[text-shadow:none]">
                               {line}
@@ -499,7 +460,7 @@ const Home = () => {
                         <TransitionLink
                           href={section.readMoreLink}
                           tabIndex={activeSection === i ? 0 : -1}
-                          className={`group inline-flex items-center rounded-full font-semibold shadow-lg ${slideCtaClass(section.cta, isPink)}`}
+                          className={`group inline-flex items-center rounded-full bg-white font-semibold shadow-lg ${isPink ? "text-accent" : "text-primary"}`}
                           style={{
                             minHeight: "var(--home-cta-height)",
                             paddingInline: "var(--home-cta-pad-x)",
@@ -527,7 +488,7 @@ const Home = () => {
       {/* Video — full-bleed on mobile, right column on desktop */}
       <div
         ref={videoPanelRef}
-        className="absolute inset-0 min-h-0 md:relative md:h-[100svh]"
+        className="absolute inset-0 min-h-0 md:relative"
       >
         {VIDEO_SOURCES.map((video, index) => (
           <div
