@@ -83,6 +83,16 @@ html.page-transitioning #main-content {
   --site-max-width: 90rem;
   --content-max-width: var(--site-max-width);
   --site-frame-inset: max(0px, calc((100vw - var(--site-max-width)) / 2));
+  /* Width of the framed content column itself (never wider than the frame). */
+  --site-frame-width: min(100vw, var(--site-max-width));
+  /* Lead column for the full-bleed split layouts (home hero, contact).
+     The split point has to track the FRAME, not the viewport: the copy
+     column already carries a viewport-derived inset, so sizing it as a
+     plain percentage of the viewport makes the padding outgrow the column
+     and squeezes the copy narrower the wider the screen gets. */
+  --site-split-lead: calc(
+    var(--site-frame-inset) + 0.45 * var(--site-frame-width)
+  );
   --page-split-gap: clamp(1.5rem, 0.75rem + 2.5vw, 6rem);
   --radius-card: 1.5rem;
   --shadow-card: 0 24px 70px rgba(0, 0, 79, 0.14);
@@ -406,7 +416,11 @@ html {
 
 @media (min-width: 1024px) {
   .contact-form textarea {
-    flex: 1 1 12rem;
+    /* Grow to fill the column, but stop before it becomes a vast empty
+       slab on tall or zoomed-out viewports. */
+    flex: 0 1 auto;
+    min-height: 12rem;
+    max-height: 22rem;
     resize: none;
   }
 }
@@ -414,7 +428,7 @@ html {
 @media (min-width: 1024px) and (max-height: 760px) {
   .contact-form textarea {
     min-height: 8.5rem;
-    flex: 1 1 8.5rem;
+    max-height: 14rem;
   }
 }
 

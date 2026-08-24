@@ -338,7 +338,7 @@ const Home = () => {
   return (
     <section
       ref={containerRef}
-      className="home relative h-[100svh] max-h-[100svh] overflow-hidden bg-primary md:grid md:grid-cols-[1fr_55%] md:grid-rows-1"
+      className="home relative h-[100svh] max-h-[100svh] overflow-hidden bg-primary md:grid md:grid-cols-[var(--site-split-lead)_1fr] md:grid-rows-1"
       aria-label="Our services"
     >
       <HomeProgressBar ref={progressBarRef} />
