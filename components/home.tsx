@@ -86,12 +86,6 @@ const Home = () => {
       gsap.set(progressBarRef.current, { scaleY: 0 });
     }
 
-    if (textPanelRef.current) {
-      textPanelRef.current.style.setProperty(
-        "--hero-nav-ink",
-        PANEL_BACKGROUNDS[0],
-      );
-    }
   }, [prefersReducedMotion]);
 
   const stepToSlide = useCallback((direction: 1 | -1) => {
@@ -127,42 +121,9 @@ const Home = () => {
     // Copy stays put and crossfades.
     const progress = HERO_SLIDE_COUNT <= 1 ? 0 : to / (HERO_SLIDE_COUNT - 1);
 
-    const colorFrom = PANEL_BACKGROUNDS[from];
-    const colorTo = PANEL_BACKGROUNDS[to];
-
-    const syncNavInkToWipe = () => {
-      const panel = textPanelRef.current;
-      const label = document.getElementById("hero-nav-home-label");
-      if (!panel || !label) return;
-
-      const panelRect = panel.getBoundingClientRect();
-      const labelRect = label.getBoundingClientRect();
-      const labelY = labelRect.top + labelRect.height / 2 - panelRect.top;
-      const yPercent = Number(gsap.getProperty(toPanel, "yPercent"));
-
-      // Incoming panel edge that sweeps across the Home label.
-      let coveredByIncoming = false;
-      if (direction > 0) {
-        // Panel enters from above; its bottom edge moves top → bottom.
-        const wipeY = (1 + yPercent / 100) * panelRect.height;
-        coveredByIncoming = wipeY >= labelY;
-      } else {
-        // Panel enters from below; its top edge moves bottom → top.
-        const wipeY = (yPercent / 100) * panelRect.height;
-        coveredByIncoming = labelY >= wipeY;
-      }
-
-      panel.style.setProperty(
-        "--hero-nav-ink",
-        coveredByIncoming ? colorTo : colorFrom,
-      );
-    };
-
     const tl = gsap.timeline({
       defaults: { ease: "power2.inOut", duration: HERO_SLIDE_DURATION },
-      onUpdate: syncNavInkToWipe,
       onComplete: () => {
-        textPanelRef.current?.style.setProperty("--hero-nav-ink", colorTo);
         activeSectionRef.current = to;
         setActiveSection(to);
         isAnimatingRef.current = false;
@@ -173,7 +134,6 @@ const Home = () => {
     });
 
     transitionTweenRef.current = tl;
-    textPanelRef.current?.style.setProperty("--hero-nav-ink", colorFrom);
 
     if (progressBarRef.current) {
       tl.to(progressBarRef.current, { scaleY: progress }, 0);
@@ -372,11 +332,6 @@ const Home = () => {
       <div
         ref={textPanelRef}
         className="relative z-20 flex min-h-[100svh] flex-col overflow-hidden md:z-auto md:border-r"
-        style={
-          {
-            "--hero-nav-ink": PANEL_BACKGROUNDS[0],
-          } as React.CSSProperties
-        }
       >
         {PANEL_BACKGROUNDS.map((color, i) => (
           <div

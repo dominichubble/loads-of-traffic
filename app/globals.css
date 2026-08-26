@@ -161,7 +161,12 @@ html {
   }
 }
 
-@media screen and (min-width: 768px) and (max-height: 720px) {
+/* Short-viewport threshold, used consistently everywhere on the site that
+   tightens type/spacing for a short window instead of the default
+   width-only breakpoints (here, in .contact-copy/.contact-desk-title/
+   .contact-form below). Previously three different numbers (700/720/760)
+   were picked independently with no shared reasoning. */
+@media screen and (min-width: 768px) and (max-height: 760px) {
   .home-copy-frame {
     --home-title-size: clamp(1.85rem, 1rem + 6.5cqi, 3.25rem);
     --home-copy-size: clamp(0.95rem, 0.88rem + 1.2cqi, 1.15rem);
@@ -170,7 +175,7 @@ html {
   }
 }
 
-@media screen and (max-width: 767px) and (max-height: 700px) {
+@media screen and (max-width: 767px) and (max-height: 760px) {
   .home-copy-frame {
     --home-bottom-clearance: 4.5rem;
   }
@@ -194,6 +199,26 @@ html {
       --home-cta-font: clamp(0.95rem, 0.7rem + 0.5vw, 1.4rem);
       --home-cta-height: clamp(3.15rem, 2.4rem + 1.4vw, 4.75rem);
       --home-cta-pad-x: clamp(1.5rem, 1rem + 1.2vw, 3rem);
+    }
+  }
+
+  /* Browsers without container-query units never had a short-viewport
+     tier at all, so a short window on one of them would render the full
+     desktop size with no tightening — the exact clipping bug this whole
+     short-viewport system exists to prevent, just for a fallback browser
+     instead of a modern one. Mirror the cqi tier's tightening here too. */
+  @media screen and (min-width: 768px) and (max-height: 760px) {
+    .home-copy-frame {
+      --home-title-size: clamp(1.85rem, 4.5vw, 3.25rem);
+      --home-copy-size: clamp(0.95rem, 2vw, 1.15rem);
+      --home-stack-gap: 0.5rem;
+      --home-cta-height: 2.85rem;
+    }
+  }
+
+  @media screen and (max-width: 767px) and (max-height: 760px) {
+    .home-copy-frame {
+      --home-bottom-clearance: 4.5rem;
     }
   }
 }
@@ -642,170 +667,4 @@ a:hover .hover-element {
   -webkit-text-stroke: 2px var(--color-accent);
   text-stroke: 2px var(--color-accent);
   color: transparent;
-}
-
-/* Embla */
-
-.embla {
-  max-width: 48rem;
-  margin: auto;
-  --slide-height: 19rem;
-  --slide-spacing: 1rem;
-  --slide-size: 100%;
-}
-
-.embla__viewport {
-  overflow: hidden;
-}
-
-.embla__container {
-  display: flex;
-  touch-action: pan-y pinch-zoom;
-  margin-left: calc(var(--slide-spacing) * -1);
-}
-
-.embla__slide {
-  transform: translate3d(0, 0, 0);
-  flex: 0 0 var(--slide-size);
-  min-width: 0;
-  padding-left: var(--slide-spacing);
-}
-
-.embla__slide__number {
-  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
-  border-radius: 1.8rem;
-  font-size: 4rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--slide-height);
-  user-select: none;
-}
-
-.embla__controls {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  justify-content: space-between;
-  gap: 1.2rem;
-  margin-top: 1.8rem;
-}
-
-.embla__buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.6rem;
-  align-items: center;
-}
-
-.embla__button {
-  -webkit-tap-highlight-color: rgba(var(--text-high-contrast-rgb-value), 0.5);
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: white;
-  touch-action: manipulation;
-  display: inline-flex;
-  text-decoration: none;
-  cursor: pointer;
-  border: 0;
-  padding: 0;
-  margin: 0;
-  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
-  z-index: 1;
-  border-radius: 50%;
-  color: var(--text-body);
-  display: flex;
-  align-items: center;
-  color: black;
-  justify-content: center;
-}
-
-.embla__button:disabled {
-  color: var(--detail-high-contrast);
-}
-
-.embla__button__svg {
-  width: 35%;
-  height: 35%;
-}
-
-.embla__play {
-  -webkit-tap-highlight-color: rgba(var(--text-high-contrast-rgb-value), 0.5);
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: transparent;
-  touch-action: manipulation;
-  display: inline-flex;
-  text-decoration: none;
-  cursor: pointer;
-  border: 0;
-  padding: 0;
-  margin: 0;
-  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
-  border-radius: 1.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  justify-self: flex-end;
-  color: var(--text-body);
-  font-weight: 700;
-  font-size: 1.4rem;
-  padding: 0 2.4rem;
-  min-width: 8.4rem;
-}
-
-.embla__progress {
-  border-radius: 1.8rem;
-  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
-  background-color: var(--background-site);
-  position: relative;
-  height: 0.6rem;
-  justify-self: flex-end;
-  align-self: center;
-  width: 13rem;
-  max-width: 90%;
-  overflow: hidden;
-}
-
-.embla__progress__bar {
-  background-color: var(--text-body);
-  position: absolute;
-  width: 100%;
-  top: 0;
-  bottom: 0;
-  left: -100%;
-}
-
-.embla__controls {
-  grid-template-columns: auto 1fr auto;
-}
-
-.embla__progress {
-  justify-self: center;
-  transition: opacity 0.3s ease-in-out;
-  width: 8rem;
-}
-
-.embla__progress--hidden {
-  opacity: 0;
-}
-
-.embla__progress__bar {
-  animation-name: autoplay-progress;
-  animation-timing-function: linear;
-  animation-iteration-count: 1;
-}
-
-.embla__progress--hidden .embla__progress__bar {
-  animation-play-state: paused;
-}
-
-@keyframes autoplay-progress {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(100%, 0, 0);
-  }
 }
