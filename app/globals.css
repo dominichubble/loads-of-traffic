@@ -80,22 +80,6 @@ html.page-transitioning #main-content {
   --sections-gap: clamp(3.75rem, 2.5rem + 5vw, 10rem);
   --container-padding-x: clamp(1.25rem, 10vw, 7.5rem);
   --container-padding-y: clamp(2rem, 1.25rem + 3vw, 7rem);
-  /* Percentage of the viewport rather than a fixed cap, so the frame scales
-     with the screen instead of stranding the content in a fixed-width island
-     with ever-growing empty bands either side. */
-  --site-max-width: 90vw;
-  --content-max-width: var(--site-max-width);
-  --site-frame-inset: max(0px, calc((100vw - var(--site-max-width)) / 2));
-  /* Width of the framed content column itself (never wider than the frame). */
-  --site-frame-width: min(100vw, var(--site-max-width));
-  /* Lead column for the full-bleed split layouts (home hero, contact).
-     The split point has to track the FRAME, not the viewport: the copy
-     column already carries a viewport-derived inset, so sizing it as a
-     plain percentage of the viewport makes the padding outgrow the column
-     and squeezes the copy narrower the wider the screen gets. */
-  --site-split-lead: calc(
-    var(--site-frame-inset) + 0.45 * var(--site-frame-width)
-  );
   --page-split-gap: clamp(1.5rem, 0.75rem + 2.5vw, 6rem);
   --radius-card: 1.5rem;
   --shadow-card: 0 24px 70px rgba(0, 0, 79, 0.14);
@@ -214,11 +198,10 @@ html {
   }
 }
 
+/* The site is full-bleed: no max width, no centring frame. This just spans
+   the parent; .page-gutters supplies the breathing room at the edges. */
 .content-container {
   width: 100%;
-  max-width: var(--content-max-width);
-  margin-left: var(--site-frame-inset);
-  margin-right: auto;
 }
 
 /* Shared page frame: header offset + bottom breathing room. */
@@ -231,23 +214,23 @@ html {
   padding-bottom: 0;
 }
 
-/* Shared horizontal page gutters — use with .content-container. */
+/* Shared horizontal page gutters. */
 .page-gutters {
   padding-inline: var(--container-padding-x);
 }
 
-/* Full-bleed chrome: same left/right edge as centered .content-container. */
+/* Full-bleed chrome: same left/right edge as the page gutters. */
 .page-inline-start {
-  padding-left: calc(var(--site-frame-inset) + var(--container-padding-x));
+  padding-left: var(--container-padding-x);
 }
 
 .page-inline-end {
-  padding-right: calc(var(--site-frame-inset) + var(--container-padding-x));
+  padding-right: var(--container-padding-x);
 }
 
 /* Home slide controls: same right edge as the navbar. */
 .page-fixed-end {
-  right: calc(var(--site-frame-inset) + var(--container-padding-x));
+  right: var(--container-padding-x);
 }
 
 /* Match home hero split: narrower left, 55% right. */
