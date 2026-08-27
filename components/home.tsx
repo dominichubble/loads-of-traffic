@@ -363,28 +363,35 @@ const Home = () => {
                   ref={(el) => {
                     textRefs.current[i] = el;
                   }}
-                  className="home-copy-slide pointer-events-auto z-[1] flex min-w-0 flex-col [grid-area:1/1]"
+                  className="home-copy-slide pointer-events-auto relative z-[1] flex min-w-0 flex-col [grid-area:1/1]"
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
-                  <div className="home-copy-scroll flex min-w-0 flex-1 flex-col justify-end overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-center [&::-webkit-scrollbar]:hidden">
+                  <span
+                    className="pointer-events-none absolute inset-0 z-0 hidden select-none items-center justify-center overflow-hidden md:flex"
+                    aria-hidden="true"
+                  >
+                    <span className="text-[clamp(11rem,34vw,28rem)] font-bold leading-none tracking-[-0.05em] text-white/10">
+                      0{i + 1}
+                    </span>
+                  </span>
+
+                  <div className="home-copy-scroll relative z-10 flex min-w-0 flex-1 flex-col justify-end overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-center [&::-webkit-scrollbar]:hidden">
                     <div className="w-full min-w-0 shrink-0">
-                      <div className="w-full min-w-0">
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="page-kicker text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
-                            {section.kicker}
-                          </span>
-                          <span className="shrink-0 text-[length:var(--home-copy-size)] font-semibold tabular-nums text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
-                            0{i + 1} / 04
-                          </span>
-                        </div>
-                        <h2
-                          className="mt-[var(--home-stack-gap)] max-w-[14ch] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:tracking-[-0.02em] md:[text-shadow:none]"
-                          style={{ fontSize: "var(--home-title-size)" }}
-                        >
-                          {section.title}
-                        </h2>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="page-kicker text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
+                          {section.kicker}
+                        </span>
+                        <span className="shrink-0 text-[length:var(--home-copy-size)] font-semibold tabular-nums text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
+                          0{i + 1} / 04
+                        </span>
                       </div>
+                      <h2
+                        className="mt-[var(--home-stack-gap)] max-w-[14ch] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:tracking-[-0.02em] md:[text-shadow:none]"
+                        style={{ fontSize: "var(--home-title-size)" }}
+                      >
+                        {section.title}
+                      </h2>
 
                       <ul
                         className="home-bullet-list mt-[var(--home-stack-gap)] flex w-full min-w-0 flex-col leading-relaxed text-white"
