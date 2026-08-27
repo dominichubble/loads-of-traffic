@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Footer from "@/components/footer";
 import ServicesContent from "@/components/services-content";
 
 export const metadata: Metadata = {
@@ -8,7 +9,12 @@ export const metadata: Metadata = {
 };
 
 const ServicesPage = () => {
-  return <ServicesContent />;
+  return (
+    <>
+      <ServicesContent />
+      <Footer />
+    </>
+  );
 };
 
 export default ServicesPage;

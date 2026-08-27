@@ -1,13 +1,7 @@
 import type { ReactNode } from "react";
-import Footer from "@/components/footer";
 
 const PagesLayout = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="relative z-0">
-      {children}
-      <Footer />
-    </div>
-  );
+  return <div className="relative z-0">{children}</div>;
 };
 
 export default PagesLayout;

@@ -95,13 +95,13 @@ const ContactForm = () => {
 
       <div className="shrink-0">
         <h2 className="page-kicker text-accent">The brief</h2>
-        <p className="text-primary/55 mt-4 max-w-[36ch] text-sm leading-relaxed">
+        <p className="contact-form-helper text-primary/55 mt-4 max-w-[36ch] text-sm leading-relaxed">
           A few lines is enough. Required fields are marked with an asterisk.
         </p>
       </div>
 
-      <div className="mt-6 flex min-h-0 flex-1 flex-col gap-6 md:mt-8 md:gap-7">
-        <div className="grid gap-6 @[34rem]:grid-cols-2 @[34rem]:gap-x-10 @[34rem]:gap-y-7">
+      <div className="no-scrollbar mt-[var(--contact-stack-gap)] flex min-h-0 flex-1 flex-col gap-[var(--contact-stack-gap)] overflow-y-auto overscroll-contain">
+        <div className="grid gap-[var(--contact-field-gap)] @[34rem]:grid-cols-2 @[34rem]:gap-x-10 @[34rem]:gap-y-[var(--contact-field-gap)]">
           <Field id="fullName" label="Full name" required>
             <Input
               id="fullName"
@@ -160,9 +160,28 @@ const ContactForm = () => {
             className="flex-1"
           />
         </Field>
+
+        {status === "success" && (
+          <p
+            className="flex shrink-0 items-center gap-2 text-sm font-semibold text-primary"
+            aria-live="polite"
+          >
+            <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+            Thanks for reaching out! We&apos;ll be in touch shortly.
+          </p>
+        )}
+        {status === "error" && (
+          <p
+            className="flex shrink-0 items-center gap-2 text-sm font-semibold text-accent"
+            role="alert"
+          >
+            <AlertCircle className="h-5 w-5" aria-hidden="true" />
+            {errorMessage}
+          </p>
+        )}
       </div>
 
-      <div className="mt-6 flex shrink-0 flex-col gap-4 sm:mt-8 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-[var(--contact-stack-gap)] flex shrink-0 flex-row flex-wrap items-center justify-between gap-x-6 gap-y-3">
         <button
           type="submit"
           disabled={status === "submitting"}
@@ -171,29 +190,10 @@ const ContactForm = () => {
           {status === "submitting" ? "Sending…" : "Send message"}
           <Send className="h-4 w-4" aria-hidden="true" />
         </button>
-        <p className="text-primary/50 text-xs leading-relaxed sm:max-w-[24ch] sm:text-right">
+        <p className="contact-form-caption text-primary/50 max-w-[24ch] text-right text-xs leading-relaxed">
           We only use your details to respond to this enquiry.
         </p>
       </div>
-
-      {status === "success" && (
-        <p
-          className="mt-4 flex shrink-0 items-center gap-2 text-sm font-semibold text-primary"
-          aria-live="polite"
-        >
-          <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
-          Thanks for reaching out! We&apos;ll be in touch shortly.
-        </p>
-      )}
-      {status === "error" && (
-        <p
-          className="mt-4 flex shrink-0 items-center gap-2 text-sm font-semibold text-accent"
-          role="alert"
-        >
-          <AlertCircle className="h-5 w-5" aria-hidden="true" />
-          {errorMessage}
-        </p>
-      )}
     </form>
   );
 };
