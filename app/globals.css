@@ -229,6 +229,16 @@ html {
   width: 100%;
 }
 
+/* Caps an individual content block (a card, a grid of cards, a form) at a
+   comfortable width on very large screens. Distinct from .content-container
+   above, which is deliberately full-bleed - the outer frame/background stays
+   edge-to-edge, but a single card stretching to 3000px+ on a 4K monitor looks
+   broken regardless of how the page frame is set up. */
+.content-cap {
+  max-width: 90rem;
+  margin-inline: auto;
+}
+
 /* Shared page frame: header offset + bottom breathing room. */
 .page-shell {
   padding-top: calc(var(--pages-header-height) + var(--container-padding-y));

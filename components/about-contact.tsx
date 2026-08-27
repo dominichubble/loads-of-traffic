@@ -4,7 +4,7 @@ import TransitionLink from "./transition-link";
 
 const AboutContact = () => {
   return (
-    <section className="about-contact content-container page-gutters">
+    <section className="about-contact content-container content-cap page-gutters">
       <div className="grid overflow-hidden rounded-[2rem] border border-white/50 bg-white text-primary shadow-[0_28px_80px_rgba(0,0,79,0.22)] lg:grid-cols-[1fr_55%]">
         <div className="p-7 sm:p-10 lg:p-14">
           <span className="page-kicker text-accent">Start a conversation</span>
