@@ -86,12 +86,6 @@ const Home = () => {
       gsap.set(progressBarRef.current, { scaleY: 0 });
     }
 
-    if (textPanelRef.current) {
-      textPanelRef.current.style.setProperty(
-        "--hero-nav-ink",
-        PANEL_BACKGROUNDS[0],
-      );
-    }
   }, [prefersReducedMotion]);
 
   const stepToSlide = useCallback((direction: 1 | -1) => {
@@ -127,42 +121,9 @@ const Home = () => {
     // Copy stays put and crossfades.
     const progress = HERO_SLIDE_COUNT <= 1 ? 0 : to / (HERO_SLIDE_COUNT - 1);
 
-    const colorFrom = PANEL_BACKGROUNDS[from];
-    const colorTo = PANEL_BACKGROUNDS[to];
-
-    const syncNavInkToWipe = () => {
-      const panel = textPanelRef.current;
-      const label = document.getElementById("hero-nav-home-label");
-      if (!panel || !label) return;
-
-      const panelRect = panel.getBoundingClientRect();
-      const labelRect = label.getBoundingClientRect();
-      const labelY = labelRect.top + labelRect.height / 2 - panelRect.top;
-      const yPercent = Number(gsap.getProperty(toPanel, "yPercent"));
-
-      // Incoming panel edge that sweeps across the Home label.
-      let coveredByIncoming = false;
-      if (direction > 0) {
-        // Panel enters from above; its bottom edge moves top → bottom.
-        const wipeY = (1 + yPercent / 100) * panelRect.height;
-        coveredByIncoming = wipeY >= labelY;
-      } else {
-        // Panel enters from below; its top edge moves bottom → top.
-        const wipeY = (yPercent / 100) * panelRect.height;
-        coveredByIncoming = labelY >= wipeY;
-      }
-
-      panel.style.setProperty(
-        "--hero-nav-ink",
-        coveredByIncoming ? colorTo : colorFrom,
-      );
-    };
-
     const tl = gsap.timeline({
       defaults: { ease: "power2.inOut", duration: HERO_SLIDE_DURATION },
-      onUpdate: syncNavInkToWipe,
       onComplete: () => {
-        textPanelRef.current?.style.setProperty("--hero-nav-ink", colorTo);
         activeSectionRef.current = to;
         setActiveSection(to);
         isAnimatingRef.current = false;
@@ -173,7 +134,6 @@ const Home = () => {
     });
 
     transitionTweenRef.current = tl;
-    textPanelRef.current?.style.setProperty("--hero-nav-ink", colorFrom);
 
     if (progressBarRef.current) {
       tl.to(progressBarRef.current, { scaleY: progress }, 0);
@@ -372,11 +332,6 @@ const Home = () => {
       <div
         ref={textPanelRef}
         className="relative z-20 flex min-h-[100svh] flex-col overflow-hidden md:z-auto md:border-r"
-        style={
-          {
-            "--hero-nav-ink": PANEL_BACKGROUNDS[0],
-          } as React.CSSProperties
-        }
       >
         {PANEL_BACKGROUNDS.map((color, i) => (
           <div
@@ -398,8 +353,8 @@ const Home = () => {
           aria-hidden="true"
         />
 
-        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex flex-1 flex-col pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-16 md:pt-[calc(var(--pages-header-height)+1.25rem)]">
-          <div className="grid w-full min-w-0 max-w-[min(52rem,100%)] flex-1">
+        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex flex-1 flex-col pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-[calc(var(--pages-header-height)+1.25rem)] md:pt-[calc(var(--pages-header-height)+1.25rem)]">
+          <div className="grid w-full min-w-0 flex-1">
             {servicesSectionContent.map((section, i) => {
               const isPink = i % 2 === 1;
               return (
@@ -408,28 +363,35 @@ const Home = () => {
                   ref={(el) => {
                     textRefs.current[i] = el;
                   }}
-                  className="home-copy-slide pointer-events-auto z-[1] flex min-w-0 flex-col [grid-area:1/1]"
+                  className="home-copy-slide pointer-events-auto relative z-[1] flex min-w-0 flex-col [grid-area:1/1]"
                   style={{ zIndex: i === 0 ? 2 : 0 }}
                   aria-hidden={activeSection !== i}
                 >
-                  <div className="home-copy-scroll flex min-w-0 flex-1 flex-col justify-end overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-center [&::-webkit-scrollbar]:hidden">
+                  <span
+                    className="pointer-events-none absolute inset-0 z-0 hidden select-none items-center justify-center overflow-hidden md:flex"
+                    aria-hidden="true"
+                  >
+                    <span className="text-[clamp(11rem,34vw,28rem)] font-bold leading-none tracking-[-0.05em] text-white/10">
+                      0{i + 1}
+                    </span>
+                  </span>
+
+                  <div className="home-copy-scroll relative z-10 flex min-w-0 flex-1 flex-col justify-end overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] md:justify-center [&::-webkit-scrollbar]:hidden">
                     <div className="w-full min-w-0 shrink-0">
-                      <div className="w-full min-w-0">
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="page-kicker text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
-                            {section.kicker}
-                          </span>
-                          <span className="shrink-0 text-[length:var(--home-copy-size)] font-semibold tabular-nums text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
-                            0{i + 1} / 04
-                          </span>
-                        </div>
-                        <h2
-                          className="mt-[var(--home-stack-gap)] max-w-[14ch] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:tracking-[-0.02em] md:[text-shadow:none]"
-                          style={{ fontSize: "var(--home-title-size)" }}
-                        >
-                          {section.title}
-                        </h2>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="page-kicker text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
+                          {section.kicker}
+                        </span>
+                        <span className="shrink-0 text-[length:var(--home-copy-size)] font-semibold tabular-nums text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.75)] md:[text-shadow:none]">
+                          0{i + 1} / 04
+                        </span>
                       </div>
+                      <h2
+                        className="mt-[var(--home-stack-gap)] max-w-[14ch] break-words font-semibold leading-[1.08] tracking-[-0.03em] text-balance text-white [text-shadow:0_3px_28px_rgba(0,0,0,0.85)] md:max-w-none md:tracking-[-0.02em] md:[text-shadow:none]"
+                        style={{ fontSize: "var(--home-title-size)" }}
+                      >
+                        {section.title}
+                      </h2>
 
                       <ul
                         className="home-bullet-list mt-[var(--home-stack-gap)] flex w-full min-w-0 flex-col leading-relaxed text-white"

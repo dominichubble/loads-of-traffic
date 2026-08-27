@@ -79,7 +79,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="contact-form @container flex h-full min-h-0 flex-col px-[var(--container-padding-x)] py-10 text-primary sm:py-12 lg:pl-10 lg:pr-[var(--container-padding-x)] lg:py-0 lg:pb-12 lg:pt-[calc(var(--pages-header-height)+1.5rem)] xl:pl-14"
+      className="contact-form @container mx-auto flex h-full min-h-0 w-full max-w-[46rem] flex-col px-[var(--container-padding-x)] py-10 text-primary sm:py-12 lg:pl-10 lg:pr-[var(--container-padding-x)] lg:py-0 lg:pb-12 lg:pt-[calc(var(--pages-header-height)+1.5rem)] xl:pl-14"
       aria-busy={status === "submitting"}
     >
       <div className="hidden" aria-hidden="true">

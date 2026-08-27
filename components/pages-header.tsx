@@ -26,8 +26,11 @@ const PagesHeader = () => {
           !navBg && "border-b border-transparent bg-transparent",
         )}
       />
-      <div className="relative grid h-full w-full grid-cols-[1fr_55%]">
-        <div className="page-inline-start flex items-center">
+      {/* Natural flex split: logo takes its own width, nav takes the rest and
+          sizes its own gaps, rather than being squeezed into a fixed 55%
+          column that left zero breathing room between links below 1024px. */}
+      <div className="page-gutters relative flex h-full w-full items-center justify-between gap-6">
+        <div className="flex items-center">
           <TransitionLink
             href="/"
             className="flex min-h-11 items-center"
@@ -47,9 +50,9 @@ const PagesHeader = () => {
         </div>
         <nav
           aria-label="Primary navigation"
-          className="page-inline-end flex h-full min-w-0 items-center"
+          className="flex h-full min-w-0 items-center"
         >
-          <ul className="flex w-full items-center justify-end gap-0 text-sm font-medium lg:gap-1 xl:gap-2 xl:text-base">
+          <ul className="flex items-center gap-1 text-sm font-medium xl:gap-2 xl:text-base">
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.link;
               return (
