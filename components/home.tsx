@@ -353,7 +353,7 @@ const Home = () => {
           aria-hidden="true"
         />
 
-        <div className="home-copy-frame pointer-events-none relative z-40 flex flex-1 flex-col pl-[var(--container-padding-x)] pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pl-[clamp(1.5rem,3.5vw,3.25rem)] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-[calc(var(--pages-header-height)+1.25rem)] md:pt-[calc(var(--pages-header-height)+1.25rem)]">
+        <div className="home-copy-frame page-inline-start pointer-events-none relative z-40 flex flex-1 flex-col pr-6 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[var(--mobile-header-offset,calc(var(--pages-header-height)+0.85rem))] md:pr-[clamp(1.5rem,3.5vw,3.25rem)] md:pb-[calc(var(--pages-header-height)+1.25rem)] md:pt-[calc(var(--pages-header-height)+1.25rem)]">
           <div className="grid w-full min-w-0 flex-1">
             {servicesSectionContent.map((section, i) => {
               const isPink = i % 2 === 1;
