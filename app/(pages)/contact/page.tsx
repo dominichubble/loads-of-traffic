@@ -14,7 +14,7 @@ const ContactPage = () => {
     <main className="contact page-atmosphere contact-shell bg-primary text-white">
       <h1 className="sr-only">Contact</h1>
       <div className="flex h-full min-h-0 flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_55%]">
-        <section className="contact-copy no-scrollbar page-inline-start flex min-h-[8rem] min-w-0 shrink flex-col gap-[var(--contact-copy-gap)] overflow-y-auto overscroll-contain pr-[var(--container-padding-x)] pb-8 pt-[calc(var(--pages-header-height)+1rem)] lg:justify-center lg:pb-12 lg:pr-10 lg:pt-[var(--pages-header-height)] xl:pr-14">
+        <section className="contact-copy no-scrollbar page-inline-start flex min-h-[8rem] min-w-0 shrink flex-col gap-[var(--contact-copy-gap)] overflow-y-auto overscroll-contain pr-[var(--container-padding-x)] pb-8 pt-[calc(var(--pages-header-height)+1rem)] lg:[justify-content:safe_center] lg:pb-12 lg:pr-10 lg:pt-[var(--pages-header-height)] xl:pr-14">
           <p className="contact-desk-title min-w-0 max-w-[min(12ch,100%)] font-semibold leading-[1.05] tracking-[-0.045em] text-pretty">
             Tell us the challenge. We&apos;ll send a next step.
           </p>
