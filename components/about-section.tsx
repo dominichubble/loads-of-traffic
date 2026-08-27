@@ -8,7 +8,7 @@ type AboutSectionProps = {
 
 const AboutSection = ({ children, className }: AboutSectionProps) => {
   return (
-    <section className={cn("content-container page-gutters", className)}>
+    <section className={cn("content-container content-cap page-gutters", className)}>
       {children}
     </section>
   );

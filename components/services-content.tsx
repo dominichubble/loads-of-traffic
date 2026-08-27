@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 const ServicesContent = () => {
   return (
     <main className="services page-shell page-atmosphere relative min-h-screen bg-red text-white">
-      <div className="services-section content-container page-gutters relative">
+      <div className="services-section content-container content-cap page-gutters relative">
         <h1 className="sr-only">Services</h1>
         <span className="page-kicker text-white/65">Capabilities</span>
 

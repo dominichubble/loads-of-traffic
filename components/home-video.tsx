@@ -50,7 +50,7 @@ const HomeVideo = ({
         <source
           src={`${videoSrc}-large.mp4`}
           type="video/mp4"
-          media="(max-width: 1024px) and (min-width: 767px)"
+          media="(max-width: 1024px) and (min-width: 769px)"
         />
         <source
           src={`${videoSrc}-medium.mp4`}
