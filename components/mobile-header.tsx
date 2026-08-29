@@ -182,6 +182,21 @@ const MobileHeader = () => {
             );
           })}
         </ul>
+        <div className="mt-1 border-t border-white/15 px-5 pb-1 pt-3">
+          <TransitionLink
+            href="/privacy"
+            tabIndex={isNavOpen ? 0 : -1}
+            aria-current={pathname === "/privacy" ? "page" : undefined}
+            className={cn(
+              "text-sm transition-colors",
+              pathname === "/privacy"
+                ? "text-white"
+                : "text-white/70 hover:text-white",
+            )}
+          >
+            Privacy &amp; cookies
+          </TransitionLink>
+        </div>
       </nav>
     </header>
   );
