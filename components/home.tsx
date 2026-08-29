@@ -256,6 +256,54 @@ const Home = () => {
     };
   }, [prefersReducedMotion, stepToSlide]);
 
+  // Keyboard parity with the wheel: Arrow / Page keys step the deck too, so
+  // the hero is not mouse/trackpad-only. Same viewport-overflow and nested-
+  // scroller guards as onWheel.
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const STEP_FORWARD = new Set(["ArrowDown", "PageDown"]);
+    const STEP_BACK = new Set(["ArrowUp", "PageUp"]);
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) {
+        return;
+      }
+      if (!STEP_FORWARD.has(event.key) && !STEP_BACK.has(event.key)) return;
+
+      const target = event.target as HTMLElement | null;
+      // Let form fields and anything scrollable keep the key.
+      if (
+        target?.isContentEditable ||
+        ["INPUT", "TEXTAREA", "SELECT"].includes(target?.tagName ?? "")
+      ) {
+        return;
+      }
+      if (document.documentElement.scrollHeight > window.innerHeight + 1) {
+        return;
+      }
+      const scroller = target?.closest?.(".home-copy-scroll");
+      if (scroller instanceof HTMLElement) {
+        const canScroll = scroller.scrollHeight > scroller.clientHeight + 1;
+        if (canScroll) {
+          const atTop = scroller.scrollTop <= 0;
+          const atBottom =
+            scroller.scrollTop + scroller.clientHeight >=
+            scroller.scrollHeight - 1;
+          const goingUp = STEP_BACK.has(event.key);
+          if ((goingUp && !atTop) || (!goingUp && !atBottom)) return;
+        }
+      }
+      if (isAnimatingRef.current) return;
+
+      event.preventDefault();
+      stepToSlide(STEP_FORWARD.has(event.key) ? 1 : -1);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [prefersReducedMotion, stepToSlide]);
+
   if (prefersReducedMotion) {
     return <HomeStatic />;
   }
@@ -267,9 +315,10 @@ const Home = () => {
       aria-label="Our services"
     >
       <HomeProgressBar ref={progressBarRef} />
-      <h1 className="sr-only">
-        Loads of Traffic digital marketing and growth services
-      </h1>
+      {/* The motion hero is a wordless stepped carousel with no single visible
+          title, so the page-level h1 is visually hidden here. The reduced-
+          motion path (HomeStatic) renders the same text as a visible h1. */}
+      <h1 className="sr-only">What we do</h1>
 
       <div className="page-fixed-end fixed bottom-5 z-[900] flex items-center gap-3 md:bottom-8">
         <button
@@ -422,7 +471,7 @@ const Home = () => {
                         <TransitionLink
                           href={section.readMoreLink}
                           tabIndex={activeSection === i ? 0 : -1}
-                          className={`group inline-flex items-center rounded-full bg-white font-semibold shadow-lg ${isPink ? "text-accent" : "text-primary"}`}
+                          className={`group inline-flex items-center rounded-full bg-white font-semibold shadow-lg ${isPink ? "text-accent-deep" : "text-primary"}`}
                           style={{
                             minHeight: "var(--home-cta-height)",
                             paddingInline: "var(--home-cta-pad-x)",
@@ -464,7 +513,7 @@ const Home = () => {
             <HomeVideo
               videoSrc={video.src}
               posterSrc={video.poster}
-              isPaused={isMotionPaused}
+              isPaused={isMotionPaused || index !== activeSection}
             />
           </div>
         ))}

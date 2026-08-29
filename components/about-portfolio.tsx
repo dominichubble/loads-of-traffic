@@ -32,7 +32,7 @@ const AboutPortfolio = () => {
         />
 
         <div className="relative z-10">
-          <span className="page-kicker text-white/65">Protected partnerships</span>
+          <span className="page-kicker text-white/80">Protected partnerships</span>
           <AboutSectionTitle className="mb-8 mt-5 text-white md:mb-10">
             Portfolio
           </AboutSectionTitle>
@@ -65,7 +65,7 @@ const AboutPortfolio = () => {
             </div>
 
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-white/65">
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-white/80">
                 What we ship under NDA
               </p>
               <ul className="mt-6 divide-y divide-white/20 border-y border-white/20">

@@ -7,7 +7,7 @@ import AboutFeature from "./about-feature";
 const AboutFeatures = () => {
   return (
     <AboutSection className="bg-primary pt-[var(--sections-gap)] text-white">
-      <span className="page-kicker text-white/60">Why Loads of Traffic</span>
+      <span className="page-kicker text-white/80">Why Loads of Traffic</span>
       <AboutSectionTitle className="mt-5">What sets us apart</AboutSectionTitle>
       <ul className="grid gap-4 sm:grid-cols-3 xl:gap-6">
         {AboutFeaturesItems.map((feature, index) => (

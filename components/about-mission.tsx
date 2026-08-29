@@ -18,13 +18,13 @@ const AboutMission = () => {
         <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,0.35fr)_minmax(0,0.65fr)] lg:items-stretch lg:gap-0">
           <div className="flex min-w-0 flex-col justify-between gap-3 lg:border-r lg:border-accent/50 lg:pr-10">
             <div>
-              <span className="page-kicker text-white/60">Our purpose</span>
+              <span className="page-kicker text-white/80">Our purpose</span>
               <AboutSectionTitle className="mb-0 mt-4 md:mb-0">
                 Mission
               </AboutSectionTitle>
             </div>
             <div>
-              <p className="max-w-[20ch] text-sm font-medium uppercase tracking-[0.14em] text-white/50">
+              <p className="max-w-[20ch] text-sm font-medium uppercase tracking-[0.14em] text-white/75">
                 Serving since
               </p>
               <p className="mt-1 text-[clamp(3.5rem,8vw,6rem)] font-bold leading-none tracking-[-0.05em] text-accent">
