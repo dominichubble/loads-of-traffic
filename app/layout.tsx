@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import CookieConsent from "@/components/cookie-consent";
+import { DeckProvider } from "@/components/deck-context";
+import DeckNav from "@/components/deck-nav";
 import MobileHeader from "@/components/mobile-header";
 import PagesHeader from "@/components/pages-header";
 import PageTransitionOverlay from "@/components/page-transition-overlay";
@@ -103,11 +105,14 @@ export default function RootLayout({
         </a>
 
         <Preloader />
-        <MobileHeader />
-        <PagesHeader />
-        <div id="main-content" tabIndex={-1}>
-          {children}
-        </div>
+        <DeckProvider>
+          <MobileHeader />
+          <PagesHeader />
+          <div id="main-content" tabIndex={-1}>
+            {children}
+          </div>
+          <DeckNav />
+        </DeckProvider>
         <PageTransitionOverlay />
         <CookieConsent />
       </body>

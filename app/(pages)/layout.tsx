@@ -1,13 +1,9 @@
 import type { ReactNode } from "react";
-import Footer from "@/components/footer";
 
 const PagesLayout = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="relative z-0">
-      {children}
-      <Footer />
-    </div>
-  );
+  // The footer is the last step of each inner page's <StepDeck> (passed as its
+  // `footer` prop), not a sibling here — a deck page never scrolls its body.
+  return <div className="relative z-0">{children}</div>;
 };
 
 export default PagesLayout;
