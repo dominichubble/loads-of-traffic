@@ -50,7 +50,7 @@ const PagesHeader = () => {
         </div>
         <nav
           aria-label="Primary navigation"
-          className="flex h-full min-w-0 items-center gap-2 xl:gap-3"
+          className="flex h-full min-w-0 items-center"
         >
           <ul className="flex items-center gap-1 text-sm font-medium xl:gap-2 xl:text-base">
             {NAV_ITEMS.map((item) => {
@@ -73,19 +73,6 @@ const PagesHeader = () => {
               );
             })}
           </ul>
-          <span className="h-4 w-px bg-white/25" aria-hidden="true" />
-          <TransitionLink
-            href="/privacy"
-            aria-current={pathname === "/privacy" ? "page" : undefined}
-            className={cn(
-              "inline-flex min-h-11 items-center whitespace-nowrap text-xs transition-colors",
-              pathname === "/privacy"
-                ? "text-white"
-                : "text-white/70 hover:text-white",
-            )}
-          >
-            Privacy
-          </TransitionLink>
         </nav>
       </div>
     </header>
