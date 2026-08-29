@@ -24,12 +24,16 @@ const ServiceCard = ({
       )}
     >
       <span
-        className={cn(
-          "pointer-events-none absolute -bottom-8 -right-10 select-none text-[clamp(5rem,11vw,10rem)] font-bold leading-none tracking-[-0.07em] sm:-right-6",
+        className="pointer-events-none absolute bottom-5 right-7 z-0 hidden select-none text-[clamp(4rem,8vw,7rem)] font-bold leading-none tracking-[-0.07em] sm:block"
+        style={
           navy
-            ? "text-white/[0.07]"
-            : "font-outline-2 font-outline-primary opacity-[0.12]",
-        )}
+            ? { color: "rgba(255,255,255,0.09)" }
+            : {
+                color: "transparent",
+                WebkitTextStroke: "2px var(--color-primary)",
+                opacity: 0.14,
+              }
+        }
         aria-hidden="true"
       >
         0{index + 1}
@@ -43,12 +47,12 @@ const ServiceCard = ({
       >
         Service 0{index + 1} / 04
       </p>
-      <h2 className="relative mt-4 max-w-[16ch] text-[clamp(1.75rem,1.1rem+2.6vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.03em]">
+      <h2 className="relative z-10 mt-4 max-w-[16ch] text-[clamp(1.75rem,1.1rem+2.6vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.03em]">
         {service.title}
       </h2>
       <p
         className={cn(
-          "relative mt-3 text-base font-medium",
+          "relative z-10 mt-3 text-base font-medium",
           navy ? "text-white/85" : "text-primary",
         )}
       >
