@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ContactForm from "@/components/contact-form";
-import Footer from "@/components/footer";
 import StepDeck from "@/components/step-deck";
 import { Linkedin, Mail, MapPin } from "lucide-react";
 
@@ -16,7 +15,6 @@ const ContactPage = () => {
     <main className="contact page-atmosphere bg-primary text-white">
       <StepDeck
         ariaLabel="Contact Loads of Traffic"
-        footer={<Footer />}
         sections={[
           {
             id: "contact-intro",
