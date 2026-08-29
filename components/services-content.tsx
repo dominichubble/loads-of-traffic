@@ -25,10 +25,10 @@ const ServiceCard = ({
     >
       <span
         className={cn(
-          "pointer-events-none absolute -right-2 -top-6 select-none text-[clamp(7rem,16vw,12rem)] font-bold leading-none tracking-[-0.07em]",
+          "pointer-events-none absolute -bottom-10 -right-6 select-none text-[clamp(6rem,12vw,10rem)] font-bold leading-none tracking-[-0.07em]",
           navy
-            ? "text-white/10"
-            : "font-outline-2 font-outline-primary opacity-20",
+            ? "text-white/[0.07]"
+            : "font-outline-2 font-outline-primary opacity-[0.12]",
         )}
         aria-hidden="true"
       >
@@ -37,7 +37,7 @@ const ServiceCard = ({
 
       <p
         className={cn(
-          "relative text-xs font-bold uppercase tabular-nums tracking-[0.18em]",
+          "relative z-10 text-xs font-bold uppercase tabular-nums tracking-[0.18em]",
           navy ? "text-yellow" : "text-accent-deep",
         )}
       >
@@ -115,7 +115,9 @@ const ServicesContent = () => {
             id: "services-path",
             node: (
               <div className="deck-section">
-                <BenefitsSection />
+                <div className="content-container content-cap page-gutters w-full">
+                  <BenefitsSection />
+                </div>
               </div>
             ),
           },
