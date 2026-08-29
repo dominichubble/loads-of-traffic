@@ -30,7 +30,15 @@ export const SLIDE_DURATION = 0.85;
 export const OUTGOING_LAYER_ID = "page-transition-outgoing";
 export const NAV_BG_STRIP_ATTR = "data-page-transition-nav-bg";
 
-const PATH_ORDER = NAV_ITEMS.map((item) => item.link.split("#")[0]);
+/** Page order for the site-wide stepped deck / Prev-Next arrows. */
+export const PATH_ORDER = NAV_ITEMS.map((item) => item.link.split("#")[0]);
+
+/**
+ * When the Prev/Next arrows cross a page boundary, the incoming page's deck
+ * reads this to decide which section to open on: "end" = last section
+ * (arrived by pressing Prev), "start" = first (the default).
+ */
+export const deckEntryIntent: { value: "start" | "end" } = { value: "start" };
 
 const NAV_BG_BY_PATH: Record<string, Exclude<NavBgTone, null>> = {
   "/services": "accent",

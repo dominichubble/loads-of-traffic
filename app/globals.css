@@ -245,6 +245,18 @@ html {
   padding-bottom: var(--container-padding-y);
 }
 
+/* One section of a <StepDeck>: fills the deck viewport, centres its content
+   vertically when it fits, and clears the fixed header. Content taller than
+   the viewport scrolls inside the deck's own .step-scroll wrapper. */
+.deck-section {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: calc(var(--pages-header-height) + clamp(1rem, 3vh, 2.5rem));
+  padding-bottom: clamp(1rem, 3vh, 2.5rem);
+}
+
 .page-shell-flush {
   padding-bottom: 0;
 }
