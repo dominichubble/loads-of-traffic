@@ -87,14 +87,11 @@ export async function POST(request: Request) {
 
     return Response.json({ success: true, data });
   } catch (error: unknown) {
-    let errorMessage = "Unknown error";
-    if (error instanceof Error) {
-      errorMessage = error.message;
-    }
-    console.error("Error sending email:", error);
-    return new Response(JSON.stringify({ error: errorMessage }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    // Log the detail server-side; never return it to the client.
+    console.error("Error sending contact email:", error);
+    return Response.json(
+      { error: "Something went wrong sending your message. Please try again." },
+      { status: 500 },
+    );
   }
 }

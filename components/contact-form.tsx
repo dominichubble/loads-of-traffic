@@ -9,7 +9,7 @@ import { AlertCircle, CheckCircle2, Send } from "lucide-react";
 type Status = "idle" | "submitting" | "success" | "error";
 
 const fieldLabelClass =
-  "text-[0.7rem] font-bold uppercase tracking-[0.14em] text-primary/55";
+  "text-[0.7rem] font-bold uppercase tracking-[0.14em] text-primary/70";
 
 const Field = ({
   id,
@@ -52,7 +52,7 @@ const ContactForm = () => {
     const formData = new FormData(form);
 
     try {
-      const response = await fetch("/api", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         body: formData,
       });
@@ -94,8 +94,8 @@ const ContactForm = () => {
       </div>
 
       <div className="shrink-0">
-        <h2 className="page-kicker text-accent">The brief</h2>
-        <p className="text-primary/55 mt-4 max-w-[36ch] text-sm leading-relaxed">
+        <h2 className="page-kicker text-accent-deep">The brief</h2>
+        <p className="text-primary/70 mt-4 max-w-[36ch] text-sm leading-relaxed">
           A few lines is enough. Required fields are marked with an asterisk.
         </p>
       </div>
@@ -171,29 +171,28 @@ const ContactForm = () => {
           {status === "submitting" ? "Sending…" : "Send message"}
           <Send className="h-4 w-4" aria-hidden="true" />
         </button>
-        <p className="text-primary/50 text-xs leading-relaxed sm:max-w-[24ch] sm:text-right">
+        <p className="text-primary/70 text-xs leading-relaxed sm:max-w-[24ch] sm:text-right">
           We only use your details to respond to this enquiry.
         </p>
       </div>
 
-      {status === "success" && (
-        <p
-          className="mt-4 flex shrink-0 items-center gap-2 text-sm font-semibold text-primary"
-          aria-live="polite"
-        >
-          <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
-          Thanks for reaching out! We&apos;ll be in touch shortly.
-        </p>
-      )}
-      {status === "error" && (
-        <p
-          className="mt-4 flex shrink-0 items-center gap-2 text-sm font-semibold text-accent"
-          role="alert"
-        >
-          <AlertCircle className="h-5 w-5" aria-hidden="true" />
-          {errorMessage}
-        </p>
-      )}
+      {/* Always in the DOM so SRs reliably announce the state change. */}
+      <div role="status" aria-live="polite" className="shrink-0">
+        {status === "success" && (
+          <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-primary">
+            <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+            Thanks for reaching out! We&apos;ll be in touch shortly.
+          </p>
+        )}
+      </div>
+      <div role="alert" className="shrink-0">
+        {status === "error" && (
+          <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-accent-deep">
+            <AlertCircle className="h-5 w-5" aria-hidden="true" />
+            {errorMessage}
+          </p>
+        )}
+      </div>
     </form>
   );
 };

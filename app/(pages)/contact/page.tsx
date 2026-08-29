@@ -12,12 +12,14 @@ export const metadata: Metadata = {
 const ContactPage = () => {
   return (
     <main className="contact page-atmosphere bg-primary text-white">
-      <h1 className="sr-only">Contact</h1>
       <div className="grid lg:grid-cols-[minmax(0,1fr)_55%]">
-        <section className="contact-copy page-inline-start flex min-w-0 flex-col gap-8 pr-[var(--container-padding-x)] pb-12 pt-[calc(var(--pages-header-height)+1.5rem)] lg:min-h-svh lg:justify-center lg:gap-10 lg:pb-12 lg:pr-10 lg:pt-[var(--pages-header-height)] xl:pr-14">
-          <p className="contact-desk-title min-w-0 max-w-[min(12ch,100%)] font-semibold leading-[1.05] tracking-[-0.045em] text-pretty">
+        <section
+          aria-label="Contact details"
+          className="contact-copy page-inline-start flex min-w-0 flex-col gap-8 pr-[var(--container-padding-x)] pb-12 pt-[calc(var(--pages-header-height)+1.5rem)] lg:min-h-svh lg:justify-center lg:gap-10 lg:pb-12 lg:pr-10 lg:pt-[var(--pages-header-height)] xl:pr-14"
+        >
+          <h1 className="contact-desk-title min-w-0 max-w-[min(12ch,100%)] font-semibold leading-[1.05] tracking-[-0.045em] text-pretty">
             Tell us the challenge. We&apos;ll send a next step.
-          </p>
+          </h1>
 
           <div className="flex max-w-[36ch] flex-col gap-5 text-sm">
             <div className="flex items-start gap-3">
@@ -26,11 +28,11 @@ const ContactPage = () => {
                 aria-hidden="true"
               />
               <div className="min-w-0">
-                <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-white/45">
+                <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-white/75">
                   Email
                 </p>
                 <Link
-                  className="mt-0.5 inline-block max-w-full break-words font-medium underline decoration-white/30 underline-offset-4 hover:decoration-white [overflow-wrap:anywhere]"
+                  className="mt-0.5 inline-block max-w-full break-words font-medium underline decoration-white/60 underline-offset-4 hover:decoration-white [overflow-wrap:anywhere]"
                   href="mailto:enquiries@loadsoftraffic.com"
                 >
                   enquiries@loadsoftraffic.com
@@ -43,7 +45,7 @@ const ContactPage = () => {
                 aria-hidden="true"
               />
               <address className="min-w-0 not-italic">
-                <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-white/45">
+                <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-white/75">
                   Office
                 </p>
                 <p className="mt-0.5 leading-snug text-white/85">

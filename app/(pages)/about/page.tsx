@@ -17,18 +17,23 @@ const AboutPage = () => {
     <main className="about page-shell page-shell-flush page-atmosphere bg-primary text-white">
       <div className="space-y-[var(--sections-gap)]">
         <AboutSection className="flex min-h-[75svh] flex-col justify-center">
-          <h1 className="sr-only">About us</h1>
-          <TextGradient className="text-center text-[clamp(1.85rem,5.8vw,5.5rem)] font-bold uppercase leading-[1.12] tracking-[-0.03em]">
-            <p className="line text-balance">Loads of Traffic</p>
-            <p className="line mt-2 text-balance">
+          <TextGradient
+            as="h1"
+            label="Loads of Traffic brings 80+ years of combined expertise to digital growth"
+            className="text-center text-[clamp(1.85rem,5.8vw,5.5rem)] font-bold uppercase leading-[1.12] tracking-[-0.03em]"
+          >
+            <span className="line block text-balance">Loads of Traffic</span>
+            <span className="line mt-2 block text-balance">
               brings <span className="text-accent">80+ years</span>
-            </p>
-            <p className="line mt-2 text-balance">of combined expertise</p>
-            <p className="line mt-2 text-balance text-white">
+            </span>
+            <span className="line mt-2 block text-balance">
+              of combined expertise
+            </span>
+            <span className="line mt-2 block text-balance text-white">
               to digital growth
-            </p>
+            </span>
           </TextGradient>
-          <p className="mt-10 text-center text-xs font-bold uppercase tracking-[0.18em] text-white/50 md:text-sm">
+          <p className="mt-10 text-center text-xs font-bold uppercase tracking-[0.18em] text-white/75 md:text-sm">
             Isle of Man · since 2010
           </p>
         </AboutSection>

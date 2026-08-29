@@ -27,7 +27,7 @@ const Footer = () => {
           </TransitionLink>
 
           <nav aria-label="Footer navigation">
-            <ul className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/70">
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/80">
               {NAV_ITEMS.map((item) => (
                 <li key={item.label}>
                   <TransitionLink
@@ -38,11 +38,32 @@ const Footer = () => {
                   </TransitionLink>
                 </li>
               ))}
+              <li>
+                <TransitionLink
+                  href="/privacy"
+                  className="transition-colors hover:text-white"
+                >
+                  Privacy
+                </TransitionLink>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() =>
+                    (
+                      window as unknown as { lotResetConsent?: () => void }
+                    ).lotResetConsent?.()
+                  }
+                  className="transition-colors hover:text-white"
+                >
+                  Cookie settings
+                </button>
+              </li>
             </ul>
           </nav>
 
           <div className="flex items-center justify-between gap-6 lg:justify-end">
-            <p className="text-xs text-white/50">
+            <p className="text-xs text-white/75">
               © {new Date().getFullYear()} Loads of Traffic
             </p>
             <Link

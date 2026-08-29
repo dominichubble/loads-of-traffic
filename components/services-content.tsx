@@ -8,8 +8,7 @@ const ServicesContent = () => {
   return (
     <main className="services page-shell page-atmosphere relative min-h-screen bg-red text-white">
       <div className="services-section content-container content-cap page-gutters relative">
-        <h1 className="sr-only">Services</h1>
-        <span className="page-kicker text-white/65">Capabilities</span>
+        <h1 className="page-kicker text-white">Capabilities</h1>
 
         <section
           id="services"
@@ -23,7 +22,7 @@ const ServicesContent = () => {
             return (
               <article
                 key={service.title}
-                id={`${i + 1}`}
+                id={service.slug}
                 className={cn(
                   "relative flex min-h-[20rem] flex-col overflow-hidden rounded-[1.5rem] border p-5 pb-6 sm:min-h-[22rem] sm:p-7 lg:p-8",
                   navy
@@ -46,7 +45,7 @@ const ServicesContent = () => {
                 <p
                   className={cn(
                     "relative text-xs font-bold tabular-nums tracking-[0.16em]",
-                    navy ? "text-yellow" : "text-accent",
+                    navy ? "text-yellow" : "text-accent-deep",
                   )}
                 >
                   0{i + 1}

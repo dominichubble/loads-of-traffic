@@ -21,7 +21,7 @@ const HomeStatic = () => {
       <div className="content-container page-gutters page-shell">
         <div className="page-split mt-8 border-b border-white/15 pb-10 md:mt-16 md:pb-12">
           <div>
-            <span className="page-kicker text-white/65">Our expertise</span>
+            <span className="page-kicker text-white/80">Our expertise</span>
             <h1 className="display-heading mt-6 text-white">What we do</h1>
           </div>
           <p className="body-copy text-white md:pb-2">
@@ -50,10 +50,10 @@ const HomeStatic = () => {
 
                 <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
                   <div className="flex items-center justify-between border-b border-white/15 pb-4">
-                    <span className="page-kicker text-white/65">
+                    <span className="page-kicker text-white/80">
                       {service.kicker}
                     </span>
-                    <span className="text-xs font-semibold tabular-nums text-white/65">
+                    <span className="text-xs font-semibold tabular-nums text-white/80">
                       0{index + 1} / 04
                     </span>
                   </div>
@@ -79,7 +79,7 @@ const HomeStatic = () => {
                     href={service.readMoreLink}
                     className={cn(
                       "mt-7 inline-flex min-h-12 w-fit items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold shadow-lg",
-                      isPink ? "text-accent" : "text-primary",
+                      isPink ? "text-accent-deep" : "text-primary",
                     )}
                   >
                     {service.ctaLabel}

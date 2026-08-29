@@ -19,7 +19,7 @@ const AboutFeature = ({
         aria-hidden="true"
       />
       <div className="relative z-10 flex items-center justify-between">
-        <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/55">
+        <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/75">
           0{index + 1}
         </span>
         <span
