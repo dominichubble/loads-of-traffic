@@ -1,4 +1,5 @@
 import BenefitsSection from "@/components/benefits-section";
+import Footer from "@/components/footer";
 import StepDeck from "@/components/step-deck";
 import TransitionLink from "@/components/transition-link";
 import { cn } from "@/utils";
@@ -80,6 +81,7 @@ const ServicesContent = () => {
     <main className="services page-atmosphere bg-red text-white">
       <StepDeck
         ariaLabel="Loads of Traffic services"
+        footer={<Footer />}
         sections={[
           {
             id: "services-intro",

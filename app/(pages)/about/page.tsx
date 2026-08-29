@@ -3,6 +3,7 @@ import AboutContact from "@/components/about-contact";
 import AboutFeatures from "@/components/about-features";
 import AboutMission from "@/components/about-mission";
 import AboutPortfolio from "@/components/about-portfolio";
+import Footer from "@/components/footer";
 import StepDeck from "@/components/step-deck";
 import TextGradient from "@/components/shared/text-gradient";
 
@@ -17,6 +18,7 @@ const AboutPage = () => {
     <main className="about page-atmosphere bg-primary text-white">
       <StepDeck
         ariaLabel="About Loads of Traffic"
+        footer={<Footer />}
         sections={[
           {
             id: "about-intro",

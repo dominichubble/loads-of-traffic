@@ -18,21 +18,33 @@ export type DeckSection = { id?: string; node: ReactNode };
 type StepDeckProps = {
   ariaLabel?: string;
   sections: DeckSection[];
+  /**
+   * Optional trailing panel (the site footer). Rendered as one more step,
+   * anchored to the bottom of the last screen rather than filling it, and it
+   * becomes the true end of the arrow sequence. Skipped on the homepage.
+   */
+  footer?: ReactNode;
   className?: string;
 };
 
 /**
  * Full-viewport stepped sections that advance one at a time on wheel / Arrow /
  * PageUp-Down, matching the homepage hero. A section taller than the viewport
- * scrolls internally (wrap the overflowing content in `.step-scroll`); the deck
- * only steps on once that inner scroll bottoms out. At the first/last section
- * the shared Prev/Next arrows carry on to the adjacent page.
+ * scrolls internally; the deck only steps on once that inner scroll bottoms
+ * out. At the first/last section the shared Prev/Next arrows carry on to the
+ * adjacent page.
  *
  * Under `prefers-reduced-motion` the sections render as a normal scrolling
  * column and the arrows do plain page-to-page navigation.
  */
-const StepDeck = ({ ariaLabel, sections, className }: StepDeckProps) => {
-  const count = sections.length;
+const StepDeck = ({ ariaLabel, sections, footer, className }: StepDeckProps) => {
+  const hasFooter = Boolean(footer);
+  const items: (DeckSection & { isFooter?: boolean })[] = hasFooter
+    ? [...sections, { id: "deck-footer", node: footer, isFooter: true }]
+    : sections;
+  const count = items.length;
+  const lastContentIndex = hasFooter ? count - 2 : count - 1;
+
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tweenRef = useRef<gsap.core.Timeline | null>(null);
   const animatingRef = useRef(false);
@@ -50,10 +62,11 @@ const StepDeck = ({ ariaLabel, sections, className }: StepDeckProps) => {
     return () => mq.removeEventListener("change", update);
   }, []);
 
-  // Open on the first section, or the last one when the visitor arrived by
-  // pressing Prev from the following page.
+  // Open on the first section, or the last *content* section (not the footer)
+  // when the visitor arrived by pressing Prev from the following page.
   useEffect(() => {
-    const start = deckEntryIntent.value === "end" ? count - 1 : 0;
+    const start =
+      deckEntryIntent.value === "end" ? Math.max(0, lastContentIndex) : 0;
     deckEntryIntent.value = "start";
     activeRef.current = start;
     setActive(start);
@@ -66,7 +79,7 @@ const StepDeck = ({ ariaLabel, sections, className }: StepDeckProps) => {
         zIndex: i === start ? 2 : 0,
       });
     });
-  }, [count, reduced]);
+  }, [lastContentIndex, reduced]);
 
   const stepTo = useCallback(
     (dir: 1 | -1): boolean => {
@@ -187,8 +200,12 @@ const StepDeck = ({ ariaLabel, sections, className }: StepDeckProps) => {
   if (reduced) {
     return (
       <div className={className} aria-label={ariaLabel} role="region">
-        {sections.map((s, i) => (
-          <section key={s.id ?? i} id={s.id} className="min-h-[100svh]">
+        {items.map((s, i) => (
+          <section
+            key={s.id ?? i}
+            id={s.id}
+            className={s.isFooter ? undefined : "min-h-[100svh]"}
+          >
             {s.node}
           </section>
         ))}
@@ -203,7 +220,7 @@ const StepDeck = ({ ariaLabel, sections, className }: StepDeckProps) => {
       role="region"
     >
       <div className="grid h-full">
-        {sections.map((s, i) => (
+        {items.map((s, i) => (
           <div
             key={s.id ?? i}
             id={s.id}
@@ -215,7 +232,13 @@ const StepDeck = ({ ariaLabel, sections, className }: StepDeckProps) => {
             aria-hidden={active !== i}
             inert={active !== i ? true : undefined}
           >
-            {s.node}
+            {s.isFooter ? (
+              <div className="flex min-h-full flex-col justify-end bg-primary">
+                {s.node}
+              </div>
+            ) : (
+              s.node
+            )}
           </div>
         ))}
       </div>
