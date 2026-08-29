@@ -25,7 +25,7 @@ const ServiceCard = ({
     >
       <span
         className={cn(
-          "pointer-events-none absolute -bottom-10 -right-6 select-none text-[clamp(6rem,12vw,10rem)] font-bold leading-none tracking-[-0.07em]",
+          "pointer-events-none absolute -bottom-8 -right-10 select-none text-[clamp(5rem,11vw,10rem)] font-bold leading-none tracking-[-0.07em] sm:-right-6",
           navy
             ? "text-white/[0.07]"
             : "font-outline-2 font-outline-primary opacity-[0.12]",
@@ -56,7 +56,7 @@ const ServiceCard = ({
       </p>
       <p
         className={cn(
-          "relative mt-5 max-w-[52ch] text-sm leading-relaxed md:text-base",
+          "relative z-10 mt-5 max-w-[52ch] text-sm leading-relaxed md:text-base",
           navy ? "text-white/80" : "text-primary/75",
         )}
       >
@@ -65,7 +65,7 @@ const ServiceCard = ({
       <TransitionLink
         href="/contact"
         className={cn(
-          "relative mt-8 inline-flex min-h-12 w-fit items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:-translate-y-0.5",
+          "relative z-10 mt-8 inline-flex min-h-12 w-fit items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:-translate-y-0.5",
           navy ? "bg-white text-primary" : "bg-primary text-white",
         )}
       >
