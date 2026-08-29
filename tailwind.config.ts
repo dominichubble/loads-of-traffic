@@ -14,6 +14,7 @@ export default {
         foreground: "var(--foreground)",
         primary: "var(--color-primary)",
         accent: "var(--color-accent)",
+        "accent-deep": "var(--color-accent-deep)",
         red: "var(--color-red)",
         yellow: "var(--color-yellow)",
       },

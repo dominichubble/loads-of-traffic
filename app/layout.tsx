@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import CookieConsent from "@/components/cookie-consent";
+import { DeckProvider } from "@/components/deck-context";
+import DeckNav from "@/components/deck-nav";
 import MobileHeader from "@/components/mobile-header";
 import PagesHeader from "@/components/pages-header";
 import PageTransitionOverlay from "@/components/page-transition-overlay";
 import Preloader from "@/components/preloader";
-import Script from "next/script";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "700", "900"],
+  // Only the weights the design actually uses: 400 body, 500 medium,
+  // 600 semibold (the most common), 700 bold.
+  weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
 });
 
@@ -49,7 +53,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName,
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: siteName }],
-    locale: "en_US",
+    locale: "en_GB",
     type: "website",
   },
   twitter: {
@@ -100,31 +104,17 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        {/* Google Analytics */}
-        <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-ZW1EPJXYSH"
-        />
-        <Script
-          id="gtag-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-ZW1EPJXYSH');
-            `,
-          }}
-        />
-
         <Preloader />
-        <MobileHeader />
-        <PagesHeader />
-        <div id="main-content" tabIndex={-1}>
-          {children}
-        </div>
+        <DeckProvider>
+          <MobileHeader />
+          <PagesHeader />
+          <div id="main-content" tabIndex={-1}>
+            {children}
+          </div>
+          <DeckNav />
+        </DeckProvider>
         <PageTransitionOverlay />
+        <CookieConsent />
       </body>
     </html>
   );

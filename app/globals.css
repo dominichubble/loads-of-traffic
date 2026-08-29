@@ -245,6 +245,23 @@ html {
   padding-bottom: var(--container-padding-y);
 }
 
+/* One section of a <StepDeck>: fills the deck viewport and clears the fixed
+   header. Content is vertically centred when it fits; when it is taller than
+   the viewport the auto margins collapse so the whole section scrolls with no
+   clipped top (unlike `justify-content: center`, which hides overflow above). */
+.deck-section {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  padding-top: calc(var(--pages-header-height) + clamp(1rem, 3vh, 2.5rem));
+  padding-bottom: clamp(1rem, 3vh, 2.5rem);
+}
+
+.deck-section > * {
+  margin-block: auto;
+  width: 100%;
+}
+
 .page-shell-flush {
   padding-bottom: 0;
 }

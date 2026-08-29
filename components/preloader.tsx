@@ -44,6 +44,10 @@ const Preloader = () => {
 
     document.documentElement.classList.add("preloader-active");
 
+    // Capture the node now so the cleanup below kills tweens on the same
+    // element the effect animated, not whatever the ref points at later.
+    const container = containerRef.current;
+
     const fallback = window.setTimeout(() => {
       markSeen();
       document.documentElement.classList.remove("preloader-active");
@@ -57,7 +61,7 @@ const Preloader = () => {
       ease: "power1.inOut",
       onUpdate: () => setProgress(progressObj.value),
       onComplete: () => {
-        const exitTween = gsap.to(containerRef.current, {
+        const exitTween = gsap.to(container, {
           yPercent: -100,
           duration: EXIT_DURATION_MS / 1000,
           ease: "power4.inOut",
@@ -76,8 +80,8 @@ const Preloader = () => {
       window.clearTimeout(fallback);
       progressTween.kill();
       gsap.killTweensOf(progressObj);
-      if (containerRef.current) {
-        gsap.killTweensOf(containerRef.current);
+      if (container) {
+        gsap.killTweensOf(container);
       }
       document.documentElement.classList.remove("preloader-active");
     };

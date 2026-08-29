@@ -52,7 +52,7 @@ const BenefitCard = ({
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="text-primary/55 text-[0.7rem] font-bold uppercase tracking-[0.14em]">
+          <span className="text-primary/70 text-[0.7rem] font-bold uppercase tracking-[0.14em]">
             Step 0{index}
           </span>
           <span

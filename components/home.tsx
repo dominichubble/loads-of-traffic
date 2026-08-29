@@ -3,11 +3,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { servicesSectionContent } from "@/utils/constants";
-import { ArrowDown, ArrowRight, ArrowUp, Pause, Play } from "lucide-react";
+import { ArrowRight, Pause, Play } from "lucide-react";
 import HomeVideo from "./home-video";
 import HomeProgressBar from "./home-progress-bar";
 import TransitionLink from "./transition-link";
 import HomeStatic from "./home-static";
+import { useDeck } from "./deck-context";
 
 const HERO_SLIDE_COUNT = servicesSectionContent.length;
 const HERO_SLIDE_DURATION = 1.35;
@@ -36,6 +37,8 @@ const Home = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMotionPaused, setIsMotionPaused] = useState(false);
+
+  const { registerDeck, reportBoundary, goPrev, goNext } = useDeck();
 
   useEffect(() => {
     const motionPreference = window.matchMedia(
@@ -88,14 +91,14 @@ const Home = () => {
 
   }, [prefersReducedMotion]);
 
-  const stepToSlide = useCallback((direction: 1 | -1) => {
-    if (isAnimatingRef.current) return;
+  // Returns true when it stepped a slide, false at the deck's first/last slide
+  // (so the shared arrows can carry on to the adjacent page).
+  const stepToSlide = useCallback((direction: 1 | -1): boolean => {
+    if (isAnimatingRef.current) return true;
 
     const from = activeSectionRef.current;
-    const to =
-      direction > 0
-        ? (from + 1) % HERO_SLIDE_COUNT
-        : (from - 1 + HERO_SLIDE_COUNT) % HERO_SLIDE_COUNT;
+    const to = from + direction;
+    if (to < 0 || to >= HERO_SLIDE_COUNT) return false;
 
     const fromVideo = videoRefs.current[from];
     const toVideo = videoRefs.current[to];
@@ -111,7 +114,7 @@ const Home = () => {
       !fromText ||
       !toText
     ) {
-      return;
+      return false;
     }
 
     isAnimatingRef.current = true;
@@ -183,6 +186,8 @@ const Home = () => {
       tl.set(fromPanel, { autoAlpha: 0, yPercent: 0, zIndex: 0 });
       tl.set(toPanel, { zIndex: 2 });
     }
+
+    return true;
   }, []);
 
   useEffect(() => {
@@ -190,6 +195,19 @@ const Home = () => {
       transitionTweenRef.current?.kill();
     };
   }, []);
+
+  // Drive the shared Prev/Next arrows: step a slide, or cross to the next page.
+  useEffect(() => {
+    registerDeck({ step: stepToSlide });
+    return () => registerDeck(null);
+  }, [registerDeck, stepToSlide]);
+
+  useEffect(() => {
+    reportBoundary({
+      atStart: activeSection === 0,
+      atEnd: activeSection === HERO_SLIDE_COUNT - 1,
+    });
+  }, [activeSection, reportBoundary]);
 
   // Discrete wheel / trackpad steps — same conveyor as Previous / Next.
   useEffect(() => {
@@ -246,7 +264,10 @@ const Home = () => {
 
       const direction: 1 | -1 = accumulated > 0 ? 1 : -1;
       accumulated = 0;
-      stepToSlide(direction);
+      if (!stepToSlide(direction)) {
+        if (direction > 0) goNext();
+        else goPrev();
+      }
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
@@ -254,7 +275,59 @@ const Home = () => {
       window.clearTimeout(idleResetTimer);
       window.removeEventListener("wheel", onWheel);
     };
-  }, [prefersReducedMotion, stepToSlide]);
+  }, [prefersReducedMotion, stepToSlide, goPrev, goNext]);
+
+  // Keyboard parity with the wheel: Arrow / Page keys step the deck too, so
+  // the hero is not mouse/trackpad-only. Same viewport-overflow and nested-
+  // scroller guards as onWheel.
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const STEP_FORWARD = new Set(["ArrowDown", "PageDown"]);
+    const STEP_BACK = new Set(["ArrowUp", "PageUp"]);
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) {
+        return;
+      }
+      if (!STEP_FORWARD.has(event.key) && !STEP_BACK.has(event.key)) return;
+
+      const target = event.target as HTMLElement | null;
+      // Let form fields and anything scrollable keep the key.
+      if (
+        target?.isContentEditable ||
+        ["INPUT", "TEXTAREA", "SELECT"].includes(target?.tagName ?? "")
+      ) {
+        return;
+      }
+      if (document.documentElement.scrollHeight > window.innerHeight + 1) {
+        return;
+      }
+      const scroller = target?.closest?.(".home-copy-scroll");
+      if (scroller instanceof HTMLElement) {
+        const canScroll = scroller.scrollHeight > scroller.clientHeight + 1;
+        if (canScroll) {
+          const atTop = scroller.scrollTop <= 0;
+          const atBottom =
+            scroller.scrollTop + scroller.clientHeight >=
+            scroller.scrollHeight - 1;
+          const goingUp = STEP_BACK.has(event.key);
+          if ((goingUp && !atTop) || (!goingUp && !atBottom)) return;
+        }
+      }
+      if (isAnimatingRef.current) return;
+
+      event.preventDefault();
+      const dir: 1 | -1 = STEP_FORWARD.has(event.key) ? 1 : -1;
+      if (!stepToSlide(dir)) {
+        if (dir > 0) goNext();
+        else goPrev();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [prefersReducedMotion, stepToSlide, goPrev, goNext]);
 
   if (prefersReducedMotion) {
     return <HomeStatic />;
@@ -267,11 +340,15 @@ const Home = () => {
       aria-label="Our services"
     >
       <HomeProgressBar ref={progressBarRef} />
-      <h1 className="sr-only">
-        Loads of Traffic digital marketing and growth services
-      </h1>
+      {/* The motion hero is a wordless stepped carousel with no single visible
+          title, so the page-level h1 is visually hidden here. The reduced-
+          motion path (HomeStatic) renders the same text as a visible h1. */}
+      <h1 className="sr-only">What we do</h1>
 
-      <div className="page-fixed-end fixed bottom-5 z-[900] flex items-center gap-3 md:bottom-8">
+      {/* Prev / Next now live in the persistent <DeckNav> (bottom-right on
+          every page). Only the video pause control is home-specific — keep it
+          out of the arrows' way, bottom-left. */}
+      <div className="page-inline-start fixed bottom-5 left-0 z-[900] md:bottom-8">
         <button
           type="button"
           className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-[0_10px_30px_rgba(0,0,79,0.45)] ring-2 ring-white/90 transition-transform hover:-translate-y-0.5 md:h-[var(--home-control-h)] md:min-h-[var(--home-control-h)] md:w-auto md:min-w-[var(--home-control-h)] md:gap-2 md:px-[var(--home-control-px)] md:text-[length:var(--home-control-font)]"
@@ -297,34 +374,6 @@ const Home = () => {
           <span className="hidden font-semibold uppercase tracking-[0.1em] lg:inline">
             {isMotionPaused ? "Play video" : "Pause video"}
           </span>
-        </button>
-        <button
-          type="button"
-          onClick={() => stepToSlide(-1)}
-          aria-label="Previous expertise"
-          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-primary shadow-[0_10px_30px_rgba(0,0,79,0.35)] transition-transform hover:-translate-y-0.5 md:h-[var(--home-control-h)] md:min-h-[var(--home-control-h)] md:w-auto md:gap-2.5 md:px-[var(--home-control-px)] md:text-[length:var(--home-control-font)]"
-        >
-          <ArrowUp
-            className="h-6 w-6 md:h-[var(--home-control-icon)] md:w-[var(--home-control-icon)]"
-            aria-hidden="true"
-          />
-          <span className="hidden font-semibold uppercase tracking-[0.1em] md:inline">
-            Previous
-          </span>
-        </button>
-        <button
-          type="button"
-          onClick={() => stepToSlide(1)}
-          aria-label="Next expertise"
-          className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white shadow-[0_10px_30px_rgba(237,20,100,0.45)] transition-transform hover:-translate-y-0.5 md:h-[var(--home-control-h)] md:min-h-[var(--home-control-h)] md:w-auto md:gap-2.5 md:px-[var(--home-control-px)] md:text-[length:var(--home-control-font)]"
-        >
-          <span className="hidden font-semibold uppercase tracking-[0.1em] md:inline">
-            Next
-          </span>
-          <ArrowDown
-            className="h-6 w-6 md:h-[var(--home-control-icon)] md:w-[var(--home-control-icon)]"
-            aria-hidden="true"
-          />
         </button>
       </div>
 
@@ -422,7 +471,7 @@ const Home = () => {
                         <TransitionLink
                           href={section.readMoreLink}
                           tabIndex={activeSection === i ? 0 : -1}
-                          className={`group inline-flex items-center rounded-full bg-white font-semibold shadow-lg ${isPink ? "text-accent" : "text-primary"}`}
+                          className={`group inline-flex items-center rounded-full bg-white font-semibold shadow-lg ${isPink ? "text-accent-deep" : "text-primary"}`}
                           style={{
                             minHeight: "var(--home-cta-height)",
                             paddingInline: "var(--home-cta-pad-x)",
@@ -464,7 +513,7 @@ const Home = () => {
             <HomeVideo
               videoSrc={video.src}
               posterSrc={video.poster}
-              isPaused={isMotionPaused}
+              isPaused={isMotionPaused || index !== activeSection}
             />
           </div>
         ))}

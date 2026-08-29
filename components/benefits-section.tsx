@@ -4,10 +4,10 @@ import { benefitsSectionContent } from "@/utils/constants";
 
 const BenefitsSection = () => {
   return (
-    <section className="relative z-0 pb-[var(--sections-gap)] pt-4 md:pt-6">
-      <div className="page-split border-t border-white/20 pt-10 md:pt-14">
+    <section className="relative z-0">
+      <div className="page-split border-t border-white/20 pt-8 md:pt-10">
         <div className="min-w-0">
-          <span className="page-kicker text-white/65">How we work</span>
+          <span className="page-kicker text-white">How we work</span>
           <h2 className="section-heading mt-5 max-w-none text-white">
             A clear path
           </h2>
@@ -17,7 +17,7 @@ const BenefitsSection = () => {
           engagement stays focused, accountable, and built around outcomes.
         </p>
       </div>
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:mt-10 xl:grid-cols-4 xl:gap-4">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:mt-8 xl:grid-cols-4 xl:gap-4">
         {benefitsSectionContent.map((benefit, index) => (
           <BenefitCard
             key={benefit.title}

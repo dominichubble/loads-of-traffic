@@ -11,10 +11,23 @@ gsap.registerPlugin(ScrollTrigger);
 type TextGradientProps = {
   children: React.ReactNode;
   className?: string;
+  /** Render as this element instead of a <div> (e.g. "h1", "h2"). */
+  as?: React.ElementType;
+  /**
+   * Accessible text for the whole block. When set, the split-into-spans
+   * animation markup is hidden from assistive tech and copy/paste, and this
+   * string is announced instead.
+   */
+  label?: string;
 };
 
-const TextGradient = ({ children, className }: TextGradientProps) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+const TextGradient = ({
+  children,
+  className,
+  as: Tag = "div",
+  label,
+}: TextGradientProps) => {
+  const containerRef = useRef<HTMLElement>(null);
   useGSAP(
     function () {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -59,13 +72,14 @@ const TextGradient = ({ children, className }: TextGradientProps) => {
     },
   );
   return (
-    <div
+    <Tag
       ref={containerRef}
       style={{ fontKerning: "none" }}
       className={cn("text-gradient-container", className)}
+      aria-label={label}
     >
-      {children}
-    </div>
+      <span aria-hidden={label ? true : undefined}>{children}</span>
+    </Tag>
   );
 };
 

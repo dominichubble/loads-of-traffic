@@ -9,7 +9,7 @@ export const servicesSectionContent: servicesSectionContentType[] = [
     title: "Market Analysis",
     kicker: "The scan",
     ctaLabel: "Request a scan",
-    readMoreLink: "/services#1",
+    readMoreLink: "/services#competitor-intelligence",
     description: [
       "Uncover insights with in-depth competitor research.",
       "Decode industry trends to sharpen your strategy.",
@@ -20,7 +20,7 @@ export const servicesSectionContent: servicesSectionContentType[] = [
     title: "Data Driven",
     kicker: "The numbers",
     ctaLabel: "See the numbers",
-    readMoreLink: "/services#3",
+    readMoreLink: "/services#consultancy",
     description: [
       "Harness analytics to fuel smarter decisions.",
       "Optimise campaigns with precise performance data.",
@@ -31,7 +31,7 @@ export const servicesSectionContent: servicesSectionContentType[] = [
     title: "Affiliate Marketing",
     kicker: "The method",
     ctaLabel: "See the method",
-    readMoreLink: "/services#4",
+    readMoreLink: "/services#digital-marketing",
     description: [
       "Build strategic partnerships that drive revenue.",
       "Manage and grow affiliate programs seamlessly.",
@@ -42,7 +42,7 @@ export const servicesSectionContent: servicesSectionContentType[] = [
     title: "Business Growth",
     kicker: "The next market",
     ctaLabel: "Plan the next market",
-    readMoreLink: "/services#2",
+    readMoreLink: "/services#market-penetration",
     description: [
       "Unlock new markets and untapped opportunities.",
       "Elevate your brand with tailored strategies.",
@@ -53,21 +53,25 @@ export const servicesSectionContent: servicesSectionContentType[] = [
 
 export const servicesAccordionsContent = [
   {
+    slug: "competitor-intelligence",
     title: "Competitor Intelligence",
     lede: "See how rivals win traffic — and where they are exposed.",
     description: `Stay ahead with deep insights into competitor strategies, strengths, and weaknesses. Our tailored analysis equips you to make informed decisions, seize opportunities, and dominate your market with confidence.`,
   },
   {
+    slug: "market-penetration",
     title: "Market Penetration Services",
     lede: "Enter a new market, or deepen the one you already have.",
     description: `Break into new markets or strengthen your presence with expert guidance. We analyse trends, assess competition, and create targeted strategies to help you navigate challenges and unlock untapped growth potential.`,
   },
   {
+    slug: "consultancy",
     title: "Consultancy Services",
     lede: "A marketing plan built around your KPIs, not a generic playbook.",
     description: `Achieve your business goals with tailored marketing plans crafted around your KPIs. Our strategies focus on sustainable growth, building genuine audience connections, and fostering long-term brand loyalty in competitive landscapes.`,
   },
   {
+    slug: "digital-marketing",
     title: "Digital Marketing Agency Services",
     lede: "Affiliate, display, SEO, PPC — campaigns measured on ROI.",
     description: `Maximise results with expert affiliate and display management, SEO, PPC, and more. Our tailored campaigns drive quality traffic, boost engagement, and deliver measurable ROI to elevate your digital presence.`,
@@ -103,7 +107,7 @@ export const AboutFeaturesItems: AboutFeatureType[] = [
   {
     title: "Creativity",
     description:
-      "Our innovative approach transforms ideas into captivating designs that stand out",
+      "Our innovative approach turns market insight into campaigns that stand out",
   },
 
   {
