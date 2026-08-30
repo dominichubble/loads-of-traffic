@@ -79,7 +79,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="contact-form @container mx-auto flex h-full min-h-0 w-full max-w-[46rem] flex-col px-[var(--container-padding-x)] py-10 text-primary sm:py-12 lg:pl-10 lg:pr-[var(--container-padding-x)] lg:py-0 lg:pb-12 lg:pt-[calc(var(--pages-header-height)+1.5rem)] xl:pl-14"
+      className="contact-form @container mx-auto flex h-full min-h-0 w-full max-w-[46rem] flex-col px-[var(--container-padding-x)] text-primary lg:pl-10 lg:pr-[var(--container-padding-x)] xl:pl-14"
       aria-busy={status === "submitting"}
     >
       <div className="hidden" aria-hidden="true">
@@ -101,7 +101,7 @@ const ContactForm = () => {
       </div>
 
       <div className="no-scrollbar mt-[var(--contact-stack-gap)] flex min-h-0 flex-1 flex-col gap-[var(--contact-stack-gap)] overflow-y-auto overscroll-contain">
-        <div className="grid gap-[var(--contact-field-gap)] @[34rem]:grid-cols-2 @[34rem]:gap-x-10 @[34rem]:gap-y-[var(--contact-field-gap)]">
+        <div className="contact-fields-grid grid shrink-0 grid-cols-2 gap-x-[var(--contact-field-gap)] gap-y-[var(--contact-field-gap)] @[34rem]:gap-x-10">
           <Field id="fullName" label="Full name" required>
             <Input
               id="fullName"
@@ -185,7 +185,8 @@ const ContactForm = () => {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="inline-flex min-h-12 w-fit items-center justify-center gap-2 rounded-full bg-yellow px-7 py-3 text-sm font-semibold text-primary shadow-[0_12px_30px_rgba(255,166,0,0.35)] transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60"
+          className="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-yellow px-7 py-3 text-sm font-semibold text-primary shadow-[0_12px_30px_rgba(255,166,0,0.35)] transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60"
+          style={{ minHeight: "var(--contact-input-h, 3.15rem)" }}
         >
           {status === "submitting" ? "Sending…" : "Send message"}
           <Send className="h-4 w-4" aria-hidden="true" />
